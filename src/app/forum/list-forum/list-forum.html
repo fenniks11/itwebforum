@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="row">  
+               <!-- start rule  -->
+               <div class="card" style="padding:3px; margin: auto;">
+                <h4 style="font-size: 18px; text-align: center;"><b> Aturan dalam bertanya</b></h4>
+                <ul class="list-group" ngbDropdown>
+                  <li class="list-group-item" ngbDropdownToggle id="navbarDropdown2" role="button">Rangkum masalah anda</li>
+                  <li class="list-group-item" ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+                    <ul>
+                      <li>Sertakan detail tentang tujuan Anda</li>
+                      <li>Jelaskan hasil yang diharapkan dengan jelas </li>
+                      <li>Sertakan pesan kesalahan apa pun</li>
+                    </ul>  
+                  </li>
+                </ul>
+                <ul class="list-group" ngbDropdown style="box-sizing: inherit;">
+                  <li class="list-group-item" ngbDropdownToggle id="navbarDropdown2" role="button">Jelaskan usaha yg sudah dicoba</li>
+                  <li class="list-group-item" ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+                    <p>Tunjukkan apa yang telah Anda coba dan beri tahu kami apa yang Anda temukan (di situs ini atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan Anda. Anda bisa mendapatkan jawaban yang lebih baik saat memberikan penelitian.</p>
+                  </li>
+                </ul>
+                <ul class="list-group" ngbDropdown>
+                  <li class="list-group-item" ngbDropdownToggle id="navbarDropdown2" role="button">Tuliskan kode bila perlu</li>
+                  <li class="list-group-item" ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+                    <p>Jika dibutuhkan, tuliskan kode yang dibutuhkan agar masalah anda dapat lebih dimengerti orang lain</p>
+                  </li>
+                </ul>
+              </div>
+              <!-- end rule -->
+    
+        </div>
+      <br>
+      <div class="blog__sidebar__tags">
+
+        <h5>Tag-tag Populer</h5>
+          <a href="#">CSS</a>
+          <a href="#">HTML</a>
+          <a href="#">PHP</a>
+          <a href="#">JavaScript</a>
+          <a href="#">C++</a>
+          <a href="#">NodeJS</a>
+          <a href="#">C</a>
+          <a href="#">C#</a>
+      </div>
+  </div>
+  <div class="col-md-9">
+    <div class="btn-group" style="float: right;">
+      <div ngbDropdown class="d-inline-block">
+       <button class="btn btn-outline-secondary" 
+       data-toggle="tooltip" data-placement="bottom" title="Custom.."id="dropdownBasic1" ngbDropdownToggle>
+      <i class="fa fa-cog" aria-hidden="true"></i>
+       </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>Terbaru</button>
+          <button ngbDropdownItem>Pertanyaan Teratas</button>
+      </div>
+  </div>
+  </div>
+      <h3>Top Latest Question</h3>
+      <hr>
+
+      <div class="card-pertanyaan">
+        <div class="list-group" *ngIf="listForum.length > 0 else forum_kosong" role="list">
+          <div class="list-group-item" *ngFor="let list of listForum | slice: (crnPage - 1) * 5: (crnPage - 1) * 5 + 5">
+            <div class="btn-group" style="float: right;" ngbDropdown>
+              <div ngbDropdown class="d-inline-block">
+                <button class="btn" ngbDropdownToggle>
+                  <i class="fa fa-ellipsis-h"  aria-hidden="true"></i>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
+                  <button type= "button" class= "btn btn-primary" ngbDropdownItem *ngIf="_id == list.idOP" (click)="edit(list.idForum)"> 
+                    <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                  <a class="btn btn-danger" ngbDropdownItem *ngIf="_id == list.idOP"
+                  (click)="alertHapus(list.idForum, list.namaForum)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
+                </div>
+              </div>
+            </div>
+           
+              <div class="card-body">
+                <div class="row">
+                      <div class="col-md-7">
+                      <a class="nav-link" (click)="buka(list.idForum)" > <h5 class="card-title" [innerHTML]="list.namaForum"></h5></a>
+                      <p class="card-title">  Dari: {{list.originalPoster}} </p>
+                      <div class="button-tag">
+                          <a class="btn btn-sm btn-secondary mr-2"  ngbPopover="Hallo ini JavaScript!" 
+                          triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
+                          <a class="btn btn-sm btn-secondary mr-2"  ngbPopover="Hallo ini JavaScript!" 
+                          triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
+                      </div>
+                  <!-- start Button Respon Viewers -->
+                  <div class="button-aksi">
+                    <a class="btn btn-ouline-secondary" href=""  data-toggle="tooltip" data-placement="left" title="suka..">
+                      <i class="fa fa-thumbs-o-up fa-2x"></i>Disukai</a>
+                    <a class="btn btn-ouline-secondary" href=""  data-toggle="tooltip" data-placement="left" title="balas..">
+                      <i class="fa fa-commenting fa-2x"></i>Balasan</a>
+                    <a class="btn btn-ouline-secondary" href=""  data-toggle="tooltip" data-placement="left" title="bagikan..">
+                      <i class="fa fa-share fa-2x"></i>Dibagikan</a>
+                  </div>
+                  <!-- end button respon viewer -->
+                      </div>
+                  
+              </div>
+            
+          </div>
+        </div>
+        <nav aria-label="Page navigation example">
+          <div #pagination *ngIf="page.length > 1">
+            <h3 style="text-align: right;">
+              Page: <span  *ngFor="let i of page">
+                <a *ngIf="i != crnPage else disabled_link"
+                  style="cursor: pointer; color: orangered;" (click)="next_page(i)">{{i}}</a>
+                <ng-template #disabled_link>{{i}}</ng-template>
+                <a *ngIf="i != page.length">, </a>
+              </span >
+            </h3>
+          </div>
+        </nav>
+    </div>
+    </div>
+    <br>
+
+    <ng-template #forum_kosong>
+      <span style="color: white; text-align: center; font-size: 200%;">
+        <p>Kamu belum membuat pertanyaan, klik untuk bertanya..
+          <br><br><button (click)="tambah()" mat-button>
+            Buat Forum
+          </button></p>
+      </span>
+    </ng-template>
+  </div>
+</div>
+<br>

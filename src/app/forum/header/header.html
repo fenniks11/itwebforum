@@ -1,0 +1,40 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span><button style="color: white" mat-button>
+        <i class="fa fa-home">&nbsp;Home</i>
+      </button></span>
+    <span><button style="color: white" routerLink='' mat-button>
+      <i class="fa fa-globe">&nbsp;Forum</i>
+    </button></span>
+    <span>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+      </form>
+    </span>
+  <br>
+  <hr>  
+    <div *ngIf="login else notLogged">
+      <a style="color: white; " (click)="tambah()" mat-button>
+        <i class="fa fa-file-text-o" aria-hidden="true"></i> Buat Forum
+      </a>
+      <span style="right: 0%; position: sticky; width: 100%;">
+        <a style="color: white; " (click)="profile()" mat-button>
+          <i class="fa fa-user-o" aria-hidden="true"></i> Profile
+        </a></span>
+      <span style="right: 0%; position: sticky; width: 100%;">
+        <a style="color: white; " (click)="logout()" mat-button>
+          <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+        </a></span>
+    </div>
+    <!-- </div> -->
+
+  </mat-toolbar-row>
+</mat-toolbar>
+<ng-template #notLogged>
+  <span style="margin-right: 0%; position: relative;">
+    <button class="btn btn-success" (click)="Login()" mat-button>
+      <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+    </button></span>
+</ng-template>
+<div style="margin-top: 10px;"></div>

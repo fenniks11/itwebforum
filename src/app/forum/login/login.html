@@ -1,0 +1,36 @@
+<body>
+    <div *ngIf="logged_in else goLogin">
+        <button  mat-raised-button color="primary">Logged in</button>
+    </div>
+    <div *ngIf="oncomplete">
+        <p style="color: red;">SILAHKAN LOGIN TERLEBIH DAHULU!</p>
+    </div>
+    <ng-template #goLogin>
+        <div class="login">
+            <mat-card>
+                <form>
+                    <mat-form-field appearance="outline" style="width: 405px;">
+                        <mat-label>Masukkan email</mat-label>
+                        <input type="email" matInput name="email" [(ngModel)]="email" placeholder="Email" data-validate = "Valid email is: a@b.c" >
+                        <mat-icon matSuffix><i class="fa fa-at"></i></mat-icon>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field appearance="outline" style="width: 405px;">
+                        <mat-label>Masukkan Password</mat-label>
+                        <input type="password" matInput name="password" [(ngModel)]="password" placeholder="Password: ">
+                        <mat-icon matSuffix><i class="fa fa-key"></i></mat-icon>
+                    </mat-form-field>
+                <mat-card-actions style="width: 300px; height: 30px; border: none; border-radius: 17px;padding-left: 7px;">
+                    <button (click)="login()" mat-raised-button color="primary">Login</button>
+                </mat-card-actions>
+                <mat-card-actions>
+                <span>have an account? klik 
+                    <button (click)="register()" mat-raised-button class="btn-outline-primary">Register</button>
+                </span>
+                     
+                </mat-card-actions>
+                </form>
+            </mat-card>
+        </div>
+    </ng-template>
+</body>

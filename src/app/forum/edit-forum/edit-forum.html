@@ -1,0 +1,73 @@
+    <!-- MAIN -->
+    <div class="container">
+        <div class="create">
+            <div class="create__head">
+                <div class="create__title"><img src="fonts/icons/main/New_Topic.svg" alt="New topic">Create New Thread</div>
+                
+            </div>
+            <div class="create__section">
+                <label class="create__label" for="title">Judul Pertanyaan</label>
+                <input type="text" name="edit-nama-forum" [(ngModel)]="nama_baru" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="create__section">
+                        <label class="create__label" for="category">Select Category</label>
+                        <label class="custom-select">
+                            <select id="category">
+                                <option>Choose</option>
+                                <option>Choose #2</option>
+                                <option>Choose #3</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="create__section">
+                        <label class="create__label" for="sub-category">Select Sub Category</label>
+                        <label class="custom-select">
+                            <select id="sub-category">
+                                <option>Choose</option>
+                                <option>Choose #2</option>
+                                <option>Choose #3</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="create__section create__textarea">
+                <div *ngIf="logged_in else not_logged">
+                    <form>
+                        <mat-card>
+                            <mat-card-subtitle>Pesan utama:*</mat-card-subtitle>
+                            <editor [ngModelOptions]="{standalone: true}" [init]="TinyMce" [(ngModel)]="pesan_utama"  data="pesan_utama" id="editor">
+                            </editor>
+            
+                            <mat-card-actions style="text-align: right;">
+                                *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
+
+                            </mat-card-actions>
+                        </mat-card>
+                    </form>
+                </div>
+            </div>
+            <div class="create__section">
+                <label class="create__label" for="tags">Add Tags</label>
+                <input type="text" class="form-control" id="tags" placeholder="e.g. css, html, etc.">
+            </div>
+            <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17" mat-raised-button
+            color="primary">Edit</button>
+            <button  mat-raised-button color="danger">Cancel</button>
+        </div>
+</div>
+
+
+<ng-template #not_logged>
+<div  style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+    <div style="height: 20vmax;"></div>
+    <h1>Kamu harus login terlebih dahulu sebelum dapat membuat forum baru!</h1>
+    <button (click)="toLogin()" mat-button>
+        Login
+    </button>
+</div>
+</ng-template>
