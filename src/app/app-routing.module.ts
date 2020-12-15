@@ -7,6 +7,7 @@ import { Forum } from './forum/forum.component';
 import { Login } from './forum/login/login.component';
 import { Register } from './forum/register/register.component';
 import { Profile } from './forum/profile/profile.component';
+import { HomeComponent } from './home/home.component';
 import { CompileRun } from './forum/compilerun/compilerun.component';
 
 
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'profile', component: Profile },
+  { path: 'home', component: HomeComponent },
   { path: 'compilerun', component: CompileRun },
   { path: '', component: Forum } //Main page
 ];

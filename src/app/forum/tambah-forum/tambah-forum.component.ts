@@ -10,6 +10,7 @@ import { HeaderForum } from '../header/header.component';
 })
 
 export class TambahForum {
+  panelOpenState = false;
   titleHeader
   nama_baru = '';
   id_op = "";

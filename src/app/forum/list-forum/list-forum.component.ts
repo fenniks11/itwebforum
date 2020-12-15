@@ -11,6 +11,7 @@ import { HeaderForum } from '../header/header.component';
   templateUrl: './list-forum.html'
 })
 export class ListForum {
+  panelOpenState = false;
   @Input() public titleHeader: string;
 
   listForum = [];

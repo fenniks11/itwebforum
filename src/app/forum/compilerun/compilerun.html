@@ -1,36 +1,38 @@
-<body>
-
-    <div *ngIf="loading" id="loading" class="overlay">
-        <div [innerHTML]="loading_message" class="overlay-content"> </div>
-    </div>
-
-    <div style="background-color: white; text-align: center;">
-        <button (click)="copy()">Salin link</button><label for="lang">Pilih bahasa program:</label>
-
-        <select [(ngModel)]="lang" name="lang" id="lang">
-            <option value="html">HTML / PHP / CSS / JS</option>
-            <option value="njs">NodeJS</option>
-            <option value="py">Python</option>
-            <option value="c">C</option>
-            <option value="cpp">C++</option>
-            <option value="jv">Java</option>
-        </select>
-        <br>
-
-        <label for="code">Kode program: </label>
-        <textarea [(ngModel)]="code" name="code" id="code" style="width: 100%; min-height: 200px;">return 0;</textarea>
-
-        <button (click)="compile()">Compile</button>
-        <br>
-        <label for="result">Hasil kode (Console): </label><br>
-        <div *ngIf="result"><span *ngIf="!run_err else errExist" style="color: green;">Sukses dijalankan
-            </span>dalam waktu <span [innerHTML]="runtime"></span></div>
-    </div>
-
-    <div style="background-color: white;">
-        <code *ngIf="res_type == 'code' else iframeBody" [innerHTML]="result"></code>
-    </div>
-</body>
-
-<ng-template #errExist><span style="color: red;">Gagal dijalankan </span></ng-template>
-<ng-template #iframeBody><iframe [src]="result | safe"></iframe></ng-template>
+<div class="container">
+    <body>
+    
+        <div *ngIf="loading" id="loading" class="overlay">
+            <div [innerHTML]="loading_message" class="overlay-content"> </div>
+        </div>
+    
+        <div style="background-color: white; text-align: center;">
+            <button (click)="copy()">Salin link</button><label for="lang">Pilih bahasa program:</label>
+    
+            <select [(ngModel)]="lang" name="lang" id="lang">
+                <option value="html">HTML / PHP / CSS / JS</option>
+                <option value="njs">NodeJS</option>
+                <option value="py">Python</option>
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+                <option value="jv">Java</option>
+            </select>
+            <br>
+    
+            <label for="code">Kode program: </label>
+            <textarea [(ngModel)]="code" name="code" id="code" style="width: 100%; min-height: 200px;">return 0;</textarea>
+    
+            <button (click)="compile()">Compile</button>
+            <br>
+            <label for="result">Hasil kode (Console): </label><br>
+            <div *ngIf="result"><span *ngIf="!run_err else errExist" style="color: green;">Sukses dijalankan
+                </span>dalam waktu <span [innerHTML]="runtime"></span></div>
+        </div>
+    
+        <div style="background-color: white;">
+            <code *ngIf="res_type == 'code' else iframeBody" [innerHTML]="result"></code>
+        </div>
+    </body>
+    
+    <ng-template #errExist><span style="color: red;">Gagal dijalankan </span></ng-template>
+    <ng-template #iframeBody><iframe [src]="result | safe"></iframe></ng-template>
+</div>

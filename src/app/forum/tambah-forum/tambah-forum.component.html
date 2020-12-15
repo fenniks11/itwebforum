@@ -1,68 +1,99 @@
     <!-- MAIN -->
     <div class="container">
-            <div class="create">
-                <div class="create__head">
-                    <div class="create__title">Buat Pertanyaan Baru</div>
-                    
-                </div>
-                <div class="create__section">
-                    <label class="create__label" for="title">Judul Pertanyaan</label>
-                    <input type="text" name="judul" [(ngModel)]="nama_baru" placeholder="Tambahkan judul forum.. " class="form-control" required>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="create__section">
-                            <label class="create__label" for="category">Select Category</label>
-                            <label class="custom-select">
-                                <select id="category">
-                                    <option>Choose</option>
-                                    <option>Choose #2</option>
-                                    <option>Choose #3</option>
-                                </select>
-                            </label>
-                        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="blog__sidebar__tags">
+                    <h4><b> Aturan dalam bertanya</b></h4>
+                      <mat-accordion>
+                        <mat-expansion-panel (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            Rangkum masalah anda
+                        </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Sertakan detail tentang tujuan Anda</p>
+                        <p>Jelaskan hasil yang diharapkan dengan jelas</p>
+                        <p>Sertakan pesan kesalahan apa pun</p>
+                        </mat-expansion-panel>  
+                      </mat-accordion>
+                      <br>
+                      <mat-accordion>
+                        <mat-expansion-panel (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                          Jelaskan usaha yg sudah dicoba
+                        </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Tunjukkan apa yang telah Anda coba dan beri tahu kami apa yang Anda temukan (di situs ini atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan Anda. Anda bisa mendapatkan jawaban yang lebih baik saat memberikan penelitian.</p>
+                        </mat-expansion-panel>  
+                      </mat-accordion>
+                      <br>
+                      <mat-accordion>
+                        <mat-expansion-panel (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            Tuliskan kode bila perlu
+                        </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Jika dibutuhkan, tuliskan kode yang dibutuhkan agar masalah anda dapat lebih dimengerti orang lain</p>
+                        </mat-expansion-panel>  
+                      </mat-accordion>
                     </div>
-                    <div class="col-md-6">
-                        <div class="create__section">
-                            <label class="create__label" for="sub-category">Select Sub Category</label>
-                            <label class="custom-select">
-                                <select id="sub-category">
-                                    <option>Choose</option>
-                                    <option>Choose #2</option>
-                                    <option>Choose #3</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="create__section create__textarea">
-                    <div *ngIf="logged_in else not_logged">
-                        <form>
-                            <mat-card>
-                                <mat-card-subtitle>Pesan utama:*</mat-card-subtitle>
-                                <editor [ngModelOptions]="{standalone: true}" [init]="TinyMce" [(ngModel)]="pesan_utama"  data="pesan_utama" id="editor">
-                                </editor>
-                
-                                <mat-card-actions style="text-align: right;">
-                                    *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
-                                    <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17"
-                                        mat-raised-button color="primary">Tambah</button>
-                                </mat-card-actions>
-                            </mat-card>
-                        </form>
-                    </div>
-                </div>
-                <div class="create__section">
-                    <label class="create__label" for="tags">Add Tags</label>
-                    <input type="text" class="form-control" id="tags" placeholder="e.g. css, html, etc.">
-                </div>
-                <button type="btn btn-secondary">Batal</button>
-                <button type="btn btn-warn" >Buat</button>
-                <a href="#" class= "btn btn-primary">Cancel</a>
-                <a href="#" class="create__btn-create">Create Thread</a>
             </div>
-</div>
-
+            <div class="col-md-9">
+                <div class="create">
+                    <div class="create__head">
+                        <div class="create__title">Buat Pertanyaan Baru</div>
+                        
+                    </div>
+                    <div class="create__section">
+                        <label class="create__label" for="title">Judul Pertanyaan</label>
+                        <input type="text" name="judul" [(ngModel)]="nama_baru" placeholder="Tambahkan judul forum.. " class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="create__section">
+                                <label class="create__label" for="category">Pilih Kategori</label>
+                                <label class="custom-select">
+                                    <select id="category">
+                                        <option>Choose</option>
+                                        <option>Frontend</option>
+                                        <option>Backend</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    <div class="create__section create__textarea">
+                        <div *ngIf="logged_in else not_logged">
+                            <form>
+                                <mat-card>
+                                    <mat-card-subtitle>Pesan utama:*</mat-card-subtitle>
+                                    <editor [ngModelOptions]="{standalone: true}" [init]="TinyMce" [(ngModel)]="pesan_utama"  data="pesan_utama" id="editor">
+                                    </editor>
+                    
+                                    <mat-card-actions style="text-align: right;">
+                                        *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
+                                       
+                                    </mat-card-actions>
+                                </mat-card>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="create__section">
+                        <label class="create__label" for="tags">Tambahkan Tag</label>
+                        <input type="text" class="form-control" id="tags" placeholder="e.g. css, html, etc.">
+                    </div>
+                </div>
+                <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17"
+                mat-raised-button color="primary">Tambah</button>
+                <button  mat-button mat-dialog-close>Cancel</button>
+                </div>
+            </div>
+        </div>
+        
 
 <ng-template #not_logged>
     <div  style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">

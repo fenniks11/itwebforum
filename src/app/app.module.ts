@@ -13,6 +13,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 
 
 import { MatCardModule, MatCard } from '@angular/material/card';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -33,6 +34,8 @@ import { Profile } from './forum/profile/profile.component';
 import { Globals } from './globals';
 import { CompileRun } from './forum/compilerun/compilerun.component';
 import { SafePipe } from './safe.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HomeComponent } from './home/home.component';
 
 
 
@@ -48,6 +51,7 @@ import { SafePipe } from './safe.pipe';
     Login,
     Register,
     Profile,
+    HomeComponent,
     CompileRun,
     SafePipe
     ],
@@ -71,7 +75,9 @@ import { SafePipe } from './safe.pipe';
     MatPaginatorModule,
     CKEditorModule,
     MatSnackBarModule,
-    ClipboardModule
+    ClipboardModule,
+    MatExpansionModule,
+    NgbModule
 
   ],
   schemas: [

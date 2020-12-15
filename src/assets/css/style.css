@@ -116,13 +116,12 @@ body {
 }
 
 .create {
-  background-color: #ffffff;
-  border: solid 1px #f3f4f5;
+  background-color: #f0ebeb;
+  border: solid 1px #a4a5a7;
 }
 @media only screen and (min-width: 1040px) {
   .create {
     padding: 20px 30px 30px;
-    margin-top: 44px;
   }
 }
 @media only screen and (max-width: 1039px) {

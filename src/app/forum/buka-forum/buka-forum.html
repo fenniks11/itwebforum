@@ -1,18 +1,24 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-2">
-            test
+        <div class="col-md-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a routerLink="home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
+                <br>
+                <li class="list-group-item">Kategori</li>
+                <li class="list-group-item"><a href="#">Frontend</a></li>
+                <li class="list-group-item"><a href="#">Backend</a></li>
+                
+            </ul>
         </div>
-        <div class="col-md-9" >
+        <div class="col-md-8" >
             <div *ngIf="!notFound else err404">
-                <h5> {{metadata.judul}}</h5>
+                <h2> <b>{{metadata.judul}}</b></h2>
                 <pre *ngIf="metadata.lastEdited != null" style="color: rgb(255, 0, 0);">{{verboseTime(metadata.lastEdited)}}</pre>
                 <hr>
                 <div class="card-body">
-                    <h5 class="card-title">{{metadata.originalPoster}} bertanya...</h5>
+                    <h4 class="card-title">{{metadata.originalPoster}} bertanya...</h4>
                         <td>
                             <img #img [src]="metadata.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
-        
                         </td>
                         <td>
                             
@@ -25,12 +31,12 @@
                 <br>
                 <h4>Balasan: {{listPesan.length}}</h4>
                     <div #semua_balasan
-                        *ngIf="listPesan.length > 0 else balasan_kosong" style="background-color: white;">
+                        *ngIf="listPesan.length > 0 else balasan_kosong" >
                         <mat-list role="list">
                             <mat-list-item role="listitem"
                                 *ngFor="let list of listPesan | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
                                 
-                                <div class="card-body">
+                                <div class="card-body" style="background-color: white;">
                                     <h5 class="card-title">{{list.originalPoster}} mengatakan: </h5>
                                     <pre *ngIf="list.lastEdited != null" style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
                                         <td>
@@ -55,19 +61,18 @@
                                                 <a (click)="balas(list.idPesan)" style="cursor: pointer; color: orangered;"><u>Balas</u></a>
                                             </ng-template>
                                         </div>
-                                </div>
-                              
+                                    </div>
+                                    <br>
                             </mat-list-item>
                         </mat-list>
                 
                     </div>
-            
-            
                 <ng-template #balasan_kosong>
                     <h1 style="color:black; text-align: center; min-height: 30vmax;">Wah belum ada yang balas nih. Jadilah orang
                         yang pertama untuk membalas forum ini!
                     </h1>
                 </ng-template>
+                <br>
                 <div>
                     <table class="d-flex justify-content-end">
                         <tr *ngIf="listPesan.length > 0" style="font-size: 50%;">
@@ -82,23 +87,21 @@
                         </tr>
                     </table>
                 </div>
-                
-                <br>
+                <div class="card-title">
+                    <div #pagination *ngIf="page.length > 1">
+                        <h1 style="text-align: right;">
+                            Page: <span *ngFor="let i of page"><a *ngIf="i != crnPage else disabled_link"
+                                    (click)="next_page(i)" style="cursor: pointer; color: orangered;"><u>{{i}}</u></a>
+                                <ng-template #disabled_link>{{i}}</ng-template><a *ngIf="i != page.length">, </a>
+                            </span>
+                        </h1>
+                    </div>
+                </div>
 
                 <div #input *ngIf="logged_in else not_logged">
                     <div *ngIf="Edit == false; else edit_msg"> Tinggalkan jawaban </div>
                     <ng-template #edit_msg> Edit Jawaban </ng-template>
                     <div class="card">
-                    <div class="card-title">
-                        <div #pagination *ngIf="page.length > 1">
-                            <h1 style="text-align: right; color: white;">
-                                Page: <span *ngFor="let i of page"><a *ngIf="i != crnPage else disabled_link"
-                                        (click)="next_page(i)" style="cursor: pointer; color: orangered;"><u>{{i}}</u></a>
-                                    <ng-template #disabled_link>{{i}}</ng-template><a *ngIf="i != page.length">, </a>
-                                </span>
-                            </h1>
-                        </div>
-                    </div>
                     <div style=" width: 85%; margin: 0 auto;">
                         Isi pesan:*
             
@@ -115,30 +118,32 @@
                 </div>
             </div>
 
-            <ng-template #err404>
-                <div style="height: 230px; "></div>
-                <div style="color: white; text-align: center; min-width: 600px;">
-                    <p>404</p>
-                    <p>Not found</p>
-                    <div style="height: 20vmax;"></div>
-                    <h1>Wah, halaman yang kamu cari tidak ada :( Silahkan periksa kembali link yang dimasukkan. Atau</h1>
-                    <button (click)="back()" mat-button>
-                        Kembali ke daftar forum
-                    </button>
-                </div>
-            </ng-template>
-            
-            <ng-template #not_logged>
-                <div
-                    style="position: sticky; height: 0px; text-align: center;color:black;">
-                    <div style="height: 20vmax;"></div>
-                    <h1>Kamu harus login terlebih dahulu sebelum dapat membalas atau mengirim pesan ke forum ini!</h1>
-                    <button (click)="toLogin()" mat-button>
-                        Login
-                    </button>
-                </div>
-            </ng-template>
+           
             
         </div>
     </div>
+    
+    <ng-template #err404>
+        <div style="height: 230px; "></div>
+        <div style="color: white; text-align: center; min-width: 600px;">
+            <p>404</p>
+            <p>Not found</p>
+            <div style="height: 20vmax;"></div>
+            <h1>Wah, halaman yang kamu cari tidak ada :( Silahkan periksa kembali link yang dimasukkan. Atau</h1>
+            <button (click)="back()" mat-button>
+                Kembali ke daftar forum
+            </button>
+        </div>
+    </ng-template>
+    
+    <ng-template #not_logged>
+        <div
+            style="position: sticky; height: 0px; text-align: center;color:black;">
+            <div style="height: 20vmax;"></div>
+            <h1>Kamu harus login terlebih dahulu sebelum dapat membalas atau mengirim pesan ke forum ini!</h1>
+            <button (click)="toLogin()" mat-button>
+                Login
+            </button>
+        </div>
+    </ng-template>
 </div>

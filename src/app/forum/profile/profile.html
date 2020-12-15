@@ -1,59 +1,75 @@
-    <div *ngIf="fresh">
+<div class="container">
+    <div class="row">
+      <div class="col-md-3">
+
+        <div class="blog__sidebar__tags">
+            <div>
+                <img style="width: 50%;"  id="blah" [src]='details.profile_picture' alt="Profile picture" />
+                <input type='file' accept="image/x-png, image/jpeg, image/jpg" id="imgInp" (change)="img_prev($event)" />
+                <div *ngIf="picture_changed">
+                    Picture Changed!
+                    <button (click)="pp_change()" mat-button> Ubah </button>
+                </div>
+                <div *ngIf="!default_pic">
+                    Picture not Default!
+                    <button (click)="pp_delete()" mat-button> Hapus </button>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div>
+                <mat-card>
+                    <form>
+                        <mat-form-field>
+                            <input type="text" placeholder="Nama" matInput name="nama" id="nama" [(ngModel)]="details.nama"
+                                required>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                            <input type="text" placeholder="Username" matInput name="username" id="username"
+                                [(ngModel)]="details.username" (keyup)="username_change()" required>
+                                <p [innerHTML]="username_err" *ngIf="username_err.length > 0" style="color: red;"></p>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                            <input type="text" placeholder="Profesi" matInput name="profesi" id="profesi"
+                                [(ngModel)]="details.profesi">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                            <input type="number" placeholder="Nomor HP" matInput name="no_hp" id="no_hp"
+                                [(ngModel)]="details.no_hp">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                            <input type="text" placeholder="Alamat rumah" matInput name="alamat" id="alamat"
+                                [(ngModel)]="details.alamat">
+                        </mat-form-field>
+                        <br>
+        
+                        <label>Jenis Kelamin </label>
+                        <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="L" type="radio">Laki-laki
+                        <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="P" type="radio">Perempuan
+        
+                        <mat-card-actions>
+                            <button (click)="save()" [disabled]="username_err.length > 0 || details.nama.length < 3"
+                                mat-raised-button color="primary">Ubah</button>
+                        </mat-card-actions>
+                    </form>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+  </div>
+  <br>
+
+
+<div *ngIf="fresh">
         Sedikit lagi!
     </div>
 
-    <div>
-        <input type='file' accept="image/x-png, image/jpeg, image/jpg" id="imgInp" (change)="img_prev($event)" />
-        <img style="width: 50%;"  id="blah" [src]='details.profile_picture' alt="Profile picture" />
-        <div *ngIf="picture_changed">
-            Picture Changed!
-            <button (click)="pp_change()" mat-button> Ubah </button>
-        </div>
-        <div *ngIf="!default_pic">
-            Picture not Default!
-            <button (click)="pp_delete()" mat-button> Hapus </button>
-        </div>
-    </div>
 
     <br>
-    <div>
-        <mat-card>
-            <form>
-                <mat-form-field>
-                    <input type="text" placeholder="Nama" matInput name="nama" id="nama" [(ngModel)]="details.nama"
-                        required>
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input type="text" placeholder="Username" matInput name="username" id="username"
-                        [(ngModel)]="details.username" (keyup)="username_change()" required>
-                        <p [innerHTML]="username_err" *ngIf="username_err.length > 0" style="color: red;"></p>
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input type="text" placeholder="Profesi" matInput name="profesi" id="profesi"
-                        [(ngModel)]="details.profesi">
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input type="number" placeholder="Nomor HP" matInput name="no_hp" id="no_hp"
-                        [(ngModel)]="details.no_hp">
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input type="text" placeholder="Alamat rumah" matInput name="alamat" id="alamat"
-                        [(ngModel)]="details.alamat">
-                </mat-form-field>
-                <br>
-
-                <label>Jenis Kelamin </label>
-                <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="L" type="radio">Laki-laki
-                <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="P" type="radio">Perempuan
-
-                <mat-card-actions>
-                    <button (click)="save()" [disabled]="username_err.length > 0 || details.nama.length < 3"
-                        mat-raised-button color="primary">Ubah</button>
-                </mat-card-actions>
-            </form>
-        </mat-card>
-    </div>

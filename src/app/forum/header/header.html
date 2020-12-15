@@ -1,33 +1,36 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <span><button style="color: white" mat-button>
+    <button style="color: white" mat-button routerLink='home'>
         <i class="fa fa-home">&nbsp;Home</i>
-      </button></span>
-    <span><button style="color: white" routerLink='' mat-button>
+      </button>
+    <button style="color: white" routerLink='' mat-button>
       <i class="fa fa-globe">&nbsp;Forum</i>
-    </button></span>
-    <span>
+    </button>
+    
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </form>
-    </span>
+    
   <br>
   <hr>  
     <div *ngIf="login else notLogged">
-      <a style="color: white; " (click)="compilerun()" mat-button>
-        <i class="fa fa-file-text-o" aria-hidden="true"></i> Compile Run
+      <a style="color: white; " (click)="compilerun()" 
+      data-bs-toggle="tooltip"  title="Jalankan Kode"
+      mat-button>
+        <i class="fa fa-file-text" aria-hidden="true"></i>
       </a>
-      <a style="color: white; " (click)="tambah()" mat-button>
-        <i class="fa fa-file-text-o" aria-hidden="true"></i> Buat Forum
+      <a style="color: white; " (click)="tambah()"
+      data-bs-toggle="tooltip"  title="Buat Forum" mat-button>
+        <i class="fa fa-file-text-o" aria-hidden="true"></i> 
       </a>
-      <span style="right: 0%; position: sticky; width: 100%;">
+      <span style="float:right;">
+        <a style="color: white; " (click)="logout()" mat-button>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </a></span>
+      <span style="float:right;">
         <a style="color: white; " (click)="profile()" mat-button>
           <i class="fa fa-user-o" aria-hidden="true"></i> Profile
-        </a></span>
-      <span style="right: 0%; position: sticky; width: 100%;">
-        <a style="color: white; " (click)="logout()" mat-button>
-          <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
         </a></span>
     </div>
     <!-- </div> -->
