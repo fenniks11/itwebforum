@@ -68,7 +68,8 @@
                 
                     </div>
                 <ng-template #balasan_kosong>
-                    <h1 style="color:black; text-align: center; min-height: 30vmax;">Wah belum ada yang balas nih. Jadilah orang
+                    <h1 style="color:black; text-align: center; min-height: 30vmax;">Wah belum ada yang balas nih.
+                        Jadilah orang
                         yang pertama untuk membalas forum ini!
                     </h1>
                 </ng-template>
@@ -77,7 +78,7 @@
                     <table class="d-flex justify-content-end">
                         <tr *ngIf="listPesan.length > 0" style="font-size: 50%;">
                             <h5 style="color: rgb(0, 0, 0); text-align: center;">Tampilkan
-                                <select [(ngModel)]="show" (change)="ngOnInit(id)" class="page-item" >
+                                <select [(ngModel)]="show" (change)="ngOnInit(id)" class="page-item">
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="20">20</option>
