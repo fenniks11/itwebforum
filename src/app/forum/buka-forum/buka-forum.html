@@ -31,7 +31,7 @@
                                 *ngFor="let list of listPesan | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
                                 
                                 <div class="card-body">
-                                    <h5 class="card-title">{{metadata.originalPoster}} mengatakan: </h5>
+                                    <h5 class="card-title">{{list.originalPoster}} mengatakan: </h5>
                                     <pre *ngIf="metadata.lastEdited != null" style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
                                         <td>
                                             <img #img [src]="metadata.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
