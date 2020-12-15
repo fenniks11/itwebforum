@@ -28,6 +28,9 @@ export class HeaderForum {
       });
   }
   
+  compilerun(){
+    this.router.navigate(['compilerun', { lang: "njs", code:"console.log('Hello World!')" }]);
+  }
 
   profile(){
     this.router.navigate(['profile'])

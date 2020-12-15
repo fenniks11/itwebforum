@@ -15,7 +15,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatCardModule, MatCard } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatToolbarModule, MatToolbar } from "@angular/material/toolbar";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -30,8 +30,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Register } from './forum/register/register.component';
 import { Profile } from './forum/profile/profile.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HomeComponent } from './home/home.component';
+import { Globals } from './globals';
+import { CompileRun } from './forum/compilerun/compilerun.component';
+import { SafePipe } from './safe.pipe';
 
 
 
@@ -47,13 +48,16 @@ import { HomeComponent } from './home/home.component';
     Login,
     Register,
     Profile,
-    HomeComponent
-  ],
+    CompileRun,
+    SafePipe
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
     EditorModule,
     MatInputModule,
     MatButtonModule,
@@ -67,14 +71,13 @@ import { HomeComponent } from './home/home.component';
     MatPaginatorModule,
     CKEditorModule,
     MatSnackBarModule,
-    ClipboardModule,
-    NgbModule
+    ClipboardModule
 
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [],
+  providers: [Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

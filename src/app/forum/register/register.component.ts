@@ -26,7 +26,6 @@ export class Register {
     var body = { email: this.email, username: this.username, password: this.password }
     var res2 = await this.http.post("http://localhost:3000/api/user/register", body).toPromise() as any;
 
-    console.log(res2);
     if(!res2.success) return alert(`${res2.reason} sudah terpakai, silahkan coba ${res2.reason} yang lain`)
 
     await sessionStorage.setItem("_id", res2.id)
@@ -36,6 +35,3 @@ export class Register {
     }, 2000);
   }
 }
-
-
-// TODO: after register, not logged in. fix this

@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb');
-const formidable = require ("formidable");
+const formidable = require("formidable")
+
 module.exports = {
 
     TambahForum: async function (app, db) {
