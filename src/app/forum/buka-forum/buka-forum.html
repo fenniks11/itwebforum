@@ -32,9 +32,9 @@
                                 
                                 <div class="card-body">
                                     <h5 class="card-title">{{list.originalPoster}} mengatakan: </h5>
-                                    <pre *ngIf="metadata.lastEdited != null" style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
+                                    <pre *ngIf="list.lastEdited != null" style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
                                         <td>
-                                            <img #img [src]="metadata.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
+                                            <img #img [src]="list.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
                         
                                         </td>
                                         <td>
