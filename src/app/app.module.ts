@@ -5,15 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TambahForum } from "./forum/tambah-forum/tambah-forum.component";
 import { Forum } from './forum/forum.component';
-import { Login } from './forum/login/login.component';
+import { Login } from './home/login/login.component';
 import { ListForum } from './forum/list-forum/list-forum.component';
 import { HeaderForum } from './forum/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
-
 import { MatCardModule, MatCard } from '@angular/material/card';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -29,13 +28,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { Register } from './forum/register/register.component';
-import { Profile } from './forum/profile/profile.component';
+import { Register } from './home/register/register.component';
+import { Profile } from './home/profile/profile.component';
 import { Globals } from './globals';
 import { CompileRun } from './forum/compilerun/compilerun.component';
 import { SafePipe } from './safe.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
+import { Search } from './home/search/search.component';
 
 
 
@@ -53,8 +53,9 @@ import { HomeComponent } from './home/home.component';
     Profile,
     HomeComponent,
     CompileRun,
-    SafePipe
-    ],
+    SafePipe,
+    Search
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

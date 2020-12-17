@@ -27,4 +27,7 @@ module.exports.init = function (app, db) {
   let compiler = require("./js/compiler")
   compiler.Compile(app, db);
   compiler.iFrame(app, db);
+
+  let search = require("./js/search")
+  search.search(app,db)
 };
