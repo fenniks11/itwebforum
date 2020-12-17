@@ -118,7 +118,7 @@ export class BukaForum {
                 this.crnPage = Math.ceil(r / this.show)
                 setTimeout(() => {
                     window.location.hash = `#${this.focusTo}`
-                    document.getElementById(this.focusTo).style.animation = "fadeIn ease 3s"
+                    document.getElementById(this.focusTo).style.animation = "fadeIn ease 5s"
                 }, 250);
             }
             else {

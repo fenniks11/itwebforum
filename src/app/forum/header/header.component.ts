@@ -12,8 +12,9 @@ export class HeaderForum {
   constructor(private router: Router, private snackBar: MatSnackBar) { };
 
   login = false;
+  keywords = "" as string;
 
-  async ngOnInit(){
+  async ngOnInit() {
     this.login = !sessionStorage.getItem("_id") ? false : true
   }
 
@@ -27,16 +28,22 @@ export class HeaderForum {
         window.location.reload()
       });
   }
-  
-  compilerun(){
-    this.router.navigate(['compilerun', { lang: "njs", code:"console.log('Hello World!')" }]);
+
+  cari() {
+    if (this.keywords.length < 3) return;
+    this.router.navigate(['search', {keywords: this.keywords}])
   }
 
-  profile(){
+
+  compilerun() {
+    this.router.navigate(['compilerun', { lang: "njs", code: "console.log('Hello World!')" }]);
+  }
+
+  profile() {
     this.router.navigate(['profile'])
   }
 
-  Login(){
+  Login() {
     this.router.navigate(['login'])
   }
 

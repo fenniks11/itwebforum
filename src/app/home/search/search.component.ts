@@ -9,10 +9,11 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class Search {
     constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient) { };
-    keywords = this.route.snapshot.paramMap.get("keywords") as string;
+    keywords = !this.route.snapshot.paramMap.get("keywords") ? "" : this.route.snapshot.paramMap.get("keywords");
     wrong = false;
     logged_in = !sessionStorage.getItem("_id") ? false : true;
     types = [];
+    headerSearch = false;
     result = [];
 
     /**
@@ -23,7 +24,7 @@ export class Search {
      */
 
     ngOnInit() {
-
+        if (this.keywords) { if (this.keywords.length < 3) return; this.types.push("forum"); this.headerSearch = true; this.cari(); }
     }
 
     async cari() {
@@ -39,19 +40,20 @@ export class Search {
 
 
         for (const i in res) this.result = this.result.concat(res[i])
-        console.log(this.result);
+        // console.log(this.result);
 
     }
 
-    forum(id){
-
+    forum(id) {
+        this.router.navigate(['forum/buka', { id: id }]);
     }
 
-    pesan(id){
-
+    pesan(fid, id) {
+        // localhost:4200/forum/buka;id=1607358733691;msg=3215119914879
+        this.router.navigate(['forum/buka', { id: fid, msg: id }]);
     }
 
-    user(username){
+    user(username) {
 
     }
 
