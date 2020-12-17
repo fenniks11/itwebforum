@@ -74,7 +74,7 @@
       <div class="card-pertanyaan">
         <div class="list-group" *ngIf="listForum.length > 0 else forum_kosong" role="list">
           <div class="list-group-item" *ngFor="let list of listForum | slice: (crnPage - 1) * 5: (crnPage - 1) * 5 + 5">
-            <div class="btn-group" style="float: right;" ngbDropdown>
+            <div class="btn-group" style="float: right; padding-right: 20px;" ngbDropdown>
               <div ngbDropdown class="d-inline-block">
                 <button class="btn" ngbDropdownToggle>
                   <i class="fa fa-ellipsis-h"  aria-hidden="true"></i>
@@ -92,8 +92,10 @@
               <div class="card-body">
                 <div class="row">
                       <div class="col-md-7">
-                      <a class="nav-link" (click)="buka(list.idForum)" > <h2 class="card-title" [innerHTML]="list.namaForum"></h2></a>
-                      <p class="card-title">  Dari: {{list.originalPoster}} </p>
+                      <a class="nav-link" (click)="buka(list.idForum)" > 
+                        <h2 class="card-title" [innerHTML]="list.namaForum"></h2>
+                      </a>
+                      <p class="card-title" style="padding-left:10px;">{{list.originalPoster}} </p>
                       <div class="button-tag">
                           <a class="btn btn-sm btn-secondary mr-2"  ngbPopover="Hallo ini JavaScript!" 
                           triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
