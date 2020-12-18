@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group list-group-flush">
@@ -11,24 +11,20 @@
             </ul>
         </div>
         <div class="col-md-8">
+
             <div *ngIf="!notFound else err404">
                 <h2> <b>{{metadata.judul}}</b></h2>
-                <pre *ngIf="metadata.lastEdited != null"
-                    style="color: rgb(255, 0, 0);">{{verboseTime(metadata.lastEdited)}}</pre>
                 <hr>
-                <div class="card-body">
-                    <h4 class="card-title">{{metadata.originalPoster}} mengatakan</h4>
-                    <td>
-                        <img #img [src]="metadata.ProfilePicture" width="50px" height="75px"
-                            style="border-radius: 10%;">
-                    </td>
-                    <td>
-
-                        <p class="card-title" [innerHTML]="metadata.pesanUtama"></p>
-
-                    </td>
-
+                <div class="row">
+                    <div class="col-md-1">
+                        <img #img [src]="metadata.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
+                    </div>
+                    <div class="col-md-7">
+                        <small *ngIf="metadata.lastEdited != null" style="color: gray">{{verboseTime(metadata.lastEdited)}}</small>
+                        <h4 class="card-title">{{metadata.originalPoster}}</h4>
+                    </div>
                 </div>
+                <p class="card-text"[innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
                 <hr>
                 <br>
                 <h4>Balasan: {{listPesan.length}}</h4>
@@ -64,21 +60,24 @@
                                             style="cursor: pointer; color: orangered;"><u>Hapus</u></a>
                                     </span>
                                     <ng-template #bukanOP>
-                                        <a (click)="balas(list.idPesan)"
-                                            style="cursor: pointer; color: orangered;"><u>Balas</u></a>
+                                        <a (click)="balas(list.idPesan)" style="cursor: pointer; color: orangered;"><u>Balas</u></a>
                                     </ng-template>
                                 </div>
-                            </div>
-                            <br>
-                        </mat-list-item>
-                    </mat-list>
-
-                </div>
+                                </div>
+                                <br>
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
                 <ng-template #balasan_kosong>
-                    <h1 style="color:black; text-align: center; min-height: 30vmax;">Wah belum ada yang balas nih.
-                        Jadilah orang
-                        yang pertama untuk membalas forum ini!
-                    </h1>
+                    <p class="text-center">
+                        Wah belum ada yang balas nih. Jadilah orang yang pertama untuk membalas forum ini!
+                    </p>
+                </ng-template>
+                <ng-template #not_logged>
+                <h4 class="card-text" style="text-align: center">
+                    Kamu harus login terlebih dahulu sebelum dapat membalas atau mengirim pesan ke forum ini!
+                    <button (click)="toLogin()" mat-raised-button>Login</button>
+                </h4>
                 </ng-template>
                 <br>
                 <div>
@@ -107,51 +106,32 @@
                 </div>
 
                 <div #input *ngIf="logged_in else not_logged">
-                    <div *ngIf="Edit == false; else edit_msg"> Tinggalkan jawaban </div>
+                    <div *ngIf="Edit == false; else edit_msg">Tinggalkan jawaban </div>
                     <ng-template #edit_msg> Edit Jawaban </ng-template>
                     <div class="card">
-                        <div style=" width: 85%; margin: 0 auto;">
-                            Isi pesan:*
-
-                            <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_pesan" data="isiKirim.isi_pesan"
-                                id="editor">
-                            </editor>
-                        </div>
-                        <pre style="text-align: right; ">*Syarat: Isi pesan minimal 5 karakter</pre>
-                        <button *ngIf="Edit == false; else edit_button" [disabled]="isiKirim.isi_pesan.length < 12"
-                            (click)="kirim()" mat-raised-button color="primary">Kirim</button>
-                        <ng-template #edit_button><button [disabled]="isiKirim.isi_pesan.length < 12"
-                                (click)="confirm_edit()" mat-raised-button color="primary">Edit</button>
-                        </ng-template>
+                    <div style=" width: 85%; margin: 0 auto;">
+                        Isi pesan:*
+                        <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_pesan" data="isiKirim.isi_pesan" id="editor">
+                        </editor>
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     </div>
-
-    <ng-template #err404>
-        <div style="height: 230px; "></div>
-        <div style="color: white; text-align: center; min-width: 600px;">
-            <p>404</p>
-            <p>Not found</p>
-            <div style="height: 20vmax;"></div>
-            <h1>Wah, halaman yang kamu cari tidak ada :( Silahkan periksa kembali link yang dimasukkan. Atau</h1>
-            <button (click)="back()" mat-button>
-                Kembali ke daftar forum
-            </button>
-        </div>
-    </ng-template>
-
-    <ng-template #not_logged>
-        <div style="position: sticky; height: 0px; text-align: center;color:black;">
-            <div style="height: 20vmax;"></div>
-            <h1>Kamu harus login terlebih dahulu sebelum dapat membalas atau mengirim pesan ke forum ini!</h1>
-            <button (click)="toLogin()" mat-button>
-                Login
-            </button>
-        </div>
-    </ng-template>
+    
 </div>
+<ng-template #err404>
+    <mat-card>
+        <img mat-card-image class="img-rounded" src="assets/images/err.jpg" >
+        <mat-card-content style="text-align: center;">
+            <h1 class="text-danger">404</h1>
+            <h1 class="text-danger">Halaman Tidak Ditemukan</h1>
+            <small>Wah, halaman yang kamu cari tidak ada :( 
+                Silahkan periksa kembali link yang dimasukkan. 
+                Atau <button (click)="back()" mat-raised-button>
+                    Kembali ke daftar forum
+                </button></small>
+        </mat-card-content>
+    </mat-card>
+    
+</ng-template>

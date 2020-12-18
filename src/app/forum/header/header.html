@@ -1,46 +1,53 @@
+
 <mat-toolbar>
   <mat-toolbar-row>
-    <button style="color: white" mat-button routerLink='home'>
+    <span>
+      <button style="color: white" mat-button routerLink='home'>
         <i class="fa fa-home">&nbsp;Home</i>
       </button>
+    </span>
+    <span>
     <button style="color: white" routerLink='' mat-button>
       <i class="fa fa-globe">&nbsp;Forum</i>
     </button>
-    
+  </span>
+    <mat-toolbar-row>
       <form class="form-inline my-2 my-lg-0">
         <input [(ngModel)]="keywords" [ngModelOptions]="{standalone: true}" class="form-control mr-sm-2" type="search" placeholder="Cari Sesuatu..." aria-label="Search">
         <button (click)="cari()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </form>
+    </mat-toolbar-row>
     
-  <br>
-  <hr>  
     <div *ngIf="login else notLogged">
-      <a style="color: white; " (click)="compilerun()" 
-      data-bs-toggle="tooltip"  title="Jalankan Kode"
-      mat-button>
-        <i class="fa fa-file-text" aria-hidden="true"></i>
-      </a>
-      <a style="color: white; " (click)="tambah()"
-      data-bs-toggle="tooltip"  title="Buat Forum" mat-button>
-        <i class="fa fa-file-text-o" aria-hidden="true"></i> 
-      </a>
-      <span style="float:right;">
-        <a style="color: white; " (click)="logout()" mat-button>
-          <i class="fa fa-sign-out" aria-hidden="true"></i>
-        </a></span>
-      <span style="float:right;">
-        <a style="color: white; " (click)="profile()" mat-button>
-          <i class="fa fa-user-o" aria-hidden="true"></i> Profile
-        </a></span>
+      <mat-toolbar-row>
+        <button style="color: white; " (click)="compilerun()" 
+        data-bs-toggle="tooltip"  title="Jalankan Kode"
+        mat-button>
+          <i class="fa fa-code" aria-hidden="true"></i>
+        </button>
+        <button style="color: white; " (click)="tambah()"
+        data-bs-toggle="tooltip"  title="Buat Forum" mat-button>
+          <i class="fa fa-file-text-o" aria-hidden="true"></i> 
+        </button>
+        <span style="float:right;">
+          <button style="color: white; " (click)="profile()" mat-button>
+            <i class="fa fa-user-o" aria-hidden="true"></i> Profile
+          </button></span>
+          <span style="float:right;">
+            <button style="color: white; " (click)="logout()"
+            data-bs-toggle="tooltip"  title="Logout" mat-button>
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </button></span>
+      </mat-toolbar-row>
     </div>
     <!-- </div> -->
 
+    <ng-template #notLogged>
+      <span style="margin-right: 0%; position: relative;">
+        <button class="btn btn-success" (click)="Login()" mat-button>
+          <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+        </button></span>
+    </ng-template>
   </mat-toolbar-row>
 </mat-toolbar>
-<ng-template #notLogged>
-  <span style="margin-right: 0%; position: relative;">
-    <button class="btn btn-success" (click)="Login()" mat-button>
-      <i class="fa fa-sign-in" aria-hidden="true"></i> Login
-    </button></span>
-</ng-template>
 <div style="margin-top: 10px;"></div>
