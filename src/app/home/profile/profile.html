@@ -1,24 +1,22 @@
 <div class="container">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4">
 
         <div class="blog__sidebar__tags">
             <div>
                 <img style="width: 50%;"  id="blah" [src]='details.profile_picture' alt="Profile picture" />
                 <input type='file' accept="image/x-png, image/jpeg, image/jpg" id="imgInp" (change)="img_prev($event)" />
                 <div *ngIf="picture_changed">
-                    Picture Changed!
-                    <button (click)="pp_change()" mat-button> Ubah </button>
+                    <br> <button (click)="pp_change()" mat-raised-button color="primary"> Simpan </button>
                 </div>
                 <div *ngIf="!default_pic">
-                    Picture not Default!
-                    <button (click)="pp_delete()" mat-button> Hapus </button>
+                    <br> <button (click)="pp_delete()" mat-raised-button color="warn"> Hapus </button>
                 </div>
             </div>
         
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
         <div class="row">
             <div>
                 <mat-card>
@@ -50,13 +48,13 @@
                         </mat-form-field>
                         <br>
         
-                        <label>Jenis Kelamin </label>
-                        <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="L" type="radio">Laki-laki
-                        <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="P" type="radio">Perempuan
+                        <label>Jenis Kelamin </label> <br>
+                        <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="L" type="radio">Pria &nbsp;
+                        <input name="jeniskelamin" [(ngModel)]="details.jenis_kelamin" value="P" type="radio">Wanita
         
-                        <mat-card-actions>
-                            <button (click)="save()" [disabled]="username_err.length > 0 || details.nama.length < 3"
-                                mat-raised-button color="primary">Ubah</button>
+                        <mat-card-actions style="text-align: center;">
+                            <br> <button (click)="save()" [disabled]="username_err.length > 0 || details.nama.length < 3"
+                                mat-raised-button color="primary">Simpan</button>
                         </mat-card-actions>
                     </form>
                 </mat-card>

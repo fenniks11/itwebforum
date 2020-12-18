@@ -6,8 +6,8 @@
         </div>
     
         <div style="background-color: white; text-align: center;">
-            <button (click)="copy()">Salin link</button><label for="lang">Pilih bahasa program:</label>
-    
+            <label for="lang">Pilih bahasa program:</label>
+            &nbsp;
             <select [(ngModel)]="lang" name="lang" id="lang">
                 <option value="html">HTML / PHP / CSS / JS</option>
                 <option value="njs">NodeJS</option>
@@ -20,9 +20,12 @@
     
             <label for="code">Kode program: </label>
             <textarea [(ngModel)]="code" name="code" id="code" style="width: 100%; min-height: 200px;">return 0;</textarea>
-    
-            <button (click)="compile()">Compile</button>
+            <div style="text-align: right;">
+            <button (click)="copy()">Salin link</button> &nbsp;
+            </div>
             <br>
+            <button (click)="compile()">Compile</button>
+            <br><br>
             <label for="result">Hasil kode (Console): </label><br>
             <div *ngIf="result"><span *ngIf="!run_err else errExist" style="color: green;">Sukses dijalankan
                 </span>dalam waktu <span [innerHTML]="runtime"></span></div>

@@ -1,8 +1,8 @@
 <body style="text-align: center;">
-    <p>Syarat: Kata kunci minimal 3 karakter, 1 tipe terpilih</p>
+    <p>Syarat: Kata kunci minimal 3 karakter dan 1 tipe terpilih</p>
     <input [(ngModel)]="keywords" type="text" id="keywords" placeholder="Masukkan kunci kata">
     <button (click)="cari()">Cari</button>
-    <span>Tipe: </span>
+    &nbsp; <span>Tipe: </span>
     <input type="checkbox" [checked]="headerSearch" class="types" id="forum" /> Forum
     <input type="checkbox" class="types" id="pesan" /> Pesan
     <input type="checkbox" class="types" id="user" /> Username

@@ -13,10 +13,12 @@
                 <input type="password" matInput name="password" [(ngModel)]="password" placeholder="Password: " required>
             </mat-form-field>
             <mat-card-actions>
-                <button (click)="register()" [disabled]="username.length < 4 || password.length < 6 || email.length == 0" mat-raised-button color="primary">Register</button> Minimal username dan password 4 dan 6 karakter, email wajib di isi
+                &nbsp; <button (click)="register()" [disabled]="username.length < 4 || password.length < 6 || email.length == 0" mat-raised-button color="primary">Daftar</button>
             </mat-card-actions>
             <mat-card-actions>
-                <button (click)="login()" mat-raised-button color="primary">Login</button>
+                &nbsp;&nbsp; * Email wajib diisi <br>
+                &nbsp;&nbsp; * Minimal username 4 karakter <br>
+                &nbsp;&nbsp; * Minimal password 6 karakter <br>
             </mat-card-actions>
         </form>
     </mat-card>
