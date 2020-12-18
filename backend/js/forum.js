@@ -28,7 +28,7 @@ module.exports = {
             for (let i = 0; i < docs.length; i++) {
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
-                docs[i]["originalPoster"] = getUser[0].nama;
+                docs[i]["originalPoster"] = getUser[0].username;
             }
 
             if (!docs)

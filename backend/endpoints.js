@@ -1,4 +1,4 @@
-module.exports.init = function (app, db) {
+module.exports = function (app, db) {
   let forum = require("./js/forum");
   forum.TambahForum(app, db);
   forum.ListForum(app, db);

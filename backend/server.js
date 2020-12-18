@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const MongoClient = require('mongodb');
-const modules = require(__dirname + "/modules.js");
+const endpoints = require(__dirname + "/endpoints.js");
 
 
 const app = express();
@@ -22,7 +22,7 @@ MongoClient.connect(url, (err, client) => {
     if (err) return console.log(`MongoDB error: ${err}`);
     console.log("Successfully connected to server");
     db = client.db(dbname)
-    modules.init(app,db)
+    endpoints(app,db)
 })
 
 app.use(express.static("image"))

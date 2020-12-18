@@ -17,7 +17,7 @@ export class Profile {
   logged_in = !sessionStorage.getItem("_id") ? false : true;
   not_found = false;
   username_err = "";
-  details = {} as any;
+  details = {nama: ""} as any;
   org_username: string;
   org_pic: String;
   new_pic: any;
