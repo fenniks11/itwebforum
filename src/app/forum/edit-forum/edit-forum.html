@@ -2,11 +2,11 @@
     <div class="container">
         <div class="create">
             <div class="create__head">
-                <div class="create__title">&nbsp;EDIT FORUM</div>
+                <div class="create__title">Edit Pertanyaan</div>
             </div>
             <div class="create__section">
                 <label class="create__label" for="title">Judul Pertanyaan</label>
-                <input type="text" name="edit-nama-forum" [(ngModel)]="nama_baru" class="form-control" required>
+                <input type="text" name="edit-nama-forum" [(ngModel)]="nama_baru" class="form-control">
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -26,15 +26,13 @@
                 <div *ngIf="logged_in else not_logged">
                     <form>
                         <mat-card>
-                            <mat-card-subtitle>Pesan utama:*</mat-card-subtitle>
+                            <mat-card-subtitle>Pesan utama</mat-card-subtitle>
                             <editor [ngModelOptions]="{standalone: true}" [init]="TinyMce" [(ngModel)]="pesan_utama"  data="pesan_utama" id="editor">
                             </editor>
-            
-                            <mat-card-actions style="text-align: right;">
-                                *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
-
-                            </mat-card-actions>
                         </mat-card>
+                        <mat-card-actions style="text-align: right;">
+                            *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
+                        </mat-card-actions>
                     </form>
                 </div>
             </div>

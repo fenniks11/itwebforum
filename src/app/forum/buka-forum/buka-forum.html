@@ -13,7 +13,7 @@
         <div class="col-md-8">
 
             <div *ngIf="!notFound else err404">
-                <h2> <b>{{metadata.judul}}</b></h2>
+                <h1> <b>{{metadata.judul}}</b></h1>
                 <hr>
                 <div class="row">
                     <div class="col-md-1">
@@ -23,7 +23,7 @@
                         <small *ngIf="metadata.lastEdited != null" style="color: gray">{{verboseTime(metadata.lastEdited)}}</small>
                     </div>
                 </div>
-                <br> <h4 class="card-title" style="font: bold; font-size: x-large;">{{metadata.originalPoster}}</h4>
+                <br> <h4 class="card-title" style="font: bolder; font-size: x-large;">{{metadata.originalPoster}}</h4>
                 <p class="card-text"[innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
                 <hr>
                 <br>
@@ -38,7 +38,7 @@
                                     <img #img [src]="list.ProfilePicture" class="rounded" width="65px" height="75px"
                                         style="border-radius: 10%;"> 
                                 </td>
-                                <br> <h5 class="card-title" style="font: bold; font-size: x-large;">{{list.originalPoster}}</h5>
+                                <br> <h5 class="card-title" style="font: bolder; font-size: x-large;">{{list.originalPoster}}</h5>
                                 <pre *ngIf="list.lastEdited != null"
                                     style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
                                 <td>

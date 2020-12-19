@@ -17,22 +17,22 @@
                             <form>
                                 <fieldset>
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Masukkan email</mat-label>
+                                        <mat-label>Masukkan Email</mat-label>
                                         <input type="email" matInput name="email" [(ngModel)]="email" placeholder="Email" data-validate = "Valid email is: a@b.c" >
                                         <mat-icon matSuffix><i class="fa fa-at"></i></mat-icon>
                                     </mat-form-field>
                                     <br>
                                     <mat-form-field appearance="outline" style="width: 100%;" >
                                         <mat-label>Masukkan Password</mat-label>
-                                        <input type="password" matInput name="password" [(ngModel)]="password" placeholder="Password: ">
+                                        <input type="password" matInput name="password" [(ngModel)]="password" placeholder="Password">
                                         <mat-icon matSuffix><i class="fa fa-key"></i></mat-icon>
                                     </mat-form-field>
                                 <mat-card-actions>
                                     <div class="col-lg">
                                         <button (click)="login()" class="btn btn-success mb-10" style="width: 100%;">Login</button>
                                         <hr>
-                                        <small class="text-success">Jika kamu belum punya akun, silahkan register.</small>
-                                        <button (click)="register()" class="btn btn-primary" style="width: 100%;">Register</button>
+                                        <small class="text-primary">Jika kamu belum punya akun, silahkan daftar.</small>
+                                        <button (click)="register()" class="btn btn-primary" style="width: 100%;">Daftar</button>
                                     </div>
                                 </mat-card-actions>
                                 </fieldset>
