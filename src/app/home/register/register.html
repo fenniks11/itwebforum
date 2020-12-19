@@ -1,23 +1,52 @@
-<div>
-    <mat-card>
-        <form>
-            <mat-form-field>
-                <input type="email" matInput name="email" [(ngModel)]="email" placeholder="Email: " required>
-            </mat-form-field>
-            <br>
-            <mat-form-field>
-                <input type="text" matInput name="username" [(ngModel)]="username" placeholder="Username: " required>
-            </mat-form-field>
-            <br>
-            <mat-form-field>
-                <input type="password" matInput name="password" [(ngModel)]="password" placeholder="Password: " required>
-            </mat-form-field>
-            <mat-card-actions>
-                <button (click)="register()" [disabled]="username.length < 4 || password.length < 6 || email.length == 0" mat-raised-button color="primary">Register</button> Minimal username dan password 4 dan 6 karakter, email wajib di isi
-            </mat-card-actions>
-            <mat-card-actions>
-                <button (click)="login()" mat-raised-button color="primary">Login</button>
-            </mat-card-actions>
-        </form>
-    </mat-card>
-</div>
+<body sty>
+    <div class="container">
+        <div class="row">
+            <div class="card mx-auto" style="width: 500px; height: 100%;  box-shadow: 0 0px 20px 0 rgba(247, 247, 247, 0.2);
+                        background-color: rgba(0, 0, 0, 0.2);">
+                            <div class="card-body">
+                                <h1 class="card-title text-center h4 text-gray"> <i class="fa fa-user-plus"></i> Register</h1>
+                                <hr>
+                                <form>
+                                    <fieldset>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Masukkan email</mat-label>
+                                            <input type="email" matInput name="email" [(ngModel)]="email" placeholder="Email " data-validate = "Valid email is: a@b.c" required >
+                                            <mat-icon matSuffix><i class="fa fa-at"></i></mat-icon>
+                                            <mat-hint class="text-danger">*) email wajib diisi</mat-hint>
+                                        </mat-form-field>
+                                        <br>
+                                        <br>
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Masukkan Username</mat-label>
+                                            <input type="text" matInput name="username" [(ngModel)]="username" placeholder="Username " required>
+                                            <mat-hint class="text-danger">*) Minimal username 4 karakter</mat-hint>
+                                        </mat-form-field>
+                                        <br>
+                                        <br>
+                                        <mat-form-field appearance="outline" style="width: 100%;" >
+                                            <mat-label>Masukkan Password</mat-label>
+                                            <input type="password" matInput name="password" [(ngModel)]="password" placeholder="Password: ">
+                                            <mat-icon matSuffix><i class="fa fa-key"></i></mat-icon>
+                                            <mat-hint class="text-danger">*) Minimal username 4 karakter</mat-hint>
+                                        </mat-form-field>
+                                        <br>
+                                        <br>
+                                    <mat-card-actions>
+                                        <div class="col-lg">
+                                            <button (click)="register()" [disabled]="username.length < 4 || password.length < 6 || email.length == 0"
+                                             mat-raised-button class="btn btn-primary" style="width: 100%;">Register
+                                            </button>
+                                            <hr>
+                                            <small class="text-primary">Jika kamu sudah punya akun, silahkan login.</small>
+                                            <button (click)="login()" class="btn btn-success mb-10" style="width: 100%;">Login</button>
+                                            <br />
+
+                                        </div>
+                                    </mat-card-actions>
+                                    </fieldset>
+                                </form>
+                              </div>
+            </div>
+        </div>
+    </div>
+</body>
