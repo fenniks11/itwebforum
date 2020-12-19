@@ -7,7 +7,7 @@
                 <li class="list-group-item">Kategori</li>
                 <li class="list-group-item"><a href="#">Frontend</a></li>
                 <li class="list-group-item"><a href="#">Backend</a></li>
-                
+
             </ul>
         </div>
         <div class="col-md-8">
@@ -17,39 +17,44 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-1">
-                        <img #img [src]="metadata.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
+                        <img #img [src]="metadata.ProfilePicture" class="rounded" width="50px" height="75px" style="border-radius: 10%;">
                     </div>
                     <div class="col-md-7">
                         <small *ngIf="metadata.lastEdited != null" style="color: gray">{{verboseTime(metadata.lastEdited)}}</small>
-                        <h4 class="card-title">{{metadata.originalPoster}}</h4>
                     </div>
                 </div>
+                <br> <h4 class="card-title" style="font: bold; font-size: x-large;">{{metadata.originalPoster}}</h4>
                 <p class="card-text"[innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
                 <hr>
                 <br>
                 <h4>Balasan: {{listPesan.length}}</h4>
-                    <div #semua_balasan
-                        *ngIf="listPesan.length > 0 else balasan_kosong" >
-                        <mat-list role="list">
-                            <mat-list-item role="listitem"
-                                *ngFor="let list of listPesan | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
-                                <div class="card-body" style="background-color: white;">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <img #img [src]="list.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
-                                        </div>
-                                        <div class="col-md-7">
-                                            <small *ngIf="list.lastEdited != null" style="font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</small>
-                                            <h4 class="card-title">{{list.originalPoster}}</h4>
-                                        </div>
-                                    </div>
-                                   <p class="card-text"   [innerHTML]="list.isiPesan" style="margin-top: 20px;"></p>
-                                <div style="font-size: 12px/smaller; color: rgb(0, 0, 0); text-align: end;">
-                                    <a (click)="copylink(list.idPesan)" style="cursor: pointer; color: orangered;"><u>Link</u></a>
+                <div #semua_balasan *ngIf="listPesan.length > 0 else balasan_kosong">
+                    <mat-list role="list">
+                        <mat-list-item role="listitem"
+                            *ngFor="let list of listPesan | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
+
+                            <div id="{{list.idPesan}}" class="card-body" style="background-color: white;">
+                                <td>
+                                    <img #img [src]="list.ProfilePicture" class="rounded" width="65px" height="75px"
+                                        style="border-radius: 10%;"> 
+                                </td>
+                                <br> <h5 class="card-title" style="font: bold; font-size: x-large;">{{list.originalPoster}}</h5>
+                                <pre *ngIf="list.lastEdited != null"
+                                    style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
+                                <td>
+                                    <mat-card-header>
+                                       <p class="card-text" [innerHTML]="list.isiPesan"></p>
+                                    </mat-card-header>
+                                </td>
+                                <div style="font-size: 12px/smaller; text-align: end;">
+                                    <a (click)="copylink(list.idPesan)"
+                                        style="cursor: pointer; color: orangered;"><u>Link</u></a>
                                     <span style="font-weight: bolder; font-size: 120%; user-select: none;"> | </span>
                                     <span *ngIf="_id == list.idOP else bukanOP">
-                                        <a (click)="edit(list.idPesan)" style="cursor: pointer; color: orangered;"><u>Edit</u></a>
-                                        <span style="font-weight: bolder; font-size: 120%; user-select: none;"> | </span>
+                                        <a (click)="edit(list.idPesan)"
+                                            style="cursor: pointer; color: orangered;"><u>Edit</u></a>
+                                        <span style="font-weight: bolder; font-size: 120%; user-select: none;"> |
+                                        </span>
                                         <a (click)="alertHapus(list.idPesan)"
                                             style="cursor: pointer; color: orangered;"><u>Hapus</u></a>
                                     </span>
@@ -108,13 +113,6 @@
                         <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_pesan" data="isiKirim.isi_pesan" id="editor">
                         </editor>
                     </div>
-                    <pre style="text-align: right; ">*Syarat: Isi pesan minimal 5 karakter</pre>
-                    <button *ngIf="Edit == false; else edit_button" [disabled]="isiKirim.isi_pesan.length < 12"
-                    (click)="kirim()" mat-raised-button color="primary">Kirim</button>
-                <ng-template #edit_button><button [disabled]="isiKirim.isi_pesan.length < 12"
-                        (click)="confirm_edit()" mat-raised-button color="primary">Edit</button>
-                </ng-template>
-                </div>
                 </div>
             </div>
         </div>

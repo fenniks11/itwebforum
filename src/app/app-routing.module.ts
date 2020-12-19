@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
+
 import { TambahForum } from './forum/tambah-forum/tambah-forum.component';
 import { BukaForum } from './forum/buka-forum/buka-forum.component';
 import { EditForum } from './forum/edit-forum/edit-forum.component';
 import { Forum } from './forum/forum.component';
-import { Login } from './home/login/login.component';
+
+
 import { Register } from './home/register/register.component';
 import { Profile } from './home/profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { CompileRun } from './forum/compilerun/compilerun.component';
 import { Search } from './home/search/search.component';
+import { Login } from './home/login/login.component';
 
 
 

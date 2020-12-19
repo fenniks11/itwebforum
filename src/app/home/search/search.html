@@ -1,9 +1,9 @@
 <body style="text-align: center;">
-    <p>Syarat: Kata kunci minimal 3 karakter, 1 tipe terpilih</p>
+    <p>Syarat: Kata kunci minimal 3 karakter dan 1 tipe terpilih</p>
     <input [(ngModel)]="keywords" type="text" id="keywords" placeholder="Masukkan kunci kata">
     <button (click)="cari()">Cari</button>
-    <span>Tipe: </span>
-    <input type="checkbox" class="types" id="forum" /> Forum
+    &nbsp; <span>Tipe: </span>
+    <input type="checkbox" [checked]="headerSearch" class="types" id="forum" /> Forum
     <input type="checkbox" class="types" id="pesan" /> Pesan
     <input type="checkbox" class="types" id="user" /> Username
 
@@ -13,20 +13,23 @@
 
 
 
-        <li *ngIf="list.namaForum"> <!-- jika array == forum  -->
-            <a (click)="forum(list.idForum)" href="#">{{list.namaForum}}</a>
+        <li *ngIf="list.namaForum">
+            <!-- jika array == forum  -->
+            <p style="cursor: pointer;" (click)="forum(list.idForum)">{{list.namaForum}}</p>
         </li>
 
 
 
-        <li *ngIf="list.idPesan"> <!-- jika array == pesan  -->
-            <a (click)="pesan(list.idPesan)" href="#">{{list.isiPesan}}</a>
+        <li *ngIf="list.idPesan">
+            <!-- jika array == pesan  -->
+            <p style="cursor: pointer;"  (click)="pesan(list.idForum ,list.idPesan)">{{list.isiPesan}}</p>
         </li>
 
 
 
-        <li *ngIf="list.username"> <!-- jika array == user  -->
-            <a (click)="user(list.username)" href="#">{{list.username}}</a>
+        <li *ngIf="list.username">
+            <!-- jika array == user  -->
+            <p style="cursor: pointer;"  (click)="user(list.username)">{{list.username}}</p>
         </li>
 
 

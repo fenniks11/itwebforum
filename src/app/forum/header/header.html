@@ -13,8 +13,8 @@
   </span>
     <mat-toolbar-row>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+        <input [(ngModel)]="keywords" [ngModelOptions]="{standalone: true}" class="form-control mr-sm-2" type="search" placeholder="Cari Sesuatu..." aria-label="Search">
+        <button (click)="cari()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </form>
     </mat-toolbar-row>
     
@@ -27,11 +27,11 @@
         </button>
         <button style="color: white; " (click)="tambah()"
         data-bs-toggle="tooltip"  title="Buat Forum" mat-button>
-          <i class="fa fa-file-text-o" aria-hidden="true"></i> 
+          <i class="fa fa-plus-square-o" aria-hidden="true"></i> 
         </button>
         <span style="float:right;">
           <button style="color: white; " (click)="profile()" mat-button>
-            <i class="fa fa-user-o" aria-hidden="true"></i> Profile
+            <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Profile
           </button></span>
           <span style="float:right;">
             <button style="color: white; " (click)="logout()"

@@ -11,7 +11,7 @@
                                 Rangkum masalah anda
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <p>Sertakan detail tentang tujuan Anda</p>
+                        <p>Sertakan detail tentang tujuan anda</p>
                         <p>Jelaskan hasil yang diharapkan dengan jelas</p>
                         <p>Sertakan pesan kesalahan apa pun</p>
                     </mat-expansion-panel>
@@ -21,12 +21,12 @@
                     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                Jelaskan usaha yg sudah dicoba
+                                Sertakan referensi
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <p>Tunjukkan apa yang telah Anda coba dan beri tahu kami apa yang Anda temukan (di situs ini
-                            atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan Anda. Anda bisa
-                            mendapatkan jawaban yang lebih baik saat memberikan penelitian.</p>
+                        <p>Tunjukkan apa yang telah anda coba dan beri tahu apa yang anda temukan (di situs ini
+                            atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan anda. Anda mungkin
+                            mendapatkan jawaban yang lebih baik apabila memberikan referensi tambahan.</p>
                     </mat-expansion-panel>
                 </mat-accordion>
                 <br>
@@ -37,34 +37,10 @@
                                 Tuliskan kode bila perlu
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <p>Jika dibutuhkan, tuliskan kode yang dibutuhkan agar masalah anda dapat lebih dimengerti orang
-                            lain</p>
+                        <p>Jika dibutuhkan tuliskan kode yang sudah dibuat agar masalah anda dapat lebih dimengerti</p>
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
-<<<<<<< HEAD
-            <div class="col-md-9">
-                <div class="create">
-                    <div class="create__head">
-                        <div class="create__title">Buat Pertanyaan Baru</div>
-                    </div>
-                    <div class="create__section">
-                        <label class="create__label" for="title">Judul Pertanyaan</label>
-                        <input type="text" name="judul" [(ngModel)]="nama_baru" placeholder="Tambahkan judul forum.. " class="form-control" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="create__section">
-                                <label class="create__label" for="category">Pilih Kategori</label>
-                                <label class="custom-select">
-                                    <select id="category">
-                                        <option>Choose</option>
-                                        <option>Frontend</option>
-                                        <option>Backend</option>
-                                    </select>
-                                </label>
-                            </div>
-=======
         </div>
         <div class="col-md-9">
             <div class="create">
@@ -88,7 +64,6 @@
                                     <option>Backend</option>
                                 </select>
                             </label>
->>>>>>> a99ad50bc1807e3d7f0fd074cf32260fc1705649
                         </div>
                     </div>
                     <div class="create__section create__textarea">
@@ -101,37 +76,22 @@
                                     </editor>
 
                                     <mat-card-actions style="text-align: right;">
-<<<<<<< HEAD
-                                        *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter    
-=======
                                         *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
 
->>>>>>> a99ad50bc1807e3d7f0fd074cf32260fc1705649
                                     </mat-card-actions>
                                 </mat-card>
                             </form>
                         </div>
                     </div>
                     <div class="create__section">
-                        <label class="create__label" for="tags">Tambahkan Tag</label>
-                        <input id="tags" type="text" placeholder="e.g. css, html, etc.">
+                        <label class="create__label" for="tags">&nbsp;&nbsp; Tambahkan Tag</label>
+                        &nbsp;&nbsp; <input id="tags" type="text" placeholder="e.g. css, html, etc.">
                     </div>
                 </div>
-                <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17" mat-raised-button
-                    color="primary">Tambah</button>
-                <button mat-button mat-dialog-close>Cancel</button>
+                <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17" mat-raised-button color="primary">Tambah</button>
+                &nbsp; <button mat-button mat-dialog-close>Batal</button>
             </div>
         </div>
-<<<<<<< HEAD
-        
-
-<ng-template #not_logged>
-    <div  style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
-        <div style="height: 20vmax;"></div>
-        <h1>Kamu harus login terlebih dahulu sebelum dapat membuat forum baru!  <button (click)="toLogin()" mat-button>
-            Login </button></h1>
-=======
->>>>>>> a99ad50bc1807e3d7f0fd074cf32260fc1705649
     </div>
 
 
