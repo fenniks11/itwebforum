@@ -194,7 +194,7 @@ export class BukaForum {
         var temp = await this.http
             .post('http://localhost:3000/api/pesan/metadata', this.body)
             .toPromise() as any[];
-        for (let ph of temp) this.isiKirim.isi_pesan += `<blockquote cite="${window.location.host}/forum/buka;id=${this.id};msg=${ph.idPesan}">${ph.isiPesan}</blockquote> <a href="${window.location.host}/forum/buka;id=${this.id};msg=${ph.idPesan}">@${ph.originalPoster}</a>&nbsp`
+        for (let ph of temp) this.isiKirim.isi_pesan += `<blockquote cite="${window.location.host}/forum/buka;id=${this.id};msg=${ph.idPesan}">${ph.isiPesan}</blockquote> <a href="${window.location.host}/forum/buka;id=${this.id};msg=${ph.idPesan}">@${ph.originalPoster}</a>&nbsp;`
         window.location.hash = `#editor`
     }
     copylink(idPesan) {

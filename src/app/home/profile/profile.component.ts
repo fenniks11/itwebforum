@@ -50,7 +50,7 @@ export class Profile {
 
   async username_change() {
     console.log(this.details.username);
-    if (this.details.username.length < 3) return this.username_err = "Username tidak boleh kurang dari 3 huruf!"
+    if (this.details.username.length < 4) return this.username_err = "Username tidak boleh kurang dari 4 Karakter!"
     if(this.org_username == this.details.username) return this.username_err = ""
 
     let check = (await this.http.post('http://localhost:3000/api/user/check', { email: "0", username: this.details.username }).toPromise()) as any;

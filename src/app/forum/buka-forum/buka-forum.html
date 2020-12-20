@@ -13,17 +13,17 @@
         <div class="col-md-8">
 
             <div *ngIf="!notFound else err404">
-                <h2> <b>{{metadata.judul}}</b></h2>
+                <h1> <b>{{metadata.judul}}</b></h1>
                 <hr>
                 <div class="row">
                     <div class="col-md-1">
-                        <img #img [src]="metadata.ProfilePicture" width="50px" height="75px" style="border-radius: 10%;">
+                        <img #img [src]="metadata.ProfilePicture" class="rounded" width="50px" height="75px" style="border-radius: 10%;">
                     </div>
                     <div class="col-md-7">
                         <small *ngIf="metadata.lastEdited != null" style="color: gray">{{verboseTime(metadata.lastEdited)}}</small>
-                        <h4 class="card-title">{{metadata.originalPoster}}</h4>
                     </div>
                 </div>
+                <br> <h4 class="card-title" style="font: bolder; font-size: x-large;">{{metadata.originalPoster}}</h4>
                 <p class="card-text"[innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
                 <hr>
                 <br>
@@ -34,20 +34,19 @@
                             *ngFor="let list of listPesan | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
 
                             <div id="{{list.idPesan}}" class="card-body" style="background-color: white;">
-                                <h5 class="card-title">{{list.originalPoster}} mengatakan: </h5>
+                                <td>
+                                    <img #img [src]="list.ProfilePicture" class="rounded" width="65px" height="75px"
+                                        style="border-radius: 10%;"> 
+                                </td>
+                                <br> <h5 class="card-title" style="font: bolder; font-size: x-large;">{{list.originalPoster}}</h5>
                                 <pre *ngIf="list.lastEdited != null"
                                     style="float: right; font-size: 80%; color: gray;">{{verboseTime(list.lastEdited)}}</pre>
                                 <td>
-                                    <img #img [src]="list.ProfilePicture" width="50px" height="75px"
-                                        style="border-radius: 10%;">
-
-                                </td>
-                                <td>
                                     <mat-card-header>
-                                        <p class="card-text" [innerHTML]="list.isiPesan"></p>
+                                       <p class="card-text" [innerHTML]="list.isiPesan"></p>
                                     </mat-card-header>
                                 </td>
-                                <div style="font-size: 12px/smaller; color: rgb(0, 0, 0); text-align: end;">
+                                <div style="font-size: 12px/smaller; text-align: end;">
                                     <a (click)="copylink(list.idPesan)"
                                         style="cursor: pointer; color: orangered;"><u>Link</u></a>
                                     <span style="font-weight: bolder; font-size: 120%; user-select: none;"> | </span>
