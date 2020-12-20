@@ -8,10 +8,10 @@
             (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Rangkum masalah anda
+                Rangkum permasalahan
             </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Sertakan detail tentang tujuan Anda</p>
+            <p>Sertakan detail tentang tujuan anda</p>
             <p>Jelaskan hasil yang diharapkan dengan jelas</p>
             <p>Sertakan pesan kesalahan apa pun</p>
             </mat-expansion-panel>  
@@ -22,10 +22,12 @@
             (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-              Jelaskan usaha yg sudah dicoba
+              Sertakan referensi
             </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Tunjukkan apa yang telah Anda coba dan beri tahu kami apa yang Anda temukan (di situs ini atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan Anda. Anda bisa mendapatkan jawaban yang lebih baik saat memberikan penelitian.</p>
+            <p>Tunjukkan apa yang telah anda coba dan beri tahu apa yang anda temukan (di situs ini
+               atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan anda. Anda mungkin
+               mendapatkan jawaban yang lebih baik apabila memberikan referensi tambahan</p>
             </mat-expansion-panel>  
           </mat-accordion>
           <br>
@@ -37,7 +39,7 @@
                 Tuliskan kode bila perlu
             </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Jika dibutuhkan, tuliskan kode yang dibutuhkan agar masalah anda dapat lebih dimengerti orang lain</p>
+            <p>Jika dibutuhkan tuliskan kode yang sudah dibuat agar masalah anda dapat lebih dimengerti</p>
             </mat-expansion-panel>  
           </mat-accordion>
         </div>
@@ -57,9 +59,9 @@
   </div>
   <div class="col-md-9">
     <div class="btn-group" style="float: right;">
-      <button (click)="tambah()">Ajukan Pertanyaan</button>
+      <button (click)="tambah()" style="color: black;" class="btn btn-outline-secondary">Ajukan Pertanyaan</button> &nbsp;
       <div ngbDropdown class="d-inline-block">
-       <button class="btn btn-outline-secondary" 
+       <button style="color: black;" class="btn btn-outline-secondary" 
        data-toggle="tooltip" data-placement="bottom" title="Custom.."id="dropdownBasic1" ngbDropdownToggle>
       <i class="fa fa-cog" aria-hidden="true"></i>
        </button>
@@ -106,11 +108,11 @@
                   <!-- start Button Respon Viewers -->
                   <div class="button-aksi">
                     <a class="btn btn-ouline-secondary" href=""  data-toggle="tooltip" data-placement="left" title="suka..">
-                      <i class="fa fa-thumbs-o-up fa-2x"></i>Disukai</a>
+                      <i class="fa fa-thumbs-o-up fa-2x"></i> Suka</a>
                     <a class="btn btn-ouline-secondary" href=""  data-toggle="tooltip" data-placement="left" title="balas..">
-                      <i class="fa fa-commenting fa-2x"></i>Balasan</a>
+                      <i class="fa fa-commenting fa-2x"></i> Balas</a>
                     <a class="btn btn-ouline-secondary" href=""  data-toggle="tooltip" data-placement="left" title="bagikan..">
-                      <i class="fa fa-share fa-2x"></i>Dibagikan</a>
+                      <i class="fa fa-share fa-2x"></i> Bagikan</a>
                   </div>
                   <!-- end button respon viewer -->
                       </div>

@@ -11,12 +11,12 @@
       <i class="fa fa-globe">&nbsp;Forum</i>
     </button>
     <button style="color: white" routerLink='qna' mat-button>
-      <i class="fa fa-globe">&nbsp;QnA</i>
+      <i class="fa fa-comments-o">&nbsp;QnA</i>
     </button>
   </span>
     <mat-toolbar-row>
       <form class="form-inline my-2 my-lg-0">
-        <input [(ngModel)]="keywords" [ngModelOptions]="{standalone: true}" class="form-control mr-sm-2" type="search" [placeholder]="titleHeader" aria-label="Search">
+        <input [(ngModel)]="keywords" [ngModelOptions]="{standalone: true}" class="form-control mr-sm-2" type="search" placeholder="Pencarian..." aria-label="Search">
         <button (click)="cari()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </form>
     </mat-toolbar-row>
