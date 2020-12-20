@@ -42,7 +42,7 @@ module.exports = {
             try {
                 const hrStart = process.hrtime();
 
-                await fs.writeFile(`${temp_php}/${id}.php`, code, function (err, data) { if (err) { return res.json({ err: Err, stderr: "", stdout: "" }) } }); //simpan code ke .php file agar bisa dicompile php
+                await fs.writeFile(`${temp_php}/${id}.php`, code, function (err, data) { if (err) { return res.json({ err: err, stderr: "", stdout: "" }) } }); //simpan code ke .php file agar bisa dicompile php
 
                 await exec(`${php} ${temp_php}/${id}.php`, async (err, stdout, stderr) => { //exec php
                     fs.unlink(`${temp_php}/${id}.php`, () => { //delete .php file
