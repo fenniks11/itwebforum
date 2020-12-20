@@ -13,13 +13,24 @@ export class HeaderForum {
 
   login = false;
   keywords = "" as string;
+  parent = "forum" //default parent
 
   async ngOnInit() {
     this.login = !sessionStorage.getItem("_id") ? false : true
   }
 
-  tambah() {
+  async update() {
+    let title = await window.localStorage.getItem("activeTitle");
+    this.titleHeader = !title.length ? "Cari sesuatu..." : title;
+    this.parent = window.localStorage.getItem("parent")
+    
+  }
+
+  tambahForum() {
     this.router.navigate(['forum/tambah'], { skipLocationChange: true })
+  }
+  tambahPertanyaan() {
+    this.router.navigate(['qna/tambah'], { skipLocationChange: true })
   }
   logout() {
     this.snackBar.open(`Logout akun?`, "Logout", { duration: 5000 }) //ganti ini jadi yang lebih cocok nanti
@@ -31,7 +42,7 @@ export class HeaderForum {
 
   cari() {
     if (this.keywords.length < 3) return;
-    this.router.navigate(['search', {keywords: this.keywords}])
+    this.router.navigate(['search', { keywords: this.keywords }])
   }
 
 

@@ -9,11 +9,16 @@ module.exports = {
             var _users = await db.collection("user").find({ username: new RegExp(keys, "i") }).toArray(), id = [], projection = { _id: 0 };
             for (let i = 0; i < _users.length; i++)  id.push(_users[i].user_id);
 
-
+            console.log(type);
             for (let i = 0; i < type.length; i++) {
                 let queries = []
                 if (type[i] == "forum") {
                     queries.push({ namaForum: new RegExp(keys, "i") })
+                    queries.push({ pesanUtama: new RegExp(keys, "i") })
+                    queries.push({ idOP: { $in: id } })
+                }
+                if (type[i] == "qna") {
+                    queries.push({ namaQnA: new RegExp(keys, "i") })
                     queries.push({ pesanUtama: new RegExp(keys, "i") })
                     queries.push({ idOP: { $in: id } })
                 }
@@ -37,7 +42,7 @@ module.exports = {
 
             }
 
-            
+
             res.send(docs)
         });
     }

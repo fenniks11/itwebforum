@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HeaderForum } from '../header/header.component';
+import { HeaderForum } from '../../home/header/header.component';
 
 
 
@@ -19,9 +19,9 @@ export class ListForum {
   _id = '';
   page = [1];
   crnPage = 1;
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute) { }
   async ngOnInit() {
-    HeaderForum.prototype.titleHeader = "Daftar Pertanyaan"
+    window.localStorage.setItem("activeTitle", "Daftar Forum")
     this.listForum = (await this.http
       .get('http://localhost:3000/api/forum/list')
       .toPromise()) as any[];

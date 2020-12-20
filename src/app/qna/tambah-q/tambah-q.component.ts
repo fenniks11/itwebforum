@@ -8,12 +8,12 @@ import Tagify from "@yaireo/tagify"
 
 
 @Component({
-  selector: 'forum-baru',
-  templateUrl: './tambah-forum.component.html',
+  selector: 'tambah-q',
+  templateUrl: './tambah-q.component.html',
   styleUrls: ["tagify.css"]
 })
 
-export class TambahForum {
+export class TambahQuestion {
   panelOpenState = false;
   titleHeader
   nama_baru = '';
@@ -82,12 +82,12 @@ export class TambahForum {
     this.id_op = sessionStorage.getItem("_id")
     this.body = { "arr": [this.nama_baru, this.id_op, this.pesan_utama] };
     var res;
-    res = await this.http.post("http://localhost:3000/api/forum/tambah", this.body).toPromise();
+    res = await this.http.post("http://localhost:3000/api/qna/tambah", this.body).toPromise();
     var id = res.id
     this.snackBar.open(`Forum berhasil dibuat! memindahkan kamu ke forum...`, null, { duration: 2000 })
-    setTimeout(() => {
-      this.router.navigate(['forum/buka', { id: id }])
-    }, 2000);
+    // setTimeout(() => {
+    //   this.router.navigate(['qna/buka', { id: id }])
+    // }, 2000);
   }
 
   toLogin() { this.router.navigate(['login']) }

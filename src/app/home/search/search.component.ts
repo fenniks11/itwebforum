@@ -24,7 +24,7 @@ export class Search {
      */
 
     ngOnInit() {
-        if (this.keywords) { if (this.keywords.length < 3) return; this.types.push("forum"); this.headerSearch = true; this.cari(); }
+        if (this.keywords) { if (this.keywords.length < 3) return; this.types.push("forum"); this.types.push("qna"); this.headerSearch = true; this.cari(); }
     }
 
     async cari() {
@@ -46,6 +46,10 @@ export class Search {
 
     forum(id) {
         this.router.navigate(['forum/buka', { id: id }]);
+    }
+
+    qna(id) {
+        this.router.navigate(['qna/buka', { id: id }]);
     }
 
     pesan(fid, id) {

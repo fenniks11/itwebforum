@@ -29,5 +29,22 @@ module.exports = function (app, db) {
   compiler.iFrame(app, db);
 
   let search = require("./js/search")
-  search.search(app,db)
+  search.search(app, db)
+
+  let qna = require("./js/qna")
+  qna.EditQnA(app, db)
+  qna.HapusQnA(app, db)
+  qna.ListQnA(app, db)
+  qna.MetaDataQnA(app, db)
+  qna.TambahQnA(app, db)
+  qna.img_qna(app, db)
+
+  let answer = require("./js/answer_qna")
+  answer.EditAnswer(app,db)
+  answer.HapusAnswer(app,db)
+  answer.ListAnswer(app,db)
+  answer.MetaDataAnswer(app,db)
+  answer.TambahAnswer(app,db)
+  answer.img_answer(app,db)
+  answer.upvote_answer(app,db)
 };

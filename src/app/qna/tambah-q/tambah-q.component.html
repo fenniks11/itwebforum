@@ -46,12 +46,12 @@
         <div class="col-md-9">
             <div class="create">
                 <div class="create__head">
-                    <div class="create__title">Mulai forum Baru</div>
+                    <div class="create__title">Ajukan Pertanyaan Baru</div>
 
                 </div>
                 <div class="create__section">
-                    <label class="create__label" for="title">Judul forum</label>
-                    <input type="text" name="judul" [(ngModel)]="nama_baru" placeholder="Tambahkan judul forum.. "
+                    <label class="create__label" for="title">Judul pertanyaan</label>
+                    <input type="text" name="judul" [(ngModel)]="nama_baru" placeholder="Tambahkan judul pertanyaan.. "
                         class="form-control" required>
                 </div>
                 <div class="row">
@@ -77,7 +77,7 @@
                                     </editor>
 
                                     <mat-card-actions style="text-align: right;">
-                                        *Syarat: Judul forum minimal 5 karakter & Pesan utama minimal 10 karakter
+                                        *Syarat: Judul pertanyaan minimal 5 karakter & Pesan utama minimal 10 karakter
 
                                     </mat-card-actions>
                                 </mat-card>
@@ -100,7 +100,7 @@
     <ng-template #not_logged>
         <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
             <div style="height: 20vmax;"></div>
-            <h1>Kamu harus login terlebih dahulu sebelum dapat membuat forum baru!</h1>
+            <h1>Kamu harus login terlebih dahulu sebelum dapat mengajukan pertanyaan baru!</h1>
             <button (click)="toLogin()" mat-button>
                 Login
             </button>

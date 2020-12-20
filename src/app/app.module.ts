@@ -7,7 +7,7 @@ import { TambahForum } from "./forum/tambah-forum/tambah-forum.component";
 import { Forum } from './forum/forum.component';
 import { Login } from './home/login/login.component';
 import { ListForum } from './forum/list-forum/list-forum.component';
-import { HeaderForum } from './forum/header/header.component';
+import { HeaderForum } from './home/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
@@ -30,12 +30,16 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Register } from './home/register/register.component';
 import { Profile } from './home/profile/profile.component';
-import { Globals } from './globals';
-import { CompileRun } from './forum/compilerun/compilerun.component';
+import { CompileRun } from './compilerun/compilerun.component';
 import { SafePipe } from './safe.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { Search } from './home/search/search.component';
+import { QuestionAndAnswer } from './qna/qna.component';
+import { ListQuestion } from './qna/list-question/list-question.component';
+import { TambahQuestion } from './qna/tambah-q/tambah-q.component';
+import { BukaQnA } from './qna/buka-qna/buka-qna.component';
+import { EditQuestion } from './qna/edit-question/edit-question.component';
 
 
 
@@ -54,7 +58,12 @@ import { Search } from './home/search/search.component';
     HomeComponent,
     CompileRun,
     SafePipe,
-    Search
+    Search,
+    QuestionAndAnswer,
+    ListQuestion,
+    TambahQuestion,
+    BukaQnA,
+    EditQuestion
   ],
   imports: [
     BrowserModule,
@@ -84,7 +93,7 @@ import { Search } from './home/search/search.component';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [Globals],
+  providers: [ { provide: Window, useValue: window }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

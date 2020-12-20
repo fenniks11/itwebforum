@@ -1,0 +1,196 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a routerLink="home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
+                <br>
+                <li class="list-group-item">Kategori</li>
+                <li class="list-group-item"><a href="#">Frontend</a></li>
+                <li class="list-group-item"><a href="#">Backend</a></li>
+
+            </ul>
+        </div>
+
+
+        <div class="col-md-8">
+            <div *ngIf="!notFound else err404">
+
+                <!-- judul -->
+                <h2> <b>{{metadata.judul}}</b></h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-1">
+                        <img #img [src]="metadata.ProfilePicture" width="50px" height="75px"
+                            style="border-radius: 10%;">
+                    </div>
+                    <div class="col-md-7">
+                        <small *ngIf="metadata.lastEdited != null"
+                            style="color: gray">{{verboseTime(metadata.lastEdited)}}</small>
+                        <h4 class="card-title">{{metadata.originalPoster}}</h4>
+                    </div>
+                </div>
+                <p class="card-text" [innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
+                <hr>
+                <!-- judul end -->
+
+                <!-- loop balasan -->
+                <br>
+                <h4>Balasan: {{listAnswer.length}}</h4>
+                <div #semua_balasan *ngIf="listAnswer.length > 0 else balasan_kosong">
+                    <mat-list role="list">
+                        <mat-list-item role="listitem"
+                            *ngFor="let list of listAnswer | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
+
+                            <div id="{{list.idAnswer}}" class="card-body" style="background-color: white;">
+                                <h5 class="card-title">{{list.originalPoster}} mengatakan: <span>Skor:
+                                        {{list.vote.score}}</span></h5>
+                                <pre *ngIf="list.lastEdited != null"
+                                    style="float: right; font-size: 80%; color: gray;">Last Edited: {{verboseTime(list.lastEdited)}}</pre>
+                                <td>
+                                    <img #img [src]="list.ProfilePicture" width="50px" height="75px"
+                                        style="border-radius: 10%;">
+
+                                </td>
+                                <td>
+                                    <mat-card-header>
+                                        <span class="card-text" [innerHTML]="list.isiAnswer"></span>
+                                    </mat-card-header>
+                                </td>
+                                <div style="font-size: 12px/smaller; color: rgb(0, 0, 0); text-align: end;">
+
+                                    <a (click)="copylink(list.idAnswer)" class="clickable"><u>Link</u></a>
+                                    <span class="seperator"> | </span>
+                                    <a (click)="commentBar(list.idAnswer)" class="clickable"><u>Komentar</u></a>
+                                    <span class="seperator"> | </span>
+
+                                    <span *ngIf="_id == list.idOP else bukanOP">
+                                        <a (click)="edit(list.idAnswer)" class="clickable"><u>Edit</u></a>
+                                        <span class="seperator"> | </span>
+                                        <a (click)="alertHapus(list.idAnswer)" class="clickable"><u>Hapus</u></a>
+                                        <span class="seperator"> | </span>
+                                    </span>
+
+                                    <span *ngIf="asker && unresolvedQuestion">
+                                        <!-- jika user == yang bertanya && pertanyaan belum terjawab / terselesaikan -->
+                                        <a (click)="resolveAnswer(list.idAnswer)" class="clickable"><u>Pilih sebagai
+                                                jawaban</u></a>
+                                    </span>
+
+                                    <ng-template #bukanOP>
+
+
+                                        <div *ngIf="!hasVoted(_id, list.vote) else voted">
+                                            <!-- jika belum vote -->
+                                            <a (click)="upvote(list.idAnswer)" class="clickable"><u>Upvote</u></a>
+                                            <span class="seperator"> | </span>
+                                            <a (click)="downvote(list.idAnswer)" class="clickable"><u>Downvote</u></a>
+                                        </div>
+
+                                        <ng-template #voted>
+
+                                            <a (click)="unvote(list.idAnswer)" class="clickable">
+                                                <u *ngIf="list.vote.list[_id].up else unDown">
+                                                    Cabut upvote</u></a>
+
+                                            <ng-template #unDown> <u>Cabut downvote</u> </ng-template>
+
+                                        </ng-template>
+
+
+                                    </ng-template>
+
+                                </div>
+                            </div>
+                            <br>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <!-- loop balasan end -->
+
+                <!-- paging -->
+                <br>
+                <div>
+                    <table class="d-flex justify-content-end">
+                        <tr *ngIf="listAnswer.length > 0" style="font-size: 50%;">
+                            <h5 style="color: rgb(0, 0, 0); text-align: center;">Tampilkan
+                                <select [(ngModel)]="show" (change)="ngOnInit(id)" class="page-item">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select></h5>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-title">
+                    <div #pagination *ngIf="page.length > 1">
+                        <h1 style="text-align: right;">
+                            Page: <span *ngFor="let i of page"><a *ngIf="i != crnPage else disabled_link"
+                                    (click)="next_page(i)" class="clickable"><u>{{i}}</u></a>
+                                <ng-template #disabled_link>{{i}}</ng-template><a *ngIf="i != page.length">, </a>
+                            </span>
+                        </h1>
+                    </div>
+                </div>
+                <!-- paging end -->
+
+
+                <!-- input balasan -->
+                <div #input *ngIf="logged_in else not_logged">
+                    <div *ngIf="Edit == false; else edit_msg">Tinggalkan jawaban </div>
+                    <ng-template #edit_msg> Edit Jawaban </ng-template>
+                    <div class="card">
+                        <div style=" width: 85%; margin: 0 auto;">
+                            Isi jawaban:*
+                            <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
+                                id="editor">
+                            </editor>
+                        </div>
+                        <button *ngIf="!Edit else editButton" [disabled]="isiKirim.isi_answer.length < 12"
+                            (click)="kirim()">Kirim</button>
+                    </div>
+                </div>
+                <!-- input balasan end -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #err404>
+    <mat-card>
+        <img mat-card-image class="img-rounded" src="assets/images/err.jpg">
+        <mat-card-content style="text-align: center;">
+            <h1 class="text-danger">404</h1>
+            <h1 class="text-danger">Halaman Tidak Ditemukan</h1>
+            <small>Wah, halaman yang kamu cari tidak ada :(
+                Silahkan periksa kembali link yang dimasukkan.
+                Atau <button (click)="back()" mat-raised-button>
+                    Kembali ke daftar pertanyaan
+                </button></small>
+        </mat-card-content>
+    </mat-card>
+</ng-template>
+
+
+<ng-template #editButton>
+    <button [disabled]="isiKirim.isi_answer.length < 12" (click)="confirm_edit()">Edit</button>
+</ng-template>
+
+
+<ng-template #balasan_kosong>
+    <p class="text-center">
+        Wah belum ada yang balas nih. Jadilah orang yang pertama untuk membalas pertanyaan ini!
+    </p>
+</ng-template>
+
+
+<ng-template #not_logged>
+    <h4 class="card-text" style="text-align: center">
+        Kamu harus login terlebih dahulu sebelum dapat membalas atau mengirim jawaban ke pertanyaan ini!
+        <button (click)="toLogin()" mat-raised-button>Login</button>
+    </h4>
+</ng-template>
