@@ -14,8 +14,10 @@ module.exports = {
                 pesanUtama: req.body.arr[2],
                 vote: {
                     score: 0,
-                    list:{}
+                    list: {}
                 },
+                resolve_answer: 0,
+                resolved_date: 0,
                 lastEdited: null
             });
             return res.json({
@@ -112,7 +114,27 @@ module.exports = {
                 .on("error", (err) => { return res.send(`Fail; Err: ${err}`) })
                 .on("end", () => { !uploaded.length ? res.send("Fail") : res.send(uploaded[0]) })
         });
+    },
+
+    ResolveQnA: async function (app, db) {
+        app.post("/api/qna/resolve", async (req, res) => {
+
+            var id = parseInt(req.body.idQnA), user_id = req.body.user_id, idAnswer = req.body.idAnswer;
+
+            var crnDate = new Date().getTime()
+
+            let qna_metadata = await db.collection("qna").find({ "idQnA": id }).toArray()
+
+            if (qna_metadata[0].resolve_answer)  return res.sendStatus(403) // sudah terjawab
+            if (qna_metadata[0].idOP != user_id) return res.sendStatus(403) // bukan penanya
+
+            db.collection("qna").update({ "idQnA": id }, {
+                $set: {
+                    resolve_answer: idAnswer,
+                    resolved_date: crnDate
+                }
+            })
+            res.status(200).send();
+        });
     }
-
-
 }

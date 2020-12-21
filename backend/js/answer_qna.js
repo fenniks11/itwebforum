@@ -29,8 +29,8 @@ module.exports = {
 
     TambahAnswer: async function (app, db) {
         app.post("/api/qna/answer/tambahanswer", async (req, res) => {
-            console.log(req.body);
-            // return res.sendStatus(200)
+            var answer = await db.collection("answer").find({ "idAnswer": idAnswer }).toArray()
+            if(answer.length) return res.sendStatus(403)
             var id = parseInt(req.body.arr[0])
             var idp = new Date().getTime() + parseInt(id)
             db.collection("answer").insertOne({
@@ -113,15 +113,58 @@ module.exports = {
         });
     },
 
-    upvote_answer: async function (app, db) {
-        app.post("/api/qna/answer/upvote", async (req, res) => {
-            var idAnswer = req.body.idAnswer, idUser = req.body.idUser,
-                answer = await db.collection("answer").find({ "idAnswer": idAnswer }).project({ vote: 1, _id: 0 }).toArray()
+    vote_answer: async function (app, db) {
+        app.post("/api/qna/answer/vote", async (req, res) => {
+            console.log(req.body);
+            var idAnswer = req.body.idAnswer
+                , idUser = req.body.idUser
+                , vote = req.body.vote
+                , answer = await db.collection("answer").find({ "idAnswer": idAnswer }).project({ vote: 1, _id: 0 }).toArray()
 
             if (idUser in answer[0].vote.list) return res.sendStatus(403)
 
-            answer[0].vote.list[idUser] = { up: true }
-            answer[0].vote.score++
+            answer[0].vote.list[idUser] = { up: vote }
+
+
+            let score = 0;
+            for (const vote in answer[0].vote.list) {
+                if (answer[0].vote.list[vote].up) score++
+                else score--
+            } answer[0].vote.score = score;
+
+            await db.collection("answer").updateOne({ "idAnswer": idAnswer }, {
+                $set: {
+                    vote: answer[0].vote
+                }
+            })
+
+            console.log(idUser in answer[0].vote.list);
+            console.log(answer[0].vote.list);
+            console.log(answer[0]);
+            res.sendStatus(200)
+
+
+        });
+    },
+
+    unvote_answer: async function (app, db) {
+        app.post("/api/qna/answer/unvote", async (req, res) => {
+            console.log(req.body);
+            var idAnswer = req.body.idAnswer
+                , idUser = req.body.idUser
+                , answer = await db.collection("answer").find({ "idAnswer": idAnswer }).project({ vote: 1, _id: 0 }).toArray()
+
+            if (!(idUser in answer[0].vote.list)) return res.sendStatus(403)
+
+            delete answer[0].vote.list[idUser]
+
+
+            let score = 0;
+            for (const vote in answer[0].vote.list) {
+                if (answer[0].vote.list[vote].up) score++
+                else score--
+            } answer[0].vote.score = score;
+
 
             await db.collection("answer").updateOne({ "idAnswer": idAnswer }, {
                 $set: {

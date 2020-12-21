@@ -16,7 +16,9 @@
             <div *ngIf="!notFound else err404">
 
                 <!-- judul -->
-                <h2> <b>{{metadata.judul}}</b></h2>
+                <h2> <b>{{metadata.judul}}</b>
+                    <p *ngIf="chosenAnswer" style="color: green;">Pertanyaan terjawab</p>
+                </h2>
                 <hr>
                 <div class="row">
                     <div class="col-md-1">
@@ -43,7 +45,9 @@
 
                             <div id="{{list.idAnswer}}" class="card-body" style="background-color: white;">
                                 <h5 class="card-title">{{list.originalPoster}} mengatakan: <span>Skor:
-                                        {{list.vote.score}}</span></h5>
+                                        {{list.vote.score}}</span>
+                                    <p *ngIf="list.idAnswer == chosenAnswer" style="color: green;">Jawaban terpilih</p>
+                                </h5>
                                 <pre *ngIf="list.lastEdited != null"
                                     style="float: right; font-size: 80%; color: gray;">Last Edited: {{verboseTime(list.lastEdited)}}</pre>
                                 <td>
@@ -56,6 +60,8 @@
                                         <span class="card-text" [innerHTML]="list.isiAnswer"></span>
                                     </mat-card-header>
                                 </td>
+
+                                <!-- action bar -->
                                 <div style="font-size: 12px/smaller; color: rgb(0, 0, 0); text-align: end;">
 
                                     <a (click)="copylink(list.idAnswer)" class="clickable"><u>Link</u></a>
@@ -63,42 +69,40 @@
                                     <a (click)="commentBar(list.idAnswer)" class="clickable"><u>Komentar</u></a>
                                     <span class="seperator"> | </span>
 
-                                    <span *ngIf="_id == list.idOP else bukanOP">
+                                    <span *ngIf="_id == list.idOP">
                                         <a (click)="edit(list.idAnswer)" class="clickable"><u>Edit</u></a>
                                         <span class="seperator"> | </span>
                                         <a (click)="alertHapus(list.idAnswer)" class="clickable"><u>Hapus</u></a>
                                         <span class="seperator"> | </span>
                                     </span>
 
-                                    <span *ngIf="asker && unresolvedQuestion">
+                                    <span *ngIf="asker && !chosenAnswer">
                                         <!-- jika user == yang bertanya && pertanyaan belum terjawab / terselesaikan -->
                                         <a (click)="resolveAnswer(list.idAnswer)" class="clickable"><u>Pilih sebagai
                                                 jawaban</u></a>
+                                        <span class="seperator"> | </span>
                                     </span>
 
-                                    <ng-template #bukanOP>
 
+                                    <div *ngIf="!list.vote.list[_id] else voted">
+                                        <!-- jika belum vote -->
+                                        <a (click)="vote(list.idAnswer, 1)" class="clickable"><u>Upvote</u></a>
+                                        <span class="seperator"> | </span>
+                                        <a (click)="vote(list.idAnswer, 0)" class="clickable"><u>Downvote</u></a>
+                                    </div>
 
-                                        <div *ngIf="!hasVoted(_id, list.vote) else voted">
-                                            <!-- jika belum vote -->
-                                            <a (click)="upvote(list.idAnswer)" class="clickable"><u>Upvote</u></a>
-                                            <span class="seperator"> | </span>
-                                            <a (click)="downvote(list.idAnswer)" class="clickable"><u>Downvote</u></a>
-                                        </div>
+                                    <ng-template #voted>
 
-                                        <ng-template #voted>
+                                        <a (click)="unvote(list.idAnswer)" class="clickable">
+                                            <u *ngIf="list.vote.list[_id].up else unDown">
+                                                Cabut upvote</u></a> <!-- Jika terupvote -->
 
-                                            <a (click)="unvote(list.idAnswer)" class="clickable">
-                                                <u *ngIf="list.vote.list[_id].up else unDown">
-                                                    Cabut upvote</u></a>
-
-                                            <ng-template #unDown> <u>Cabut downvote</u> </ng-template>
-
+                                        <ng-template #unDown> <u>Cabut downvote</u> <!-- Jika terdownvote -->
                                         </ng-template>
-
 
                                     </ng-template>
 
+                                    <!-- action bar end -->
                                 </div>
                             </div>
                             <br>
@@ -138,17 +142,21 @@
 
                 <!-- input balasan -->
                 <div #input *ngIf="logged_in else not_logged">
-                    <div *ngIf="Edit == false; else edit_msg">Tinggalkan jawaban </div>
-                    <ng-template #edit_msg> Edit Jawaban </ng-template>
-                    <div class="card">
-                        <div style=" width: 85%; margin: 0 auto;">
-                            Isi jawaban:*
-                            <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
-                                id="editor">
-                            </editor>
+                    <div *ngIf="!hasAnswered else answered">
+
+                        <div *ngIf="Edit == false; else edit_msg">Tinggalkan jawaban </div>
+                        <ng-template #edit_msg> Edit Jawaban </ng-template>
+                        <div class="card">
+                            <div style=" width: 85%; margin: 0 auto;">
+                                Isi jawaban:*
+                                <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
+                                    id="editor">
+                                </editor>
+                            </div>
+                            <button *ngIf="!Edit else editButton" [disabled]="isiKirim.isi_answer.length < 12"
+                                (click)="kirim()">Kirim</button>
                         </div>
-                        <button *ngIf="!Edit else editButton" [disabled]="isiKirim.isi_answer.length < 12"
-                            (click)="kirim()">Kirim</button>
+
                     </div>
                 </div>
                 <!-- input balasan end -->
@@ -192,5 +200,12 @@
     <h4 class="card-text" style="text-align: center">
         Kamu harus login terlebih dahulu sebelum dapat membalas atau mengirim jawaban ke pertanyaan ini!
         <button (click)="toLogin()" mat-raised-button>Login</button>
+    </h4>
+</ng-template>
+
+<ng-template #answered>
+    <h4 class="card-text" style="text-align: center">
+        Kamu sudah menjawab pertanyaan ini
+        <button (click)="focus(hasAnswered)" mat-raised-button>Lihat jawaban saya</button>
     </h4>
 </ng-template>

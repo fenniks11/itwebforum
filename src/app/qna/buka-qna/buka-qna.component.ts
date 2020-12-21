@@ -37,10 +37,12 @@ export class BukaQnA {
     page = [1];
     crnPage = 1;
     notFound = 0;
-    focusTo = "";
+    focusTo = 0;
     Edit = false;
     asker = false;
-    unresolvedQuestion = false;
+    hasAnswered = 0;
+    chosenAnswer = 0;
+    answer_date = 0;
     constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard) { }
 
     public TinyMce = {
@@ -85,6 +87,7 @@ export class BukaQnA {
 
 
 
+
         this.body.arr = [this.id]
         try { this.metadataQnA = (await this.http.post('http://localhost:3000/api/qna/metadata', this.body).toPromise()) as any[]; }
         catch (err) { if (err) return this.notFound = 1; }
@@ -98,38 +101,49 @@ export class BukaQnA {
             this.metadata.idOP = ph.idOP
             this.metadata.ProfilePicture = ph.ProfilePicture
             this.metadata.lastEdited = ph.lastEdited
-            this.unresolvedQuestion = !ph.answered
+            this.chosenAnswer = ph.resolve_answer
+            this.answer_date = ph.resolved_date
             if (ph.idOP == this._id) this.asker = true;
         }
+
 
         this.page = [1]
         for (let index = 1; index < Math.ceil(this.listAnswer.length / this.show); index) {
             this.page.push(++index)
         }
 
-        this.focusTo = this.route.snapshot.paramMap.get("msg");
-        if (this.focusTo != null) {
-            this.router.navigate(['../qna/buka', { id: this.id }]);
+        this.focusTo = parseInt(window.location.hash.replace("#", ""));
 
-            var i = 1, r = 0;
-            for (let v of this.listAnswer) {
-                if (v.idAnswer == this.focusTo) r = i;
-                else i++
-            }
+        for (let v of this.listAnswer) if (v.idOP == this._id) this.hasAnswered = v.idAnswer;
 
-            if (r > 0) {
-                this.crnPage = Math.ceil(r / this.show)
-                setTimeout(() => {
-                    window.location.hash = `#${this.focusTo}`
-                    document.getElementById(this.focusTo).style.animation = "fadeIn ease 5s"
-                }, 250);
-            }
-            else {
-                this.snackBar.open(`Wah, sepertinya kamu menginput tag answer yang sudah tidak ada :(`, "Ok")
-                    .onAction().subscribe(() => {
-                        this.snackBar.dismiss()
-                    });
-            }
+
+        if (this.focusTo) this.focus(this.focusTo)
+    }
+
+    focus(focusTo) {
+        this.router.navigate(['../qna/buka', { id: this.id }]);
+
+        var i = 1, r = 0;
+        for (let v of this.listAnswer) {
+            if (v.idAnswer == focusTo) r = i;
+            else i++
+        }
+
+        if (r) {
+            this.crnPage = Math.ceil(r / this.show)
+            setTimeout(() => {
+                document.getElementById(`${focusTo}`).style.animation = ""
+            }, 250);
+            setTimeout(() => {
+                window.location.hash = `#${focusTo}`
+                document.getElementById(`${focusTo}`).style.animation = "fadeIn ease 5s"
+            }, 500);
+        }
+        else {
+            this.snackBar.open(`Wah, sepertinya kamu menginput tag jawaban yang sudah tidak ada :(`, "Ok")
+                .onAction().subscribe(() => {
+                    this.snackBar.dismiss()
+                });
         }
     }
 
@@ -200,7 +214,7 @@ export class BukaQnA {
 
     copylink(idAnswer) {
         this.snackBar.open(`Link answer berhasil tersimpan di clipboard kamu!`, null, { duration: 3000 })
-        var link = `${window.location.host}/qna/buka;id=${this.id};msg=${idAnswer}`
+        var link = `${window.location.host}/qna/buka;id=${this.id}#${idAnswer}`
         this.clipboard.copy(link)
     }
 
@@ -208,27 +222,25 @@ export class BukaQnA {
 
     }
 
-    hasVoted(id, vote){        
-        return !(id in vote)
+    async vote(id, vote) {
+        var body = { idAnswer: id, idUser: this._id, vote: vote };
+        (await this.http.post("http://localhost:3000/api/qna/answer/vote", body).toPromise()) as any[];
+        window.location.reload()
     }
 
-    async upvote(id) {
-        var body = { idAnswer: id, idUser: this._id }
-        console.log("Upvote function");
-        
-        await this.http.post("http://localhost:3000/api/qna/answer/upvote", body).toPromise();
+    async unvote(id) {
+        var body = { idAnswer: id, idUser: this._id };
+        (await this.http.post("http://localhost:3000/api/qna/answer/unvote", body).toPromise()) as any[];
+        window.location.reload()
     }
 
-    downvote(id) {
-
-    }
-
-    unvote(id) {
-
-    }
-
-    resolveAnswer(id) {
-
+    async resolveAnswer(id) {
+        this.snackBar.open(`Kamu tidak bisa mencabut jawaban yang terpilih, yakin ini jawabannya?`, "Pilih sebagai jawaban", { duration: 5000 })
+            .onAction().subscribe(async () => {
+                var body = { idAnswer: id, user_id: this._id, idQnA: this.id };
+                (await this.http.post("http://localhost:3000/api/qna/resolve", body).toPromise()) as any[];
+                window.location.reload()
+            });
     }
 
     toLogin() { this.router.navigate(['login']) }
