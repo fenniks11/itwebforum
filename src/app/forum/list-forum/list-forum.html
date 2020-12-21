@@ -1,4 +1,10 @@
 <div class="container">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink='home'>Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Daftar Pertanyaaan</li>
+    </ol>
+  </nav>
   <div class="row">
     <div class="col-md-3">
       <div class="blog__sidebar__tags">
@@ -58,6 +64,9 @@
   <div class="col-md-9">
     <div class="btn-group" style="float: right;">
       <div ngbDropdown class="d-inline-block">
+       <button class="btn btn-primary mr-2"  (click)="tambah()">
+      <i class="fa fa-plus" aria-hidden="true">&nbsp;Pertanyaan Baru</i>
+       </button>
        <button class="btn btn-outline-secondary" 
        data-toggle="tooltip" data-placement="bottom" title="Custom.."id="dropdownBasic1" ngbDropdownToggle>
       <i class="fa fa-cog" aria-hidden="true"></i>

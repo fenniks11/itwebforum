@@ -1,10 +1,159 @@
-<div class="container">
-    <h1>Home, workss!
-    </h1>
-    <div class="row">
-        <div class="col">col</div>
-        <div class="col">col</div>
-        <div class="col">col</div>
-    </div>
-   
+<img src="assets/images/th.jpg" class="img-fluid" alt="..." style="background-repeat:repeat; width: 100%; height: 400px;">
+<div class="centered text-center" style=" position: absolute; top: 50%;left: 50%;transform: translate(-50%, -50%); color:white;">
+    <h1 style="font-size:6em; font-family: Georgia, 'Times New Roman', Times, serif;">Itwebforum</h1>
+    <br>
+    <br>
+    <a routerLink='' class="btn btn-primary mr-2"><i class="fa fa-files-o">&nbsp;Daftar Forum</i> </a>
+    <a routerLink='forum/tambah' class="btn btn-primary mr-2"><i class="fa fa-folder-o">&nbsp;Pertanyaan Baru</i> </a>
+    <a routerLink='compilerun' class="btn btn-primary mr-2"><i class="fa fa-file-code-o">&nbsp;Jalankan Kode</i> </a>
+</div>
+<div class="container mt-5">
+    <div class="card text-center card text-center border-primary bg-light mb-3">
+        <div class="card-header">
+          Itwebforum
+        </div>
+        <div class="card-body mx-auto" style="border-left: violet;">
+          <h1 class="card-title text-success">Pengenalan</h1>
+          <h3 class="card-text">Adalah website tanya jawab yang membahas seputar pembangunan sebuah program komputer ataupun sebuah website</h3>
+          <p class="card-text">Terdiri dari dua kategori pertanyaan</p>
+          <a href="#" class="btn btn-primary mr-2">Frontend</a>
+          <a href="#" class="btn btn-secondary">Backend</a>
+        </div>
+      </div>
+      <br>
+    <h1 class="text-info text-center">Ayo, bergabung dengan kami..</h1>
+    <br>
+            <div class="card mx-auto" style="width: 90%; height: 100%;  box-shadow: 0 0px 20px 0 rgba(255, 254, 254, 0.2);
+            background-color: rgb(0, 0, 0);">
+                <div class="card-body">
+                    <h1 class="card-title text-center h4 text-white"> <i class="fa fa-user "></i> Registrasi</h1>
+                    <hr>
+                    <form>
+                        <fieldset>
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Masukkan Email</mat-label>
+                                <input type="email" matInput name="email" placeholder="Email" data-validate = "Valid email is: a@b.c" required>
+                                <mat-icon matSuffix><i class="fa fa-at"></i></mat-icon>
+                                <mat-hint class="text-danger">*) Email wajib diisi</mat-hint>
+                            </mat-form-field>
+                            <br>
+                            <br>
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Masukkan Username</mat-label>
+                                <input type="text" matInput name="username" placeholder="Username" required>
+                                <mat-hint class="text-danger">*) Minimal username 4 karakter</mat-hint>
+                            </mat-form-field>
+                            <br>
+                            <br>
+                            <mat-form-field appearance="outline" style="width: 100%;" >
+                                <mat-label>Masukkan Password</mat-label>
+                                <input type="password" matInput name="password" placeholder="Password" required>
+                                <mat-icon matSuffix><i class="fa fa-key"></i></mat-icon>
+                                <mat-hint class="text-danger">*) Minimal password 6 karakter</mat-hint>
+                            </mat-form-field>
+                            <br>
+                            <br>
+                        <mat-card-actions>
+                            <div class="col-lg">
+                                <button
+                                 class="btn btn-primary" style="width: 100%;">Daftar
+                                </button>
+                                <hr>
+                                <small class="text-success">Jika kamu sudah punya akun, silahkan login.</small>
+                                <button class="btn btn-success mb-10" style="width: 100%;">Login</button>
+                                <br />
+
+                            </div>
+                        </mat-card-actions>
+                        </fieldset>
+                    </form>
+                  </div>
+</div>
+<hr>
+<br>
+<h1 class="text-info text-center">Jika sudah punya akun, silahkan login terlebih dahulu</h1>
+
+<br>
+
+<div class="card mx-auto" style="width: 90%;  box-shadow: 0 0px 20px 0 rgba(247, 247, 247, 0.2);
+                    background-color: rgb(0, 0, 0)">
+                        <div class="card-body">
+                            <h1 class="card-title text-center h4 text-white"> <i class="fa fa-sign-in"></i> Login</h1>
+                            <hr>
+                            <form>
+                                <fieldset>
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>Masukkan Email</mat-label>
+                                        <input type="email" matInput name="email" placeholder="Email" data-validate = "Valid email is: a@b.c" >
+                                        <mat-icon matSuffix><i class="fa fa-at"></i></mat-icon>
+                                    </mat-form-field>
+                                    <br>
+                                    <mat-form-field appearance="outline" style="width: 100%;" >
+                                        <mat-label>Masukkan Password</mat-label>
+                                        <input type="password" matInput name="password" placeholder="Password">
+                                        <mat-icon matSuffix><i class="fa fa-key"></i></mat-icon>
+                                    </mat-form-field>
+                                <mat-card-actions>
+                                    <div class="col-lg">
+                                        <button class="btn btn-success mb-10" style="width: 100%;">Login</button>
+                                        <hr>
+                                        <small class="text-primary">Jika kamu belum punya akun, silahkan daftar.</small>
+                                        <button  class="btn btn-primary" style="width: 100%;">Daftar</button>
+                                    </div>
+                                </mat-card-actions>
+                                </fieldset>
+                            </form>
+                          </div>
+        
+                        </div>
+                        <hr>
+                        <br>
+
+    <div class="card text-center border-warning text-white bg-light mb-3" >
+        <div class="card-header">
+            <h1 class="text-success text-center"><b> Aturan Bertanya</b></h1>
+        </div>
+        <div class="card-body mx-auto" style="border-left: violet;">
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Rangkum masalah anda
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>Sertakan detail tentang tujuan anda</p>
+                <p>Jelaskan hasil yang diharapkan dengan jelas</p>
+                <p>Sertakan pesan kesalahan apa pun</p>
+                </mat-expansion-panel>  
+              </mat-accordion>
+              <br>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                  Sertakan referensi
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>Tunjukkan apa yang telah anda coba dan beri tahu kami apa yang anda temukan (di situs ini atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan anda. Anda mungkin mendapatkan jawaban yang lebih baik apabila memberikan referensi tambahan.</p>
+                </mat-expansion-panel>  
+              </mat-accordion>
+              <br>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Tuliskan kode bila perlu
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>Jika dibutuhkan tuliskan kode yang sudah dibuat agar masalah anda dapat lebih dimengerti</p>
+                </mat-expansion-panel>  
+              </mat-accordion>
+<br>
+          <a routerLink = 'forum/tambah' class="btn btn-primary">Mulai bertanya </a>
+        </div>
+      </div>
+         
 </div>
