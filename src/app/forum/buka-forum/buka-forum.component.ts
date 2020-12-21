@@ -83,8 +83,7 @@ export class BukaForum {
         }
 
 
-
-        this.body.arr = [this.id]
+        this.body.arr = [this.id, this._id]
         try { this.metadataForum = (await this.http.post('http://localhost:3000/api/forum/metadata', this.body).toPromise()) as any[]; }
         catch (err) { if (err) return this.notFound = 1; }
 

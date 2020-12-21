@@ -6,6 +6,7 @@ module.exports = function (app, db) {
   forum.MetaDataForum(app, db);
   forum.EditForum(app, db);
   forum.img_forum(app, db);
+  forum.LikeForum(app, db)
 
   let pesan = require("./js/pesan")
   pesan.ListPesan(app, db);
@@ -39,6 +40,7 @@ module.exports = function (app, db) {
   qna.TambahQnA(app, db)
   qna.img_qna(app, db)
   qna.ResolveQnA(app, db)
+  qna.LikeQnA(app, db)
 
   let answer = require("./js/answer_qna")
   answer.EditAnswer(app, db)

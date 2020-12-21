@@ -88,7 +88,7 @@ export class BukaQnA {
 
 
 
-        this.body.arr = [this.id]
+        this.body.arr = [this.id, this._id]
         try { this.metadataQnA = (await this.http.post('http://localhost:3000/api/qna/metadata', this.body).toPromise()) as any[]; }
         catch (err) { if (err) return this.notFound = 1; }
 

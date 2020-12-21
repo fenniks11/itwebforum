@@ -20,6 +20,7 @@ export class ListForum {
   page = [1];
   crnPage = 1;
   constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute) { }
+  
   async ngOnInit() {
     window.localStorage.setItem("activeTitle", "Daftar Forum")
     this.listForum = (await this.http
@@ -27,13 +28,15 @@ export class ListForum {
       .toPromise()) as any[];
     console.log(this.listForum);
 
-    this._id = sessionStorage.getItem('_id') == null ? "0" :sessionStorage.getItem('_id');
+    this._id = sessionStorage.getItem('_id') == null ? "0" : sessionStorage.getItem('_id');
 
     this.page = [1]
     for (let index = 1; index < Math.ceil(this.listForum.length / 5); index) {
       this.page.push(++index)
     }
+    
   }
+
   tambah() {
     this.router.navigate(['forum/tambah'], { skipLocationChange: true })
   }
@@ -61,5 +64,16 @@ export class ListForum {
       .onAction().subscribe(() => {
         this.hapus(id)
       });
+  }
+
+  async like(id) {
+    if (!this._id) {
+      this.snackBar.open(`Kamu harus login terlebih dahulu`, "Login", { duration: 5000 })
+        .onAction().subscribe(() => { this.router.navigate(["login"]) });
+      return;
+    }
+
+    await this.http.post('http://localhost:3000/api/forum/like', { arr: [id, this._id] }).toPromise();
+    window.location.reload()
   }
 }

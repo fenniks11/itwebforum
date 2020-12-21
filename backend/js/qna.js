@@ -12,6 +12,8 @@ module.exports = {
                 namaQnA: req.body.arr[0],
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
+                viewed: [],
+                liked: [],
                 vote: {
                     score: 0,
                     list: {}
@@ -29,12 +31,15 @@ module.exports = {
     ListQnA: async function (app, db) {
         app.get("/api/qna/list", async (req, res) => {
             const docs = await db.collection("qna").find({}).toArray();
-            let getUser;
+            let getUser, getResponses;
 
             for (let i = 0; i < docs.length; i++) {
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
                 docs[i]["originalPoster"] = getUser[0].username;
+
+                getResponses = await db.collection("answer").find({ "idQnA": docs[i].idQnA }).toArray();
+                docs[i]["responses"] = getResponses.length;
             }
 
             if (!docs)
@@ -72,10 +77,26 @@ module.exports = {
                 }).toArray()
 
             if (docs.length < 1) return res.status(404).send();
+
+            var viewer = req.body.arr[1]
+            if (!viewer) viewer = req.socket.remoteAddress.replace(/^.*:/, '');
+
+            if (!docs[0].viewed.includes(viewer)) {
+                docs[0].viewed.push(viewer)
+
+                await db.collection("qna").update({ "idQnA": id, }, {
+                    $set: { viewed: docs[0].viewed }
+                })
+            }
+
             let getUser;
             getUser = await db.collection("user").find({ "user_id": docs[0].idOP }).toArray();
             docs[0]["ProfilePicture"] = getUser[0].profile_picture;
             docs[0]["originalPoster"] = getUser[0].username;
+
+            let getResponses;
+            getResponses = await db.collection("answer").find({ "idQnA": docs[0].idQnA }).toArray();
+            docs[0]["responses"] = getResponses.length;
 
             res.json(docs);
 
@@ -125,8 +146,8 @@ module.exports = {
 
             let qna_metadata = await db.collection("qna").find({ "idQnA": id }).toArray()
 
-            if (qna_metadata[0].resolve_answer)  return res.sendStatus(403) // sudah terjawab
-            if (qna_metadata[0].idOP != user_id) return res.sendStatus(403) // bukan penanya
+            if (qna_metadata[0].resolve_answer) return res.status(403).send() // sudah terjawab
+            if (qna_metadata[0].idOP != user_id) return res.status(403).send() // bukan penanya
 
             db.collection("qna").update({ "idQnA": id }, {
                 $set: {
@@ -136,5 +157,36 @@ module.exports = {
             })
             res.status(200).send();
         });
+    },
+
+    LikeQnA: async function (app, db) {
+
+        app.post("/api/qna/like", async (req, res) => {
+
+            var id = parseInt(req.body.arr[0]);
+            var docs = await db
+                .collection("qna")
+                .find({
+                    idQnA: id,
+                }).toArray()
+
+            if (!docs.length) return res.status(403).send();
+
+
+            var viewer = req.body.arr[1]
+            if (!viewer) return res.status(403).send(); // wajib login untuk like
+
+            console.log(docs[0].liked.includes(viewer));
+            if (!docs[0].liked.includes(viewer)) docs[0].liked.push(viewer) // like jika tidak ada
+            else docs[0].liked.remove(viewer)  // unlike jika ada
+
+            await db.collection("qna").update({ "idQnA": id, }, {
+                $set: { liked: docs[0].liked }
+            })
+
+            res.status(200).send()
+
+        });
+
     }
 }

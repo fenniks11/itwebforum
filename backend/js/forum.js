@@ -12,6 +12,8 @@ module.exports = {
                 namaForum: req.body.arr[0],
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
+                viewed: [],
+                liked: [],
                 lastEdited: null
             });
             return res.json({
@@ -23,12 +25,15 @@ module.exports = {
     ListForum: async function (app, db) {
         app.get("/api/forum/list", async (req, res) => {
             const docs = await db.collection("forum").find({}).toArray();
-            let getUser;
+            let getUser, getResponses;
 
             for (let i = 0; i < docs.length; i++) {
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
                 docs[i]["originalPoster"] = getUser[0].username;
+
+                getResponses = await db.collection("pesan").find({ "idForum": docs[i].idForum }).toArray();
+                docs[i]["responses"] = getResponses.length;
             }
 
             if (!docs)
@@ -59,17 +64,34 @@ module.exports = {
     MetaDataForum: async function (app, db) {
         app.post("/api/forum/metadata", async (req, res) => {
             var id = parseInt(req.body.arr[0]);
-            const docs = await db
+            var docs = await db
                 .collection("forum")
                 .find({
                     idForum: id,
                 }).toArray()
 
-            if (docs.length < 1) return res.status(404).send();
+            if (!docs.length) return res.status(403).send();
+
+
+            var viewer = req.body.arr[1]
+            if (!viewer) viewer = req.socket.remoteAddress.replace(/^.*:/, '');
+
+            if (!docs[0].viewed.includes(viewer)) {
+                docs[0].viewed.push(viewer)
+
+                await db.collection("forum").update({ "idForum": id, }, {
+                    $set: { viewed: docs[0].viewed }
+                })
+            }
+
             let getUser;
             getUser = await db.collection("user").find({ "user_id": docs[0].idOP }).toArray();
             docs[0]["ProfilePicture"] = getUser[0].profile_picture;
             docs[0]["originalPoster"] = getUser[0].username;
+
+            let getResponses;
+            getResponses = await db.collection("pesan").find({ "idForum": docs[0].idForum }).toArray();
+            docs[0]["responses"] = getResponses.length;
 
             res.json(docs);
 
@@ -108,7 +130,35 @@ module.exports = {
                 .on("error", (err) => { return res.send(`Fail; Err: ${err}`) })
                 .on("end", () => { !uploaded.length ? res.send("Fail") : res.send(uploaded[0]) })
         });
+    },
+
+    LikeForum: async function (app, db) {
+
+        app.post("/api/forum/like", async (req, res) => {
+
+            var id = parseInt(req.body.arr[0]);
+            var docs = await db
+                .collection("forum")
+                .find({
+                    idForum: id,
+                }).toArray()
+
+            if (!docs.length) return res.status(403).send();
+
+
+            var viewer = req.body.arr[1]
+            if (!viewer) return res.status(403).send(); // wajib login untuk like
+
+            if (!docs[0].liked.includes(viewer)) docs[0].liked.push(viewer)
+            else docs[0].liked.remove(viewer) 
+
+            await db.collection("forum").update({ "idForum": id, }, {
+                $set: { liked: docs[0].liked }
+            })
+
+            res.status(200).send()
+
+        });
+
     }
-
-
 }

@@ -28,3 +28,15 @@ MongoClient.connect(url, (err, client) => {
 app.use(express.static("image"))
 app.use('/image', express.static("image"));
 app.listen(port, () => { console.log("Aplikasi berjalan di port", port) });
+
+//custom prototype
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};

@@ -105,17 +105,27 @@
                       triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
                   </div>
                   <!-- start Button Respon Viewers -->
-                  <div class="button-aksi">
-                    <a class="btn btn-ouline-secondary" href="" data-toggle="tooltip" data-placement="left"
-                      title="suka..">
-                      <i class="fa fa-thumbs-o-up fa-2x"></i>Disukai</a>
-                    <a class="btn btn-ouline-secondary" href="" data-toggle="tooltip" data-placement="left"
-                      title="balas..">
-                      <i class="fa fa-commenting fa-2x"></i>Balasan</a>
-                    <a class="btn btn-ouline-secondary" href="" data-toggle="tooltip" data-placement="left"
-                      title="bagikan..">
-                      <i class="fa fa-share fa-2x"></i>Dibagikan</a>
+                  <a *ngIf="!list.liked.includes(_id) else unlike" class="btn btn-ouline-secondary" (click)="like(list.idForum)"
+                  data-toggle="tooltip" data-placement="left" title="Berikan forum ini like kamu">
+                  <i class="fa fa-thumbs-o-up fa-2x"></i> Disukai oleh {{list.liked.length}} orang </a>
+
+                <ng-template #unlike>
+                  
+                  <a class="btn btn-ouline-secondary" (click)="like(list.idQnA)"
+                  data-toggle="tooltip" data-placement="left" title="Kamu suka pertanyaan ini!">
+                  <i style="color: blue;" class="fa fa-thumbs-o-up fa-2x"></i>Disukai oleh {{list.liked.length}} orang</a>
+
+                </ng-template>
+
+                <a class="btn btn-ouline-secondary" (click)="buka(list.idQnA)" data-toggle="tooltip" data-placement="left"
+                  title="Buka forum untuk membalas">
+                  <i class="fa fa-commenting fa-2x"></i> {{list.responses}} Balasan</a>
+
+                    <a class="btn btn-ouline-secondary" (click)="buka(list.idQnA)" data-toggle="tooltip" data-placement="left"
+                      title="Lihat pertanyaan">
+                      <i class="fa fa-eye fa-2x"></i> Dilihat {{list.viewed.length}} kali</a>
                   </div>
+                  
                   <!-- end button respon viewer -->
                 </div>
 

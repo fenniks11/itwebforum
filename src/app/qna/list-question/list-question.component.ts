@@ -26,7 +26,7 @@ export class ListQuestion {
       .toPromise()) as any[];
     console.log(this.listQnA);
 
-    this._id = sessionStorage.getItem('_id') == null ? "0" :sessionStorage.getItem('_id');
+    this._id = sessionStorage.getItem('_id') == null ? "0" : sessionStorage.getItem('_id');
 
     this.page = [1]
     for (let index = 1; index < Math.ceil(this.listQnA.length / 5); index) {
@@ -60,5 +60,18 @@ export class ListQuestion {
       .onAction().subscribe(() => {
         this.hapus(id)
       });
+  }
+
+  async like(id) {
+    if (!this._id) {
+      this.snackBar.open(`Kamu harus login terlebih dahulu`, "Login", { duration: 5000 })
+        .onAction().subscribe(() => { this.router.navigate(["login"]) });
+         return;
+    }
+
+
+    await this.http.post('http://localhost:3000/api/qna/like', { arr: [id, this._id] }).toPromise()
+    window.location.reload()
+    
   }
 }
