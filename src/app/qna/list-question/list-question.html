@@ -105,7 +105,7 @@
                       triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
                   </div>
                   <!-- start Button Respon Viewers -->
-                  <a *ngIf="!list.liked.includes(_id) else unlike" class="btn btn-ouline-secondary" (click)="like(list.idForum)"
+                  <a *ngIf="!list.liked.includes(_id) else unlike" class="btn btn-ouline-secondary" (click)="like(list.idQnA)"
                   data-toggle="tooltip" data-placement="left" title="Berikan forum ini like kamu">
                   <i class="fa fa-thumbs-o-up fa-2x"></i> Disukai oleh {{list.liked.length}} orang </a>
 

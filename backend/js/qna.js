@@ -34,6 +34,7 @@ module.exports = {
             let getUser, getResponses;
 
             for (let i = 0; i < docs.length; i++) {
+                0
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
                 docs[i]["originalPoster"] = getUser[0].username;
@@ -172,11 +173,9 @@ module.exports = {
 
             if (!docs.length) return res.status(403).send();
 
-
             var viewer = req.body.arr[1]
             if (!viewer) return res.status(403).send(); // wajib login untuk like
 
-            console.log(docs[0].liked.includes(viewer));
             if (!docs[0].liked.includes(viewer)) docs[0].liked.push(viewer) // like jika tidak ada
             else docs[0].liked.remove(viewer)  // unlike jika ada
 

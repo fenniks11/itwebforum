@@ -37,7 +37,7 @@ export class BukaForum {
     page = [1];
     crnPage = 1;
     notFound = 0;
-    focusTo = "";
+    focusTo = 0;
     Edit = false;
     constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard) { }
     // public Editor = ClassicEditor.create(document.querySelector("#editor"), { cloudServices: { tokenUrl: "http://localhost:3000/api/forum/TokenuploadImage", uploadUrl: "http://localhost:3000/api/forum/uploadImage" } });
@@ -103,29 +103,36 @@ export class BukaForum {
             this.page.push(++index)
         }
 
-        this.focusTo = this.route.snapshot.paramMap.get("msg");
-        if (this.focusTo != null) {
-            this.router.navigate(['../forum/buka', { id: this.id }]);
+        this.focusTo = parseInt(window.location.hash.replace("#", ""));
 
-            var i = 1, r = 0;
-            for (let v of this.listPesan) {
-                if (v.idPesan == this.focusTo) r = i;
-                else i++
-            }
 
-            if (r > 0) {
-                this.crnPage = Math.ceil(r / this.show)
-                setTimeout(() => {
-                    window.location.hash = `#${this.focusTo}`
-                    document.getElementById(this.focusTo).style.animation = "fadeIn ease 5s"
-                }, 250);
-            }
-            else {
-                this.snackBar.open(`Wah, sepertinya kamu menginput tag pesan yang sudah tidak ada :(`, "Ok")
-                    .onAction().subscribe(() => {
-                        this.snackBar.dismiss()
-                    });
-            }
+        if (this.focusTo) this.focus(this.focusTo)
+    }
+
+    focus(focusTo) {
+        this.router.navigate(['../forum/buka', { id: this.id }]);
+
+        var i = 1, r = 0;
+        for (let v of this.listPesan) {
+            if (v.idPesan == focusTo) r = i;
+            else i++
+        }
+
+        if (r) {
+            this.crnPage = Math.ceil(r / this.show)
+            setTimeout(() => {
+                document.getElementById(`${focusTo}`).style.animation = ""
+            }, 250);
+            setTimeout(() => {
+                window.location.hash = `#${focusTo}`
+                document.getElementById(`${focusTo}`).style.animation = "fadeIn ease 5s"
+            }, 500);
+        }
+        else {
+            this.snackBar.open(`Wah, sepertinya kamu menginput tag jawaban yang sudah tidak ada :(`, "Ok")
+                .onAction().subscribe(() => {
+                    this.snackBar.dismiss()
+                });
         }
     }
 
@@ -198,7 +205,7 @@ export class BukaForum {
     }
     copylink(idPesan) {
         this.snackBar.open(`Link pesan berhasil tersimpan di clipboard kamu!`, null, { duration: 3000 })
-        var link = `${window.location.host}/forum/buka;id=${this.id};msg=${idPesan}`
+        var link = `${window.location.host}/forum/buka;id=${this.id}#${idPesan}`
         this.clipboard.copy(link)
     }
 

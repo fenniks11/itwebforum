@@ -29,7 +29,7 @@ module.exports = {
 
     TambahAnswer: async function (app, db) {
         app.post("/api/qna/answer/tambahanswer", async (req, res) => {
-            var answer = await db.collection("answer").find({ "idAnswer": idAnswer }).toArray()
+            var answer = await db.collection("answer").find({ "idOP": req.body.arr[2] }).toArray()
             if(answer.length) return res.sendStatus(403)
             var id = parseInt(req.body.arr[0])
             var idp = new Date().getTime() + parseInt(id)

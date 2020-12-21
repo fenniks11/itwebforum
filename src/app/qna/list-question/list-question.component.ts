@@ -62,14 +62,13 @@ export class ListQuestion {
       });
   }
 
-  async like(id) {
+  async like(id) {    
     if (!this._id) {
       this.snackBar.open(`Kamu harus login terlebih dahulu`, "Login", { duration: 5000 })
         .onAction().subscribe(() => { this.router.navigate(["login"]) });
          return;
     }
-
-
+    
     await this.http.post('http://localhost:3000/api/qna/like', { arr: [id, this._id] }).toPromise()
     window.location.reload()
     

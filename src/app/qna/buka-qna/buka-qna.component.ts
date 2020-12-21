@@ -112,9 +112,9 @@ export class BukaQnA {
             this.page.push(++index)
         }
 
-        this.focusTo = parseInt(window.location.hash.replace("#", ""));
-
         for (let v of this.listAnswer) if (v.idOP == this._id) this.hasAnswered = v.idAnswer;
+
+        this.focusTo = parseInt(window.location.hash.replace("#", ""));
 
 
         if (this.focusTo) this.focus(this.focusTo)
