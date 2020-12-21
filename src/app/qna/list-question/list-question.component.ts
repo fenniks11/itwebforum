@@ -35,8 +35,6 @@ export class ListQuestion {
       }
     }
 
-    console.log(this.listQnA);
-
     this._id = sessionStorage.getItem('_id') == null ? "0" : sessionStorage.getItem('_id');
 
 
@@ -51,7 +49,7 @@ export class ListQuestion {
   }
 
   buka(id) {
-    this.router.navigate(['qna/buka', { id: id }]);
+    this.router.navigate(['qna/buka/'+id]);
   }
 
   edit(id) {

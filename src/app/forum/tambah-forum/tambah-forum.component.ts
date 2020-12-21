@@ -86,7 +86,7 @@ export class TambahForum {
     var id = res.id
     this.snackBar.open(`Forum berhasil dibuat! memindahkan kamu ke forum...`, null, { duration: 2000 })
     setTimeout(() => {
-      this.router.navigate(['forum/buka', { id: id }])
+      this.router.navigate(['forum/buka/'+id])
     }, 2000);
   }
 

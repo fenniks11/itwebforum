@@ -45,7 +45,7 @@ export class ListForum {
     this.router.navigate(['forum/tambah'], { skipLocationChange: true })
   }
   buka(id) {
-    this.router.navigate(['forum/buka', { id: id }]);
+    this.router.navigate(['forum/buka/'+id]);
   }
   edit(id) {
     this.router.navigate(['forum/edit', { id: id }], {

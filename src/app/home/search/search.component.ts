@@ -45,16 +45,16 @@ export class Search {
     }
 
     forum(id) {
-        this.router.navigate(['forum/buka', { id: id }]);
+        this.router.navigate(['forum/buka/'+id]);
     }
 
     qna(id) {
-        this.router.navigate(['qna/buka', { id: id }]);
+        this.router.navigate(['qna/buka/'+id]);
     }
 
     pesan(fid, id) {
         // localhost:4200/forum/buka;id=1607358733691;msg=3215119914879
-        this.router.navigate(['forum/buka', { id: fid, msg: id }]);
+        this.router.navigate([`forum/buka/${fid}#${id}`]);
     }
 
     user(username) {

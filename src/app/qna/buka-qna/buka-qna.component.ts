@@ -121,7 +121,7 @@ export class BukaQnA {
     }
 
     focus(focusTo) {
-        this.router.navigate(['../qna/buka', { id: this.id }]);
+        this.router.navigate(['../qna/buka/'+this.id]);
 
         var i = 1, r = 0;
         for (let v of this.listAnswer) {
@@ -214,7 +214,7 @@ export class BukaQnA {
 
     copylink(idAnswer) {
         this.snackBar.open(`Link answer berhasil tersimpan di clipboard kamu!`, null, { duration: 3000 })
-        var link = `${window.location.host}/qna/buka;id=${this.id}#${idAnswer}`
+        var link = `${window.location.host}/qna/buka/${this.id}#${idAnswer}`
         this.clipboard.copy(link)
     }
 

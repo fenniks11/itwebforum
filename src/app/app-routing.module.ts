@@ -18,12 +18,13 @@ import { QuestionAndAnswer } from './qna/qna.component';
 import { TambahQuestion } from './qna/tambah-q/tambah-q.component';
 import { BukaQnA } from './qna/buka-qna/buka-qna.component';
 import { EditQuestion } from './qna/edit-question/edit-question.component';
+import { Err404 } from './home/404err/404err.component';
 
 
 
 const routes: Routes = [
   { path: 'forum/tambah', component: TambahForum },
-  { path: 'forum/buka', component: BukaForum },
+  { path: 'forum/buka/:id', component: BukaForum },
   { path: 'forum/edit', component: EditForum },
   { path: 'forum', component: Forum },
   { path: 'login', component: Login },
@@ -34,9 +35,10 @@ const routes: Routes = [
   { path: 'search', component: Search },
   { path: 'qna', component: QuestionAndAnswer },
   { path: 'qna/tambah', component: TambahQuestion },
-  { path: 'qna/buka', component: BukaQnA },
+  { path: 'qna/buka/:id', component: BukaQnA },
   { path: 'qna/edit', component: EditQuestion },
-  { path: '', component: Forum } //Main page
+  { path: '', component: Forum }, //Main page
+  { path: '**', component:  Err404} //error 404 page
 ];
 
 @NgModule({

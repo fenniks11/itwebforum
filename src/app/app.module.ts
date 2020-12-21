@@ -40,6 +40,7 @@ import { ListQuestion } from './qna/list-question/list-question.component';
 import { TambahQuestion } from './qna/tambah-q/tambah-q.component';
 import { BukaQnA } from './qna/buka-qna/buka-qna.component';
 import { EditQuestion } from './qna/edit-question/edit-question.component';
+import { Err404 } from './home/404err/404err.component';
 
 
 
@@ -63,7 +64,8 @@ import { EditQuestion } from './qna/edit-question/edit-question.component';
     ListQuestion,
     TambahQuestion,
     BukaQnA,
-    EditQuestion
+    EditQuestion,
+    Err404
   ],
   imports: [
     BrowserModule,
