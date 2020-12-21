@@ -1,29 +1,27 @@
-# TubesPbo
+# forumTI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.5.
+Aplikasi ini adalah sebagai penilaian untuk tugas besar dalam mata kuliah Interaksi Manusia dan Komputer.
 
-## Development server
+## Platform
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Aplikasi ini berbasis Angular untuk front end, Express + NodeJS untuk back end, dan MongoDB sebagai sistem basis data.
 
-## Code scaffolding
+## Apa yang dibutuhkan
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Sebelum kita dapat menjalankan aplikasi ini, setidaknya ada 2 aplikasi yang sudah terinstall pada perangkat server, yaitu:
 
-## Build
+1. NodeJS (Minimum v10) - Download dari [Website resmi NodeJS](https://nodejs.org/en/download/)
+2. MongoDB (Minimum Community Edition) - Download dari [Website resmi MongoDB](https://www.mongodb.com/try/download/community)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Jalankan
 
-## Running unit tests
+Untuk menjalankan aplikasi ini, akan dibutuhkan 2 console / terminal untuk menjalankan sisi front-end dan back-end.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Pada terminal 1, jalankan `ng serve` pada directory utama dari aplikasi ini.
+Pada terminal 2, jalankan `node .` atau `nodemon .` didalam folder backend yang terdapat pada folder utama aplikasi ini (`./backend/`).
 
-## Running end-to-end tests
+## Buka
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Setelah aplikasi dijalankan, aplikasi akan memakai port 4200 (localhost:4200) untuk sisi front-end, dan port 3030 (localhost:3030) untuk sisi back-end.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-sip.
+Silahkan buka localhost:4200 pada browser untuk membuka aplikasi ini.
