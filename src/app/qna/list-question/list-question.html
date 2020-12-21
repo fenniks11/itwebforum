@@ -60,11 +60,13 @@
         <div ngbDropdown class="d-inline-block">
           <button class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Custom.."
             id="dropdownBasic1" ngbDropdownToggle>
-            <i class="fa fa-cog" aria-hidden="true"></i>
+            <i class="fa fa-filter" aria-hidden="true"></i>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <button ngbDropdownItem>Backend</button>
-            <button ngbDropdownItem>Frontend</button>
+            <button (click)="filter('_empty')" ngbDropdownItem>Tampilkan semua</button>
+            <button (click)="filter('fb')" ngbDropdownItem>Frontend dan Backend</button>
+            <button (click)="filter('f')" ngbDropdownItem>Frontend</button>
+            <button (click)="filter('b')" ngbDropdownItem>Backend</button>
           </div>
         </div>
       </div>

@@ -101,6 +101,7 @@
                 <div class="col-md-7">
                   <a class="nav-link" (click)="buka(list.idForum)">
                     <h2 class="card-title" [innerHTML]="list.namaForum"></h2>
+                    <h5 [innerHTML]="getDate(list.createdDate)"></h5>
                   </a>
                   <p class="card-title" style="padding-left:10px;">{{list.originalPoster}} </p>
                   <div class="button-tag">

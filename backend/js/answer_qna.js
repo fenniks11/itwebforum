@@ -32,10 +32,11 @@ module.exports = {
             var answer = await db.collection("answer").find({ "idOP": req.body.arr[2] }).toArray()
             if(answer.length) return res.sendStatus(403)
             var id = parseInt(req.body.arr[0])
-            var idp = new Date().getTime() + parseInt(id)
+            var idp = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000));
             db.collection("answer").insertOne({
                 idQnA: id,
                 idAnswer: idp,
+                createdDate: new Date().getTime(),
                 isiAnswer: req.body.arr[1],
                 idOP: req.body.arr[2],
                 vote: {

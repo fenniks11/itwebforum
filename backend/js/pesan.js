@@ -32,10 +32,11 @@ module.exports = {
             console.log(req.body);
             // return res.sendStatus(200)
             var id = parseInt(req.body.arr[0])
-            var idp = new Date().getTime() + parseInt(id)
+            var idp = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000))
             db.collection("pesan").insertOne({
                 idForum: id,
                 idPesan: idp,
+                createdDate: new Date().getTime(),
                 isiPesan: req.body.arr[1],
                 idOP: req.body.arr[2],
                 lastEdited: null

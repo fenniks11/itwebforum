@@ -24,6 +24,7 @@ export class TambahQuestion {
   body = {};
   valid = false;
   tagify: any;
+  category= "_empty";
   constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar) { };
 
   public TinyMce = {
@@ -80,14 +81,14 @@ export class TambahQuestion {
 
 
     this.id_op = sessionStorage.getItem("_id")
-    this.body = { "arr": [this.nama_baru, this.id_op, this.pesan_utama] };
+    this.body = { "arr": [this.nama_baru, this.id_op, this.pesan_utama, this.category] };
     var res;
     res = await this.http.post("http://localhost:3000/api/qna/tambah", this.body).toPromise();
     var id = res.id
     this.snackBar.open(`Forum berhasil dibuat! memindahkan kamu ke forum...`, null, { duration: 2000 })
-    // setTimeout(() => {
-    //   this.router.navigate(['qna/buka', { id: id }])
-    // }, 2000);
+    setTimeout(() => {
+      this.router.navigate(['qna/buka', { id: id }])
+    }, 2000);
   }
 
   toLogin() { this.router.navigate(['login']) }

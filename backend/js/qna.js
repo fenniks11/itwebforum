@@ -6,12 +6,14 @@ module.exports = {
     TambahQnA: async function (app, db) {
         app.post("/api/qna/tambah", async (req, res) => {
             var id = await db.collection("qna").find({}).toArray();
-            id = Math.round(new Date().getTime() + id.length);
+            id = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000))
             db.collection("qna").insertOne({
                 idQnA: id,
                 namaQnA: req.body.arr[0],
+                createdDate: new Date().getTime(),
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
+                category:  req.body.arr[3],
                 viewed: [],
                 liked: [],
                 vote: {

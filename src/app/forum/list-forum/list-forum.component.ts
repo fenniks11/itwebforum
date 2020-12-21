@@ -37,6 +37,10 @@ export class ListForum {
     
   }
 
+  getDate(ms){
+    return new Date(ms)
+  }
+
   tambah() {
     this.router.navigate(['forum/tambah'], { skipLocationChange: true })
   }

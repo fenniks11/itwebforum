@@ -58,10 +58,11 @@
                         <div class="create__section">
                             <label class="create__label" for="category">Pilih Kategori</label>
                             <label class="custom-select">
-                                <select id="category">
-                                    <option>Choose</option>
-                                    <option>Frontend</option>
-                                    <option>Backend</option>
+                                <select [(ngModel)]="category" id="category">
+                                    <option value="_empty">Frontend atau Backend?</option>
+                                    <option value="fb">Frontend dan Backend</option>
+                                    <option value="f">Frontend</option>
+                                    <option value="b">Backend</option>
                                 </select>
                             </label>
                         </div>
@@ -86,7 +87,7 @@
                         &nbsp;&nbsp; <input id="tags" type="text" placeholder="e.g. css, html, etc.">
                     </div>
                 </div>
-                <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17" mat-raised-button
+                <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17 || category == '_empty'" mat-raised-button
                     color="primary">Tambah</button>
                 <button mat-button mat-dialog-close>Cancel</button>
             </div>

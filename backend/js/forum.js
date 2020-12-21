@@ -6,9 +6,10 @@ module.exports = {
     TambahForum: async function (app, db) {
         app.post("/api/forum/tambah", async (req, res) => {
             var id = await db.collection("forum").find({}).toArray();
-            id = Math.round(new Date().getTime() + id.length);
+            id = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000))
             db.collection("forum").insertOne({
                 idForum: id,
+                createdDate: new Date().getTime(),
                 namaForum: req.body.arr[0],
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
