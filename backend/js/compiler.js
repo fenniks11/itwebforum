@@ -51,14 +51,14 @@ module.exports = {
                         let hrDiff = process.hrtime(hrStart);
                         runtime = `${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ''}${hrDiff[1] / 1000000}ms`;
                         result.length < 1 ? result = "true" : 0;
-                        res.json({ success: success, runtime: runtime, result: result })
+                        return res.json({ success: success, runtime: runtime, result: result })
                     });
 
                 })
 
             }
 
-            catch (err) { res.json({ success: false, runtime: 0, result: err }) }
+            catch (err) {if(err) return res.json({ success: false, runtime: 0, result: err }) }
 
 
         })

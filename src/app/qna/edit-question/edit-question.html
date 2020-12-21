@@ -2,16 +2,16 @@
     <div class="container">
         <div class="create">
             <div class="create__head">
-                <div class="create__title">Edit Forum</div>
+                <div class="create__title">Edit Pertanyaan</div>
             </div>
             <div class="create__section">
-                <label class="create__label" for="title">Judul Forum</label>
-                <input type="text" name="edit-nama-forum" [(ngModel)]="nama_baru" placeholder="Tambahkan judul forum..." class="form-control">
+                <label class="create__label" for="title">Judul Pertanyaan</label>
+                <input type="text" name="edit-nama-forum" [(ngModel)]="nama_baru" placeholder="Tambahkan judul pertanyaan..." class="form-control" required>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="create__section">
-                        <label class="create__label" for="category">Pilih Kategori</label>
+                        <label class="create__label" for="category">Select Category</label>
                         <label class="custom-select">
                             <select id="category">
                                 <option>Choose</option>
@@ -37,8 +37,8 @@
                 </div>
             </div>
             <div class="create__section">
-                <label class="create__label" for="tags">Tambahkan Tag</label>
-                <input type="text" class="form-control" id="tags" placeholder="e.g. css, html, etc.">
+                <label class="create__label" for="tags">&nbsp;&nbsp; Tambahkan Tag</label>
+                &nbsp;&nbsp; <input type="text" class="form-control" id="tags" placeholder="e.g. css, html, etc.">
             </div>
             <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17" mat-raised-button
             color="primary">Edit</button>

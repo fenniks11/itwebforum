@@ -4,10 +4,10 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HeaderForum } from '../../home/header/header.component';
 
 @Component({
-    selector: 'edit-forum',
-    templateUrl: './edit-forum.html',
+    selector: 'edit-question',
+    templateUrl: './edit-question.html',
 })
-export class EditForum {
+export class EditQuestion {
     id = "";
     placeholder = [];
     pesan_utama = "";
@@ -36,7 +36,7 @@ export class EditForum {
 
             xhr = new XMLHttpRequest();
             xhr.withCredentials = false;
-            xhr.open('POST', 'http://localhost:3000/api/forum/img_forum');
+            xhr.open('POST', 'http://localhost:3000/api/qna/img_qna');
 
             xhr.onload = function () {
                 if (xhr.responseText.startsWith("Fail")) return failure(xhr.responseText);
@@ -54,16 +54,16 @@ export class EditForum {
         HeaderForum.prototype.titleHeader = "Edit forum?"
         this.id = this.route.snapshot.paramMap.get("id")
         this.body.arr.push(this.id)
-        this.placeholder = (await this.http.post('http://localhost:3000/api/forum/metadata', this.body).toPromise()) as any[];
+        this.placeholder = (await this.http.post('http://localhost:3000/api/qna/metadata', this.body).toPromise()) as any[];
         for (let ph of this.placeholder) {
             this.pesan_utama = ph.pesanUtama;
-            this.nama_baru = ph.namaForum;
+            this.nama_baru = ph.namaQnA;
             this.idOP = ph.idOP;
         }
     }
     kirim() {
         this.body1.arr = [this.id, this.nama_baru, this.idOP, this.pesan_utama]
-        this.http.post("http://localhost:3000/api/forum/edit", this.body1).toPromise();
+        this.http.post("http://localhost:3000/api/qna/edit", this.body1).toPromise();
         this.router.navigate(['forum'], { skipLocationChange: true })
     }
 

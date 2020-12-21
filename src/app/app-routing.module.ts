@@ -11,9 +11,13 @@ import { Forum } from './forum/forum.component';
 import { Register } from './home/register/register.component';
 import { Profile } from './home/profile/profile.component';
 import { HomeComponent } from './home/home.component';
-import { CompileRun } from './forum/compilerun/compilerun.component';
+import { CompileRun } from './compilerun/compilerun.component';
 import { Search } from './home/search/search.component';
 import { Login } from './home/login/login.component';
+import { QuestionAndAnswer } from './qna/qna.component';
+import { TambahQuestion } from './qna/tambah-q/tambah-q.component';
+import { BukaQnA } from './qna/buka-qna/buka-qna.component';
+import { EditQuestion } from './qna/edit-question/edit-question.component';
 
 
 
@@ -28,6 +32,10 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'compilerun', component: CompileRun },
   { path: 'search', component: Search },
+  { path: 'qna', component: QuestionAndAnswer },
+  { path: 'qna/tambah', component: TambahQuestion },
+  { path: 'qna/buka', component: BukaQnA },
+  { path: 'qna/edit', component: EditQuestion },
   { path: '', component: Forum } //Main page
 ];
 

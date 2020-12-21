@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Ubuntu";
+  src: url("ubuntu.medium-italic.ttf"); /* IE9 Compat Modes */
+  src: url("ubuntu.medium-italic.ttf?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("ubuntu.medium-italic.ttf") format("woff2"),
+    /* Super Modern Browsers */ url("ubuntu.medium-italic.ttf") format("woff"),
+    /* Pretty Modern Browsers */ url("ubuntu.medium-italic.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("ubuntu.medium-italic.ttf#svgFontName")
+      format("svg"); /* Legacy iOS */
+}

@@ -1,19 +1,13 @@
 <div class="container">
-  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink='home'>Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Daftar Pertanyaaan</li>
-    </ol>
-  </nav>
   <div class="row">
     <div class="col-md-3">
       <div class="blog__sidebar__tags">
-        <h4><b>Aturan dalam bertanya</b></h4>
+        <h4><b> Aturan dalam bertanya</b></h4>
         <mat-accordion>
           <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Rangkum permasalahan
+                Rangkum masalah anda
               </mat-panel-title>
             </mat-expansion-panel-header>
             <p>Sertakan detail tentang tujuan anda</p>
@@ -26,12 +20,12 @@
           <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Sertakan referensi
+                Jelaskan usaha yg sudah dicoba
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Tunjukkan apa yang telah anda coba dan beri tahu apa yang anda temukan (di situs ini
-               atau di tempat lain) dan mengapa hal itu tidak memenuhi kebutuhan anda. Anda mungkin
-               mendapatkan jawaban yang lebih baik apabila memberikan referensi tambahan</p>
+            <p>Tunjukkan apa yang telah Anda coba dan beri tahu kami apa yang Anda temukan (di situs ini atau di tempat
+              lain) dan mengapa hal itu tidak memenuhi kebutuhan Anda. Anda bisa mendapatkan jawaban yang lebih baik
+              saat memberikan penelitian.</p>
           </mat-expansion-panel>
         </mat-accordion>
         <br>
@@ -42,7 +36,7 @@
                 Tuliskan kode bila perlu
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Jika dibutuhkan tuliskan kode yang sudah dibuat agar masalah anda dapat lebih dimengerti</p>
+            <p>Jika dibutuhkan, tuliskan kode yang dibutuhkan agar masalah anda dapat lebih dimengerti orang lain</p>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -59,28 +53,12 @@
         <a href="#">C</a>
         <a href="#">C#</a>
       </div>
-<<<<<<< HEAD
-  </div>
-  <div class="col-md-9">
-    <div class="btn-group" style="float: right;">
-      <div ngbDropdown class="d-inline-block">
-       <button class="btn btn-primary mr-2"  (click)="tambah()">
-      <i class="fa fa-plus" aria-hidden="true">&nbsp;Pertanyaan Baru</i>
-       </button>
-       <button class="btn btn-outline-secondary" 
-       data-toggle="tooltip" data-placement="bottom" title="Custom.."id="dropdownBasic1" ngbDropdownToggle>
-      <i class="fa fa-cog" aria-hidden="true"></i>
-       </button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem>Frontend</button>
-          <button ngbDropdownItem>Backend</button>
-=======
     </div>
     <div class="col-md-9">
       <div class="btn-group" style="float: right;">
-        <button (click)="tambah()" style="color: black;" class="btn btn-outline-secondary">Tambah Forum</button> &nbsp;
+        <button (click)="tambah()">Ajukan Pertanyaan</button>
         <div ngbDropdown class="d-inline-block">
-          <button style="color: black;" class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Custom.."
+          <button class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Custom.."
             id="dropdownBasic1" ngbDropdownToggle>
             <i class="fa fa-cog" aria-hidden="true"></i>
           </button>
@@ -89,14 +67,13 @@
             <button ngbDropdownItem>Frontend</button>
           </div>
         </div>
->>>>>>> f6ada5551547f06805b62a909c36532a07da1a90
       </div>
-      <h1>Daftar Forum</h1>
+      <h1>Daftar Pertanyaan</h1>
       <hr>
 
       <div class="card-pertanyaan">
-        <div class="list-group" *ngIf="listForum.length > 0 else forum_kosong" role="list">
-          <div class="list-group-item" *ngFor="let list of listForum | slice: (crnPage - 1) * 5: (crnPage - 1) * 5 + 5">
+        <div class="list-group" *ngIf="listQnA.length > 0 else qna_kosong" role="list">
+          <div class="list-group-item" *ngFor="let list of listQnA | slice: (crnPage - 1) * 5: (crnPage - 1) * 5 + 5">
             <div class="btn-group" style="float: right; padding-right: 20px;" ngbDropdown>
               <div ngbDropdown class="d-inline-block">
                 <button class="btn" ngbDropdownToggle>
@@ -104,10 +81,10 @@
                 </button>
                 <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
                   <button type="button" class="btn btn-primary" ngbDropdownItem *ngIf="_id == list.idOP"
-                    (click)="edit(list.idForum)">
+                    (click)="edit(list.idQnA)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
                   <a class="btn btn-danger" ngbDropdownItem *ngIf="_id == list.idOP"
-                    (click)="alertHapus(list.idForum, list.namaForum)">
+                    (click)="alertHapus(list.idQnA, list.namaQnA)">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
                 </div>
               </div>
@@ -116,10 +93,11 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-7">
-                  <a class="nav-link" (click)="buka(list.idForum)">
-                    <h2 class="card-title" [innerHTML]="list.namaForum"></h2>
+                  <a class="nav-link" (click)="buka(list.idQnA)">
+                    <h2 class="card-title" [innerHTML]="list.namaQnA"></h2>
                   </a>
                   <p class="card-title" style="padding-left:10px;">{{list.originalPoster}} </p>
+                  <p class="card-title" *ngIf="list.resolve_answer" style="padding-left:10px; color: green;">Pertanyaan terjawab</p>
                   <div class="button-tag">
                     <a class="btn btn-sm btn-secondary mr-2" ngbPopover="Hallo ini JavaScript!"
                       triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
@@ -130,13 +108,13 @@
                   <div class="button-aksi">
                     <a class="btn btn-ouline-secondary" href="" data-toggle="tooltip" data-placement="left"
                       title="suka..">
-                      <i class="fa fa-thumbs-o-up fa-2x"></i> Suka</a>
+                      <i class="fa fa-thumbs-o-up fa-2x"></i>Disukai</a>
                     <a class="btn btn-ouline-secondary" href="" data-toggle="tooltip" data-placement="left"
                       title="balas..">
-                      <i class="fa fa-commenting fa-2x"></i> Balas</a>
+                      <i class="fa fa-commenting fa-2x"></i>Balasan</a>
                     <a class="btn btn-ouline-secondary" href="" data-toggle="tooltip" data-placement="left"
                       title="bagikan..">
-                      <i class="fa fa-share fa-2x"></i> Bagikan</a>
+                      <i class="fa fa-share fa-2x"></i>Dibagikan</a>
                   </div>
                   <!-- end button respon viewer -->
                 </div>
@@ -160,11 +138,11 @@
       </div>
       <br>
 
-      <ng-template #forum_kosong>
+      <ng-template #qna_kosong>
         <span style="color: white; text-align: center; font-size: 200%;">
-          <p>Wah sepertinya belum ada forum nih, ayo kita mulai sebuah forum!
-            <br><br><button (click)="tambah()" mat-button>
-              Buat Forum
+          <p>Wah sepertinya belum ada pertanyaan nih, ayo kita mulai bertanya!
+            <br><br><button style="background-color: black;" (click)="tambah()" mat-button>
+              Ajukan Pertanyaan
             </button></p>
         </span>
       </ng-template>

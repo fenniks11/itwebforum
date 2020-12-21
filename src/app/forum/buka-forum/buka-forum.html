@@ -112,7 +112,7 @@
                 </div>
 
                 <div #input *ngIf="logged_in else not_logged">
-                    <div *ngIf="Edit == false; else edit_msg">Tinggalkan jawaban </div>
+                    <div *ngIf="Edit == false; else edit_msg">Tinggalkan balasan </div>
                     <ng-template #edit_msg> Edit Jawaban </ng-template>
                     <div class="card">
                     <div style=" width: 85%; margin: 0 auto;">
@@ -120,6 +120,7 @@
                         <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_pesan" data="isiKirim.isi_pesan" id="editor">
                         </editor>
                     </div>
+                    <button *ngIf="!Edit else editButton" [disabled]="isiKirim.isi_pesan.length < 12" (click)="kirim()">Kirim</button>
                 </div>
             </div>
         </div>
@@ -141,3 +142,5 @@
     </mat-card>
     
 </ng-template>
+
+<ng-template #editButton><button [disabled]="isiKirim.isi_pesan.length < 12" (click)="confirm_edit()">Edit</button></ng-template>
