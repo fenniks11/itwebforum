@@ -41,6 +41,7 @@ import { BukaQnA } from './qna/buka-qna/buka-qna.component';
 import { EditQuestion } from './qna/edit-question/edit-question.component';
 import { Err404 } from './home/404err/404err.component';
 import { HighlightService } from './prism.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 
 
@@ -66,6 +67,7 @@ import { HighlightService } from './prism.component';
     BukaQnA,
     EditQuestion,
     Err404
+
   ],
   imports: [
     BrowserModule,
@@ -88,13 +90,14 @@ import { HighlightService } from './prism.component';
     MatSnackBarModule,
     ClipboardModule,
     MatExpansionModule,
-    NgbModule
+    NgbModule,
+    MonacoEditorModule.forRoot()
 
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [ { provide: Window, useValue: window }, HighlightService],
+  providers: [{ provide: Window, useValue: window }, HighlightService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

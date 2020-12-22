@@ -8,6 +8,7 @@ import 'clipboard';
 import 'prismjs';
 import 'prismjs/plugins/toolbar/prism-toolbar';
 import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import 'prismjs/components/prism-markup-templating.js'
 import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-java';
@@ -15,7 +16,7 @@ import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-http';
-// import 'prismjs/components/prism-php';
+import 'prismjs/components/prism-php';
 import 'prismjs/components/prism-ruby';
 import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';

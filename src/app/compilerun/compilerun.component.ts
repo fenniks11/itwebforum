@@ -19,11 +19,13 @@ function backScape(str) {
   styleUrls: ["compilerun.css"]
 })
 export class CompileRun {
+  editorOptions = { theme: 'vs-dark', language: 'javascript', minimap: { enabled: false } };
   code: string;
-  result = "" as any;
+  result = "Ready" as any;
   res_type = "code"
   lang = "njs";
   runtime: string;
+  resultType = "Console"
   run_err: boolean;
   loading = false;
   loading_message = "";
@@ -32,7 +34,20 @@ export class CompileRun {
 
   async ngOnInit() {
     if (this.route.snapshot.paramMap.get("code")) this.code = decodeURIComponent(this.route.snapshot.paramMap.get("code"));
-    if (this.route.snapshot.paramMap.get("lang")) this.lang = this.route.snapshot.paramMap.get("lang");
+    if (this.route.snapshot.paramMap.get("lang")) { this.lang = this.route.snapshot.paramMap.get("lang"); this.languageChange(); }
+  }
+
+  languageChange() {
+    let lang;
+    switch (this.lang) {
+      case "html": lang = "php"; break;
+      case "njs": lang = "javascript"; break;
+      case "jv": lang = "java"; break;
+      case "py": lang = "python"; break;
+      case "c": lang = "c"; break;
+      case "cpp": lang = "cpp"; break;
+    }
+    this.editorOptions = { ...this.editorOptions, language: lang };
   }
 
   async compile() {
@@ -41,11 +56,13 @@ export class CompileRun {
     this.result = null;
     var res;
     if (this.lang == "html") {
+      this.resultType = "iFrame"
       res = await this.http.post("http://localhost:3000/api/iframe", { code: this.code }).toPromise() as any;
       this.res_type = "iframe"
       this.result = 'data:text/html;charset=utf-8,' + encodeURI(res.result)
     }
     else {
+      this.resultType = "Console"
       res = await this.http.post("http://localhost:3000/api/compile", { lang: this.lang, code: this.code }).toPromise() as any;
       this.res_type = "code"
       this.result = backScape(res.result)

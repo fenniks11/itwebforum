@@ -96,3 +96,12 @@ export class ListQuestion {
 
   }
 }
+
+
+/**
+ * 
+ * tambah CodeMirror untuk compilerun
+ * 
+ * tambah time_events dari serevya
+ * tambah time properties dari serevya
+ */
