@@ -8,17 +8,18 @@ Aplikasi ini berbasis Angular untuk front end, Express + NodeJS untuk back end, 
 
 ## Apa yang dibutuhkan
 
-Sebelum kita dapat menjalankan aplikasi ini, setidaknya ada 2 aplikasi yang sudah terinstall pada perangkat server, yaitu:
+Sebelum kita dapat menjalankan aplikasi ini, setidaknya ada 3 aplikasi yang sudah terinstall pada perangkat server, yaitu:
 
 1. NodeJS (Minimum v10) - Download dari [Website resmi NodeJS](https://nodejs.org/en/download/)
-2. MongoDB (Minimum Community Edition) - Download dari [Website resmi MongoDB](https://www.mongodb.com/try/download/community)
+2. Angular CLI (Latest version) - Install menggunakan terminal / console setelah menginstall NodeJS dengan perintah `npm i --g @angular/cli`
+3. MongoDB (Minimum Community Edition) - Download dari [Website resmi MongoDB](https://www.mongodb.com/try/download/community)
 
 ## Jalankan
 
 Untuk menjalankan aplikasi ini, akan dibutuhkan 2 console / terminal untuk menjalankan sisi front-end dan back-end.
 
-Pada terminal 1, jalankan `ng serve` pada directory utama dari aplikasi ini.
-Pada terminal 2, jalankan `node .` atau `nodemon .` didalam folder backend yang terdapat pada folder utama aplikasi ini (`./backend/`).
+- Pada terminal 1, jalankan `ng serve` pada directory utama dari aplikasi ini.
+- Pada terminal 2, jalankan `node .` atau `nodemon .` didalam folder backend yang terdapat pada folder utama aplikasi ini (`./backend/`).
 
 ## Buka
 
