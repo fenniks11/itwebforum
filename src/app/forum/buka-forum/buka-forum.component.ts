@@ -1,19 +1,20 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewChecked } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { HighlightService } from 'src/app/prism.component';
 
 
 
 @Component({
     selector: 'buka-forum',
     templateUrl: './buka-forum.html',
-    styleUrls: ["buka-forum.css"],
+    styleUrls: ["buka-forum.css", "../../../../node_modules/prismjs/themes/prism-okaidia.css", "../../../../node_modules/prismjs/plugins/toolbar/prism-toolbar.css"],
     encapsulation: ViewEncapsulation.None
 })
-export class BukaForum {
+export class BukaForum implements AfterViewChecked {
     id = "";
     _id = sessionStorage.getItem("_id");
     logged_in = !sessionStorage.getItem("_id") ? false : true;
@@ -39,7 +40,7 @@ export class BukaForum {
     notFound = 0;
     focusTo = 0;
     Edit = false;
-    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard) { }
+    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard, private highlightService: HighlightService) { }
     // public Editor = ClassicEditor.create(document.querySelector("#editor"), { cloudServices: { tokenUrl: "http://localhost:3000/api/forum/TokenuploadImage", uploadUrl: "http://localhost:3000/api/forum/uploadImage" } });
 
     public TinyMce = {
@@ -56,6 +57,16 @@ export class BukaForum {
           bullist numlist outdent indent | removeformat | link image media | help',
 
         selector: 'textarea',
+        codesample_languages: [
+            { text: 'HTML/XML', value: 'markup' },
+            { text: 'NodeJS / JavaScript', value: 'javascript' },
+            { text: 'CSS', value: 'css' },
+            { text: 'PHP', value: 'php' },
+            { text: 'Python', value: 'python' },
+            { text: 'Java', value: 'java' },
+            { text: 'C', value: 'c' },
+            { text: 'C++', value: 'cpp' }
+        ],
         images_upload_handler: function (blobInfo, success, failure) {
             var xhr, formData;
 
@@ -75,13 +86,22 @@ export class BukaForum {
         }
     }
 
+    ngAfterViewChecked() {
+        this.highlightService.start((toCompiler) => {
+            toCompiler.newTab ?
+                window.open(`${window.location.protocol}//${window.location.host}/compilerun;lang=${toCompiler.lang};code=${toCompiler.code}`) :
+                this.router.navigate(["compilerun", { lang: toCompiler.lang, code: toCompiler.code }])
+        });
+
+        console.clear()
+    }
+
 
     async ngOnInit(id) {
-        console.log(this.router.url)
+
         if (!id || this.id.length < 1) {
             this.id = this.route.snapshot.paramMap.get("id");
         }
-
 
         this.body.arr = [this.id, this._id]
         try { this.metadataForum = (await this.http.post('http://localhost:3000/api/forum/metadata', this.body).toPromise()) as any[]; }
@@ -110,7 +130,7 @@ export class BukaForum {
     }
 
     focus(focusTo) {
-        this.router.navigate(['../forum/buka/'+this.id]);
+        this.router.navigate(['../forum/buka/' + this.id]);
 
         var i = 1, r = 0;
         for (let v of this.listPesan) {

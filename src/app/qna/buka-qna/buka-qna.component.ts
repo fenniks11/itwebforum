@@ -1,19 +1,20 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewChecked } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatDialog } from '@angular/material/dialog';
+import { HighlightService } from 'src/app/prism.component';
 
 
 
 @Component({
     selector: 'buka-qna',
     templateUrl: './buka-qna.html',
-    styleUrls: ["buka-qna.css"],
+    styleUrls: ["buka-qna.css", "../../../../node_modules/prismjs/themes/prism-okaidia.css", "../../../../node_modules/prismjs/plugins/toolbar/prism-toolbar.css"],
     encapsulation: ViewEncapsulation.None
 })
-export class BukaQnA {
+export class BukaQnA implements AfterViewChecked {
     id = "";
     _id = sessionStorage.getItem("_id");
     logged_in = !sessionStorage.getItem("_id") ? false : true;
@@ -43,7 +44,7 @@ export class BukaQnA {
     hasAnswered = 0;
     chosenAnswer = 0;
     answer_date = 0;
-    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard) { }
+    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard, private highlightService: HighlightService) { }
 
     public TinyMce = {
         height: 500,
@@ -59,6 +60,16 @@ export class BukaQnA {
           bullist numlist outdent indent | removeformat | link image media | help',
 
         selector: 'textarea',
+        codesample_languages: [
+            { text: 'HTML/XML', value: 'markup' },
+            { text: 'NodeJS / JavaScript', value: 'javascript' },
+            { text: 'CSS', value: 'css' },
+            { text: 'PHP', value: 'php' },
+            { text: 'Python', value: 'python' },
+            { text: 'Java', value: 'java' },
+            { text: 'C', value: 'c' },
+            { text: 'C++', value: 'cpp' }
+        ],
         images_upload_handler: function (blobInfo, success, failure) {
             var xhr, formData;
 
@@ -78,6 +89,17 @@ export class BukaQnA {
         }
     }
 
+
+
+    ngAfterViewChecked() {
+        this.highlightService.start((toCompiler) => {
+            toCompiler.newTab ?
+                window.open(`${window.location.protocol}//${window.location.host}/compilerun;lang=${toCompiler.lang};code=${toCompiler.code}`) :
+                this.router.navigate(["compilerun", { lang: toCompiler.lang, code: toCompiler.code }])
+        });
+
+        console.clear()
+    }
 
     async ngOnInit(id) {
 
@@ -121,7 +143,7 @@ export class BukaQnA {
     }
 
     focus(focusTo) {
-        this.router.navigate(['../qna/buka/'+this.id]);
+        this.router.navigate(['../qna/buka/' + this.id]);
 
         var i = 1, r = 0;
         for (let v of this.listAnswer) {

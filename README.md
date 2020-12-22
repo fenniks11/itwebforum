@@ -14,6 +14,14 @@ Sebelum kita dapat menjalankan aplikasi ini, setidaknya ada 3 aplikasi yang suda
 2. Angular CLI (Latest version) - Install menggunakan terminal / console setelah menginstall NodeJS dengan perintah `npm i --g @angular/cli`
 3. MongoDB (Minimum Community Edition) - Download dari [Website resmi MongoDB](https://www.mongodb.com/try/download/community)
 
+Untuk dapat menggunakan fitur "Compile Run" perangkat server membutuhkan compiler untuk masing masing bahasa pemrograman, yaitu:
+
+1. C dan C++ - Membutuhkan gcc
+2. Java - Membutuhkan jdk
+3. Python - Membutuhkan python
+4. JavaScript - Membutuhkan NodeJS
+5. PHP - Membutuhkan php.exe (Dapat ditemukan didalam folder xampp/php/, harus konfigurasi manual didalam backend/js/compiler.js)
+
 ## Jalankan
 
 Untuk menjalankan aplikasi ini, akan dibutuhkan 2 console / terminal untuk menjalankan sisi front-end dan back-end.

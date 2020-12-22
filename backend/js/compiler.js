@@ -1,8 +1,8 @@
 const compiler = require("compile-run")
-const php = "D:\\xampp\\php\\php.exe"
+const php = "D:\\xampp\\php\\php.exe"  //path ke php.exe , biasa ditemukan di folder apache / xampp
 const { exec } = require("child_process")
 const fs = require("fs")
-const temp_php = `${__dirname}/compiler-temp/` //path ke php.exe , biasa ditemukan di folder apache / xampp
+const temp_php = `${__dirname}/compiler-temp/`
 
 module.exports = {
     Compile: async function (app, db) {

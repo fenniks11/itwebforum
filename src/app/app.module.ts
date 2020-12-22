@@ -26,7 +26,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Register } from './home/register/register.component';
 import { Profile } from './home/profile/profile.component';
@@ -41,6 +40,7 @@ import { TambahQuestion } from './qna/tambah-q/tambah-q.component';
 import { BukaQnA } from './qna/buka-qna/buka-qna.component';
 import { EditQuestion } from './qna/edit-question/edit-question.component';
 import { Err404 } from './home/404err/404err.component';
+import { HighlightService } from './prism.component';
 
 
 
@@ -85,7 +85,6 @@ import { Err404 } from './home/404err/404err.component';
     MatStepperModule,
     MatTableModule,
     MatPaginatorModule,
-    CKEditorModule,
     MatSnackBarModule,
     ClipboardModule,
     MatExpansionModule,
@@ -95,7 +94,7 @@ import { Err404 } from './home/404err/404err.component';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [ { provide: Window, useValue: window }],
+  providers: [ { provide: Window, useValue: window }, HighlightService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

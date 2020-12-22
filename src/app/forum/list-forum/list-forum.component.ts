@@ -26,7 +26,6 @@ export class ListForum {
     this.listForum = (await this.http
       .get('http://localhost:3000/api/forum/list')
       .toPromise()) as any[];
-    console.log(this.listForum);
 
     this._id = sessionStorage.getItem('_id') == null ? "0" : sessionStorage.getItem('_id');
 

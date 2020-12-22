@@ -17,6 +17,7 @@ export class EditForum {
     body = { arr: [] }
     body1 = { arr: [] }
     constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
+
     public TinyMce = {
         height: 500,
         menubar: false,
@@ -31,12 +32,22 @@ export class EditForum {
           bullist numlist outdent indent | removeformat | link image media | help',
 
         selector: 'textarea',
+        codesample_languages: [
+            { text: 'HTML/XML', value: 'markup' },
+            { text: 'NodeJS / JavaScript', value: 'javascript' },
+            { text: 'CSS', value: 'css' },
+            { text: 'PHP', value: 'php' },
+            { text: 'Python', value: 'python' },
+            { text: 'Java', value: 'java' },
+            { text: 'C', value: 'c' },
+            { text: 'C++', value: 'cpp' }
+        ],
         images_upload_handler: function (blobInfo, success, failure) {
             var xhr, formData;
 
             xhr = new XMLHttpRequest();
             xhr.withCredentials = false;
-            xhr.open('POST', 'http://localhost:3000/api/forum/img_forum');
+            xhr.open('POST', 'http://localhost:3000/api/forum/img_pesan');
 
             xhr.onload = function () {
                 if (xhr.responseText.startsWith("Fail")) return failure(xhr.responseText);
@@ -49,6 +60,7 @@ export class EditForum {
             xhr.send(formData);
         }
     }
+    
     async ngOnInit() {
         if (sessionStorage.getItem("_id") == null) return this.router.navigate(['/'])
         HeaderForum.prototype.titleHeader = "Edit forum?"
