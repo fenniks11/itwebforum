@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderForum } from '../../home/header/header.component';
+import { TimeVerbose } from 'src/app/time.component';
 
 
 
@@ -19,7 +20,7 @@ export class ListForum {
   _id = '';
   page = [1];
   crnPage = 1;
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute) { }
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private timeVerbose: TimeVerbose) { }
   
   async ngOnInit() {
     window.localStorage.setItem("activeTitle", "Daftar Forum")
@@ -37,7 +38,7 @@ export class ListForum {
   }
 
   getDate(ms){
-    return new Date(ms)
+    return this.timeVerbose.parseTime(ms).verbose[5]
   }
 
   tambah() {

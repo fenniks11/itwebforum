@@ -24,7 +24,7 @@ export class CompileRun {
   result = "Ready" as any;
   res_type = "code"
   lang = "njs";
-  runtime: string;
+  runtime = "0s";
   resultType = "Console"
   run_err: boolean;
   loading = false;

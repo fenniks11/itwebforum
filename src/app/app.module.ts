@@ -42,6 +42,7 @@ import { EditQuestion } from './qna/edit-question/edit-question.component';
 import { Err404 } from './home/404err/404err.component';
 import { HighlightService } from './prism.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { TimeVerbose } from './time.component';
 
 
 
@@ -97,7 +98,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [{ provide: Window, useValue: window }, HighlightService],
+  providers: [{ provide: Window, useValue: window }, HighlightService, TimeVerbose],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

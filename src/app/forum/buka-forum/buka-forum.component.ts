@@ -5,6 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatDialog } from '@angular/material/dialog';
 import { HighlightService } from 'src/app/prism.component';
+import { TimeVerbose } from 'src/app/time.component';
+
 
 
 
@@ -40,8 +42,15 @@ export class BukaForum implements AfterViewChecked {
     notFound = 0;
     focusTo = 0;
     Edit = false;
-    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard, private highlightService: HighlightService) { }
-    // public Editor = ClassicEditor.create(document.querySelector("#editor"), { cloudServices: { tokenUrl: "http://localhost:3000/api/forum/TokenuploadImage", uploadUrl: "http://localhost:3000/api/forum/uploadImage" } });
+
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private router: Router,
+        private snackBar: MatSnackBar,
+        private clipboard: Clipboard, private highlightService: HighlightService,
+        private timeVerbose: TimeVerbose
+    ) { }
 
     public TinyMce = {
         height: 500,
@@ -209,9 +218,11 @@ export class BukaForum implements AfterViewChecked {
                 this.hapus(id)
             });
     }
-    verboseTime(time) {
-        return new Date(time).toUTCString()
+
+    verboseTime(time) {        
+        return this.timeVerbose.parseTime(time).verbose[5]
     }
+
     back() {
         this.router.navigate(['../forum'])
     }
