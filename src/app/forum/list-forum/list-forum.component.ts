@@ -70,7 +70,7 @@ export class ListForum {
   }
 
   async like(id) {
-    if (!this._id) {
+    if (this._id == "0") {
       this.snackBar.open(`Kamu harus login terlebih dahulu`, "Login", { duration: 5000 })
         .onAction().subscribe(() => { this.router.navigate(["login"]) });
       return;
