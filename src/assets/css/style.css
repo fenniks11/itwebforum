@@ -97,7 +97,7 @@ body {
 }
 
 .mbox {
-  background: #f5f5f5;
+  background: #fbfeff;
   text-align: left;
   line-height: 1.4;
   margin: auto auto;
@@ -111,8 +111,8 @@ body {
   -moz-box-shadow: 0px 2px 5px -1px #adaeaf;
   box-shadow: 0px 2px 5px -1px #adaeaf;
   margin-top: 60px;
-  width: 90%;
-  max-width: 1300px;
+  width: 100%;
+  max-width: 95vw;
 }
 
 .create {

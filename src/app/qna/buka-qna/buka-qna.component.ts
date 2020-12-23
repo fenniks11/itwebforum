@@ -15,6 +15,9 @@ import { HighlightService } from 'src/app/prism.component';
     encapsulation: ViewEncapsulation.None
 })
 export class BukaQnA implements AfterViewChecked {
+
+    root = {route: "/qna", name: "Question N Answer"}
+
     id = "";
     _id = sessionStorage.getItem("_id");
     logged_in = !sessionStorage.getItem("_id") ? false : true;
@@ -133,6 +136,7 @@ export class BukaQnA implements AfterViewChecked {
         for (let index = 1; index < Math.ceil(this.listAnswer.length / this.show); index) {
             this.page.push(++index)
         }
+        if(this.crnPage > this.page.length) this.crnPage = this.page.length
 
         for (let v of this.listAnswer) if (v.idOP == this._id) this.hasAnswered = v.idAnswer;
 

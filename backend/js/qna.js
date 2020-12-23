@@ -13,7 +13,7 @@ module.exports = {
                 createdDate: new Date().getTime(),
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
-                category:  req.body.arr[3],
+                category: req.body.arr[3],
                 viewed: [],
                 liked: [],
                 vote: {
@@ -111,11 +111,11 @@ module.exports = {
             var id = parseInt(req.body.arr[0])
             var crnDate = new Date().getTime()
             db.collection("qna").update({ idQnA: id }, {
-                idQnA: id,
-                namaQnA: req.body.arr[1],
-                idOP: req.body.arr[2],
-                pesanUtama: req.body.arr[3],
-                lastEdited: crnDate
+                $set: {
+                    pesanUtama: req.body.arr[3],
+                    lastEdited: crnDate,
+                    namaQnA: req.body.arr[1]
+                }
             })
             res.status(200).send();
         });

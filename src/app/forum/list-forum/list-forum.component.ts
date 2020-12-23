@@ -9,7 +9,8 @@ import { TimeVerbose } from 'src/app/time.component';
 
 @Component({
   selector: 'list-forum',
-  templateUrl: './list-forum.html'
+  templateUrl: './list-forum.html',
+  styleUrls: ["list-forum.css"]
 })
 export class ListForum {
   panelOpenState = false;

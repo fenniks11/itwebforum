@@ -97,7 +97,7 @@ export class TambahQuestion {
     var id = res.id
     this.snackBar.open(`Forum berhasil dibuat! memindahkan kamu ke forum...`, null, { duration: 2000 })
     setTimeout(() => {
-      this.router.navigate(['qna/buka', { id: id }])
+      this.router.navigate(['qna/buka/'+id])
     }, 2000);
   }
 

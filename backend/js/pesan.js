@@ -80,11 +80,10 @@ module.exports = {
         app.post("/api/pesan/edit", async (req, res) => {
             var crnDate = new Date().getTime()
             db.collection("pesan").update({ idPesan: req.body.arr[1] }, {
-                idForum: parseInt(req.body.arr[0]),
-                idPesan: req.body.arr[1],
-                isiPesan: req.body.arr[2],
-                idOP: req.body.arr[3],
-                lastEdited: crnDate
+                $set:{
+                    isiPesan: req.body.arr[2],
+                    lastEdited: crnDate    
+                }
             })
             res.status(200).send();
         });

@@ -1,82 +1,39 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="blog__sidebar__tags">
-        <h4><b> Aturan dalam bertanya</b></h4>
-        <mat-accordion>
-          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Rangkum masalah anda
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>Sertakan detail tentang tujuan anda</p>
-            <p>Jelaskan hasil yang diharapkan dengan jelas</p>
-            <p>Sertakan pesan kesalahan apa pun</p>
-          </mat-expansion-panel>
-        </mat-accordion>
-        <br>
-        <mat-accordion>
-          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Jelaskan usaha yg sudah dicoba
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>Tunjukkan apa yang telah Anda coba dan beri tahu kami apa yang Anda temukan (di situs ini atau di tempat
-              lain) dan mengapa hal itu tidak memenuhi kebutuhan Anda. Anda bisa mendapatkan jawaban yang lebih baik
-              saat memberikan penelitian.</p>
-          </mat-expansion-panel>
-        </mat-accordion>
-        <br>
-        <mat-accordion>
-          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Tuliskan kode bila perlu
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>Jika dibutuhkan, tuliskan kode yang dibutuhkan agar masalah anda dapat lebih dimengerti orang lain</p>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
-      <br>
-      <div class="blog__sidebar__tags">
+<div class="container-fluid">
 
-        <h1>Tag populer</h1>
-        <a href="#">CSS</a>
-        <a href="#">HTML</a>
-        <a href="#">PHP</a>
-        <a href="#">JavaScript</a>
-        <a href="#">C++</a>
-        <a href="#">NodeJS</a>
-        <a href="#">C</a>
-        <a href="#">C#</a>
-      </div>
-    </div>
-    <div class="col-md-9">
+  <nav-bar current="List Pertanyaan"></nav-bar>
+
+  <div id="mainbox">
+
+    <div *ngIf="!showRightBar else rightBar"></div>
+
+    <div id="listbox">
+      <!--showRightBar == true ? class="col-md-10"-->
+
+
       <div class="btn-group" style="float: right;">
-        <button (click)="tambah()">Ajukan Pertanyaan</button>
+        <button (click)="tambah()" style="color: black;" class="btn btn-outline-secondary">Ajukan
+          Pertanyaan</button>&nbsp;
         <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Custom.."
-            id="dropdownBasic1" ngbDropdownToggle>
+
+          <button ngbPopover="Filter list pertanyaan" triggers="mouseenter:mouseleave"
+          popoverTitle="Filter"  class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Filter"
+            id="dropdownBasic1" (click)="showFilters()">
             <i class="fa fa-filter" aria-hidden="true"></i>
           </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <button (click)="filter('_empty')" ngbDropdownItem>Tampilkan semua</button>
-            <button (click)="filter('fb')" ngbDropdownItem>Frontend dan Backend</button>
-            <button (click)="filter('f')" ngbDropdownItem>Frontend</button>
-            <button (click)="filter('b')" ngbDropdownItem>Backend</button>
-          </div>
+
         </div>
       </div>
       <h1>Daftar Pertanyaan</h1>
       <hr>
 
       <div class="card-pertanyaan">
+
         <div class="list-group" *ngIf="listQnA.length > 0 else qna_kosong" role="list">
-          <div class="list-group-item" *ngFor="let list of listQnA | slice: (crnPage - 1) * 5: (crnPage - 1) * 5 + 5">
+          <div class="list-group-item"
+            *ngFor="let list of listQnA | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
+
             <div class="btn-group" style="float: right; padding-right: 20px;" ngbDropdown>
+
               <div ngbDropdown class="d-inline-block">
                 <button class="btn" ngbDropdownToggle>
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -94,70 +51,177 @@
 
             <div class="card-body">
               <div class="row">
-                <div class="col-md-7">
-                  <a class="nav-link" (click)="buka(list.idQnA)">
-                    <h2 class="card-title" [innerHTML]="list.namaQnA"></h2>
+
+                <div class="col-md-1">
+
+                  <!-- start Button Respon Viewers -->
+                  <div class="button-aksi">
+
+                    <a *ngIf="!list.liked.includes(_id) else unlike" class="btn btn-ouline-secondary"
+                      (click)="like(list.idQnA)" data-toggle="tooltip" data-placement="left"
+                      title="{{list.liked.length}} kali disukai. Berikan pertanyaan ini like kamu">
+                      <i class="fa fa-thumbs-o-up fa-2x"></i><br>{{list.liked.length}}</a>
+
+                    <ng-template #unlike>
+
+                      <a class="btn btn-ouline-secondary" (click)="like(list.idQnA)" data-toggle="tooltip"
+                        data-placement="left" title="{{list.liked.length}} kali disukai. Kamu suka pertanyaan ini!">
+                        <i style="color: blue;" class="fa fa-thumbs-o-up fa-2x"></i><br>{{list.liked.length}} </a>
+
+                    </ng-template>
+
+                    <a class="btn btn-ouline-secondary" (click)="buka(list.idQnA)" data-toggle="tooltip"
+                      data-placement="left" title="{{list.responses}} total balasan. Buka pertanyaan untuk membalas">
+                      <i class="fa fa-commenting fa-2x"></i><br>{{list.responses}}</a>
+
+                    <a class="btn btn-ouline-secondary" (click)="buka(list.idQnA)" data-toggle="tooltip"
+                      data-placement="left" title="{{list.viewed.length}} kali dilihat.">
+                      <i class="fa fa-eye fa-2x"></i><br>{{list.viewed.length}}</a>
+                  </div>
+                  <!-- end button respon viewer -->
+
+                </div>
+
+                <div class="col-md-11" (click)="buka(list.idQnA)">
+                  <a class="nav-link">
+                    <p class="badge badge-pill badge-success answered-question" *ngIf="list.resolve_answer">Pertanyaan
+                      terjawab</p>
+                    <h2 class="card-title question-title" [innerHTML]="list.namaQnA"></h2>
+
                   </a>
-                  <p class="card-title" style="padding-left:10px;">{{list.originalPoster}} </p>
-                  <p class="card-title" *ngIf="list.resolve_answer" style="padding-left:10px; color: green;">Pertanyaan terjawab</p>
+                  <p class="card-title" style="padding-left:10px;">Main OP: {{list.originalPoster}}</p>
+                  <h5 class="time-info"><span *ngIf="list.lastEdited != null" data-toggle="tooltip"
+                      data-placement="left" title="Last edit: {{getDate(list.lastEdited)}}"
+                      class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}}</h5>
+
+
                   <div class="button-tag">
                     <a class="btn btn-sm btn-secondary mr-2" ngbPopover="Hallo ini JavaScript!"
                       triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
                     <a class="btn btn-sm btn-secondary mr-2" ngbPopover="Hallo ini JavaScript!"
                       triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#" role="button">JavaScript</a>
                   </div>
-                  <!-- start Button Respon Viewers -->
-                  <a *ngIf="!list.liked.includes(_id) else unlike" class="btn btn-ouline-secondary" (click)="like(list.idQnA)"
-                  data-toggle="tooltip" data-placement="left" title="Berikan forum ini like kamu">
-                  <i class="fa fa-thumbs-o-up fa-2x"></i> Disukai oleh {{list.liked.length}} orang </a>
 
-                <ng-template #unlike>
-                  
-                  <a class="btn btn-ouline-secondary" (click)="like(list.idQnA)"
-                  data-toggle="tooltip" data-placement="left" title="Kamu suka pertanyaan ini!">
-                  <i style="color: blue;" class="fa fa-thumbs-o-up fa-2x"></i>Disukai oleh {{list.liked.length}} orang</a>
 
-                </ng-template>
 
-                <a class="btn btn-ouline-secondary" (click)="buka(list.idQnA)" data-toggle="tooltip" data-placement="left"
-                  title="Buka forum untuk membalas">
-                  <i class="fa fa-commenting fa-2x"></i> {{list.responses}} Balasan</a>
-
-                    <a class="btn btn-ouline-secondary" (click)="buka(list.idQnA)" data-toggle="tooltip" data-placement="left"
-                      title="Lihat pertanyaan">
-                      <i class="fa fa-eye fa-2x"></i> Dilihat {{list.viewed.length}} kali</a>
-                  </div>
-                  
-                  <!-- end button respon viewer -->
                 </div>
 
               </div>
             </div>
+
+
+
           </div>
-          <nav aria-label="Page navigation example">
-            <div #pagination *ngIf="page.length > 1">
-              <h3 style="text-align: right;">
-                Page: <span *ngFor="let i of page">
-                  <a *ngIf="i != crnPage else disabled_link" style="cursor: pointer; color: orangered;"
-                    (click)="next_page(i)">{{i}}</a>
-                  <ng-template #disabled_link>{{i}}</ng-template>
-                  <a *ngIf="i != page.length">, </a>
-                </span>
-              </h3>
-            </div>
-          </nav>
         </div>
+        <nav aria-label="Page navigation example">
+          <div #pagination *ngIf="page.length > 1">
+            <h3 style="text-align: right;">
+              Page: <span *ngFor="let i of page">
+                <a *ngIf="i != crnPage else disabled_link" style="cursor: pointer; color: orangered;"
+                  (click)="next_page(i)">{{i}}</a>
+                <ng-template #disabled_link>{{i}}</ng-template>
+                <a *ngIf="i != page.length">, </a>
+              </span>
+            </h3>
+          </div>
+        </nav>
       </div>
+    </div>
+
+
+
+    <br>
+
+
+  </div>
+</div>
+<br>
+
+<ng-template #qna_kosong>
+  <span style="color: white; text-align: center; font-size: 200%;">
+    <p>Wah sepertinya belum ada pertanyaan nih, ayo kita mulai bertanya!
+      <br><br><button style="background-color: black;" (click)="tambah()" mat-button>
+        Ajukan Pertanyaan
+      </button></p>
+  </span>
+</ng-template>
+
+
+<ng-template #rightBar>
+
+  <div class="col-md-3">
+
+    <div class="blog__sidebar__tags">
+
+      <h4><b>Tampilkan</b></h4>
+
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title> Berdasarkan kategori </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div style="text-align: center;">
+            <button (click)="filter('_empty')" style="color: white;" class="btn btn-outline-secondary">Tampilkan
+              semua</button>&nbsp;
+            <button (click)="filter('fb')" style="color: white;" class="btn btn-outline-secondary">Frontend dan
+              Backend</button><br>
+            <button (click)="filter('f')" style="color: white;"
+              class="btn btn-outline-secondary">Frontend</button>&nbsp;
+            <button (click)="filter('b')" style="color: white;" class="btn btn-outline-secondary">Backend</button>
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+
       <br>
 
-      <ng-template #qna_kosong>
-        <span style="color: white; text-align: center; font-size: 200%;">
-          <p>Wah sepertinya belum ada pertanyaan nih, ayo kita mulai bertanya!
-            <br><br><button style="background-color: black;" (click)="tambah()" mat-button>
-              Ajukan Pertanyaan
-            </button></p>
-        </span>
-      </ng-template>
+
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title> Paginnation </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div style="text-align: center;">
+            <button style="color: white;" class="btn btn-outline-secondary" (click)="pagination(5)">5
+              Judul</button>&nbsp;
+            <button style="color: white;" class="btn btn-outline-secondary" (click)="pagination(10)">10
+              Judul</button>&nbsp;
+            <button style="color: white;" class="btn btn-outline-secondary" (click)="pagination(20)">20
+              Judul</button>
+
+            <p> Input Manual :</p>
+            <form (submit)="pagination(inputShow, true)" action="#">
+              <input type="number" [(ngModel)]="inputShow" style="width: 3vw; text-align: center;" name="show">
+              <button type="submit" [disabled]='inputShow < 1' style="color: white;"
+                class="btn btn-outline-secondary">Go</button>
+            </form>
+
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+
+      <br>
+
+
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Berdasarkan Tag
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>Maaf, fitur ini belum selesai!</p>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
+    <br>
+
   </div>
-  <br>
+</ng-template>

@@ -37,7 +37,7 @@ const routes: Routes = [
   { path: 'qna/tambah', component: TambahQuestion },
   { path: 'qna/buka/:id', component: BukaQnA },
   { path: 'qna/edit', component: EditQuestion },
-  { path: '', component: Forum }, //Main page
+  { path: '', component: HomeComponent }, //Main page
   { path: '**', component:  Err404} //error 404 page
 ];
 

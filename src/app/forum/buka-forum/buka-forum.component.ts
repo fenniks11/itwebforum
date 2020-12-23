@@ -17,6 +17,9 @@ import { TimeVerbose } from 'src/app/time.component';
     encapsulation: ViewEncapsulation.None
 })
 export class BukaForum implements AfterViewChecked {
+
+    root = {route: "/forum", name: "Forum"}
+
     id = "";
     _id = sessionStorage.getItem("_id");
     logged_in = !sessionStorage.getItem("_id") ? false : true;
@@ -27,13 +30,13 @@ export class BukaForum implements AfterViewChecked {
         idPesan: null
     }
     metadata = {
-        pesanUtama: "",
-        originalPoster: "",
-        idOP: "",
-        judul: "",
-        ProfilePicture: "",
-        lastEdited: null
-    }
+        // pesanUtama: "",
+        // originalPoster: "",
+        // idOP: "",
+        // judul: "",
+        // ProfilePicture: "",
+        // lastEdited: null
+    } as any;
     body = { arr: [], idPesan: "" }
     listPesan = [];
     metadataForum = [];
@@ -125,12 +128,14 @@ export class BukaForum implements AfterViewChecked {
             this.metadata.idOP = ph.idOP
             this.metadata.ProfilePicture = ph.ProfilePicture
             this.metadata.lastEdited = ph.lastEdited
+            this.metadata.createdDate = ph.createdDate
         }
 
         this.page = [1]
         for (let index = 1; index < Math.ceil(this.listPesan.length / this.show); index) {
             this.page.push(++index)
         }
+        if(this.crnPage > this.page.length) this.crnPage = this.page.length
 
         this.focusTo = parseInt(window.location.hash.replace("#", ""));
 

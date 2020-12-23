@@ -2,25 +2,30 @@ import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TimeVerbose } from 'src/app/time.component';
 
 
 
 @Component({
   selector: 'list-question',
-  templateUrl: './list-question.html'
+  templateUrl: './list-question.html',
+  styleUrls: ["list-question.css"]
 })
 export class ListQuestion {
   panelOpenState = false;
   @Input() public titleHeader: string;
 
+  showRightBar = false;
   listQnA = [];
   body = { idQnA: '' };
   _id = '';
   page = [1];
+  show = 5;
+  inputShow = 5;
   crnPage = 1;
   filterIn = ""
 
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private window: Window, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private window: Window, private route: ActivatedRoute, private timeVerbose: TimeVerbose) { }
 
   async ngOnInit() {
     window.localStorage.setItem("activeTitle", "Daftar Pertanyaan")
@@ -31,7 +36,7 @@ export class ListQuestion {
     var filter = this.route.snapshot.paramMap.get("show");
     if (filter) {
       for (let i = this.listQnA.length - 1; i >= 0; i--) {
-        if(this.listQnA[i].category != filter) this.listQnA.splice(i, 1)
+        if (this.listQnA[i].category != filter) this.listQnA.splice(i, 1)
       }
     }
 
@@ -39,9 +44,41 @@ export class ListQuestion {
 
 
     this.page = [1]
-    for (let index = 1; index < Math.ceil(this.listQnA.length / 5); index) {
+    for (let index = 1; index < Math.ceil(this.listQnA.length / this.show); index) {
       this.page.push(++index)
     }
+    if(this.crnPage > this.page.length) this.crnPage = this.page.length
+
+    
+  }
+
+  getDate(ms){
+    return this.timeVerbose.parseTime(ms).verbose[5]
+  }
+
+  pagination(show, manual = false){
+    this.show = show;
+    this.ngOnInit()
+    if(manual) return false;
+    
+  }
+
+
+  showFilters() {
+    console.log(this.showRightBar);
+    
+    if (this.showRightBar == true) {
+      this.showRightBar = false
+      document.querySelector("#mainbox").classList.remove("row")
+      document.querySelector("#listbox").classList.remove("col-md-9")
+    } 
+    else if (this.showRightBar == false){
+      this.showRightBar = true
+      document.querySelector("#mainbox").classList.add("row")
+      document.querySelector("#listbox").classList.add("col-md-9")
+    }
+
+
   }
 
   tambah() {
@@ -49,7 +86,7 @@ export class ListQuestion {
   }
 
   buka(id) {
-    this.router.navigate(['qna/buka/'+id]);
+    this.router.navigate(['qna/buka/' + id]);
   }
 
   edit(id) {
@@ -99,9 +136,9 @@ export class ListQuestion {
 
 
 /**
- * 
+ *
  * tambah CodeMirror untuk compilerun
- * 
+ *
  * tambah time_events dari serevya
  * tambah time properties dari serevya
  */

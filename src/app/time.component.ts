@@ -108,3 +108,7 @@ export class TimeVerbose {
         return time;
     }
 }
+
+/**
+ * MULAI FOKUS KE FRONTEND
+ */

@@ -1,5 +1,9 @@
-<div class="container">
+<div class="container-fluid">
+
+    <nav-bar [root]="root" current="{{metadata.judul}}"></nav-bar>
+
     <div class="row">
+        
         <div class="col-md-3">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a routerLink="home"><i class="fa fa-home"></i>&nbsp;Home</a></li>

@@ -1,0 +1,19 @@
+.button-aksi {
+    background-color: #e9ecef;
+    border-radius: 2px;
+    width: min-content;
+}
+
+.time-info {
+    color: rgb(99, 99, 99);
+    font-weight: lighter;
+    user-select: none;
+}
+
+.edited {
+    font-weight: bold;
+}
+
+.forum-title{
+    cursor: pointer;
+}

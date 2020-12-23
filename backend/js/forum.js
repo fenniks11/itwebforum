@@ -94,6 +94,7 @@ module.exports = {
             getResponses = await db.collection("pesan").find({ "idForum": docs[0].idForum }).toArray();
             docs[0]["responses"] = getResponses.length;
 
+            console.log(docs);
             res.json(docs);
 
         });
@@ -104,11 +105,11 @@ module.exports = {
             var id = parseInt(req.body.arr[0])
             var crnDate = new Date().getTime()
             db.collection("forum").update({ idForum: id }, {
-                idForum: id,
-                namaForum: req.body.arr[1],
-                idOP: req.body.arr[2],
-                pesanUtama: req.body.arr[3],
-                lastEdited: crnDate
+                $set:{
+                    lastEdited: crnDate,
+                    pesanUtama: req.body.arr[3],
+                    namaForum: req.body.arr[1],
+                }
             })
             res.status(200).send();
         });

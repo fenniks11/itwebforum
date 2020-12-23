@@ -43,6 +43,7 @@ import { Err404 } from './home/404err/404err.component';
 import { HighlightService } from './prism.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { TimeVerbose } from './time.component';
+import { NavBar } from './misc/nav-bar/nav-bar.component';
 
 
 
@@ -67,7 +68,8 @@ import { TimeVerbose } from './time.component';
     TambahQuestion,
     BukaQnA,
     EditQuestion,
-    Err404
+    Err404,
+    NavBar
 
   ],
   imports: [
