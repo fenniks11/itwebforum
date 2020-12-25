@@ -30,7 +30,7 @@ module.exports = {
     TambahAnswer: async function (app, db) {
         app.post("/api/qna/answer/tambahanswer", async (req, res) => {
             var answer = await db.collection("answer").find({ "idOP": req.body.arr[2] }).toArray()
-            if(answer.length) return res.sendStatus(403)
+            if (answer.length) return res.status(403).send()
             var id = parseInt(req.body.arr[0])
             var idp = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000));
             db.collection("answer").insertOne({
@@ -75,7 +75,8 @@ module.exports = {
                 });
             let getUser;
             getUser = await db.collection("user").find({ "user_id": docs[0].idOP }).toArray();
-            docs[0]["originalPoster"] = getUser[0].nama;
+            docs[0]["ProfilePicture"] = getUser[0].profile_picture;
+            docs[0]["originalPoster"] = getUser[0].username;
             res.json(docs);
         });
     },
@@ -84,11 +85,10 @@ module.exports = {
         app.post("/api/answer/edit", async (req, res) => {
             var crnDate = new Date().getTime()
             db.collection("answer").update({ idAnswer: req.body.arr[1] }, {
-                idQnA: parseInt(req.body.arr[0]),
-                idAnswer: req.body.arr[1],
-                isiAnswer: req.body.arr[2],
-                idOP: req.body.arr[3],
-                lastEdited: crnDate
+                $set: {
+                    lastEdited: crnDate,
+                    isiAnswer: req.body.arr[2]
+                }
             })
             res.status(200).send();
         });
@@ -122,7 +122,6 @@ module.exports = {
                 , vote = req.body.vote
                 , answer = await db.collection("answer").find({ "idAnswer": idAnswer }).project({ vote: 1, _id: 0 }).toArray()
 
-            if (idUser in answer[0].vote.list) return res.sendStatus(403)
 
             answer[0].vote.list[idUser] = { up: vote }
 
@@ -142,7 +141,7 @@ module.exports = {
             console.log(idUser in answer[0].vote.list);
             console.log(answer[0].vote.list);
             console.log(answer[0]);
-            res.sendStatus(200)
+            res.status(200).send()
 
 
         });
@@ -155,7 +154,7 @@ module.exports = {
                 , idUser = req.body.idUser
                 , answer = await db.collection("answer").find({ "idAnswer": idAnswer }).project({ vote: 1, _id: 0 }).toArray()
 
-            if (!(idUser in answer[0].vote.list)) return res.sendStatus(403)
+            if (!(idUser in answer[0].vote.list)) return res.status(403).send()
 
             delete answer[0].vote.list[idUser]
 
@@ -176,7 +175,7 @@ module.exports = {
             console.log(idUser in answer[0].vote.list);
             console.log(answer[0].vote.list);
             console.log(answer[0]);
-            res.sendStatus(200)
+            res.status(200).send()
 
 
         });

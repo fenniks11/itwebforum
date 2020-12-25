@@ -1,0 +1,99 @@
+<!-- MAIN -->
+<div *ngIf="logged_in else not_logged">
+    <h1 mat-dialog-title>Pilih jawaban ini sebagai yang paling benar?</h1>
+    <div mat-dialog-content>
+        <p>Kamu tidak dapat merubah pilihan kamu! Lanjutkan?</p>
+
+        <div class="container-fluid qna-dialog-c-mbody" id="{{selected.idAnswer}}">
+
+            <!-- top -->
+            <div class="qna-dialog-top-mbody">
+                <small *ngIf="selected.lastEdited != null" ngbPopover="{{verboseTime(selected.lastEdited)}}"
+                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                    class="qna-dialog-time-info qna-dialog-edited">(Edited)
+                </small>
+                <small class="qna-dialog-time-info">{{verboseTime(selected.createdDate)}}</small>
+            </div>
+            <!-- top end -->
+
+            <!-- main -->
+            <div class="row">
+
+
+
+                <!-- user info -->
+                <div class="col-md-1 qna-dialog-user-info">
+                    <img #img [src]="selected.ProfilePicture" class="qna-dialog-p-profile">
+                    <div class="qna-dialog-d-profile">
+                        <span class="card-title qna-dialog-n-profile">{{selected.originalPoster}}
+                        </span>
+                    </div>
+                </div>
+                <!-- user info end -->
+
+                <!-- main message -->
+                <div class="col-md-auto qna-dialog-outer-m-mbody">
+                    <p class="card-text" [innerHTML]="selected.isiAnswer" style="margin-top: 20px;"> </p>
+                </div>
+                <!-- main message end -->
+
+                <!-- vote info -->
+                <div class="col-md-1 qna-dialog-vote-info">
+
+                    <!-- upvote -->
+                    <p class="qna-dialog-vote-btn fa fa-3x">
+                        <span class="fa-chevron-up"
+                            *ngIf="!selected.vote.list[_id] || !selected.vote.list[_id].up else upvoted"></span>
+
+                        <ng-template #upvoted>
+                            <span class="fa-chevron-up" style="color: green;"></span>
+                        </ng-template>
+                    </p>
+                    <!-- upvote end -->
+
+                    <!-- score  -->
+                    <p class="vote-score fa-3x">{{selected.vote.score}} </p>
+                    <!-- score end -->
+
+                    <!-- downvote  -->
+                    <p class="qna-dialog-vote-btn fa fa-3x ">
+                        <span class="fa-chevron-down"
+                            *ngIf="!selected.vote.list[_id] || selected.vote.list[_id].up else downvoted"></span>
+
+                        <ng-template #downvoted>
+                            <span class="fa-chevron-down" style="color: red;"></span>
+                        </ng-template>
+                    </p>
+                    <!-- downvote end -->
+
+                </div>
+                <!-- vote info end -->
+
+            </div>
+        </div>
+
+        <!-- main end -->
+
+        <!-- bottom -->
+        <!-- bottom end -->
+
+    </div>
+
+
+</div>
+<div style="width: 100%; padding-top: 15px; text-align: end;">
+    <button mat-button (click)="batal()">Kembali</button>
+    <button mat-button mat-dialog-close="1">Pilih
+        jawaban ini</button>
+</div>
+
+
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        <div style="height: 20vmax;"></div>
+        <h1>Kamu harus login terlebih dahulu sebelum dapat mengedit jawaban ini!</h1>
+        <button (click)="batal()" mat-button>
+            Kembali
+        </button>
+    </div>
+</ng-template>

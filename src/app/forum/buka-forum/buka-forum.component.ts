@@ -51,7 +51,8 @@ export class BukaForum implements AfterViewChecked {
         private route: ActivatedRoute,
         private router: Router,
         private snackBar: MatSnackBar,
-        private clipboard: Clipboard, private highlightService: HighlightService,
+        private clipboard: Clipboard, 
+        private highlightService: HighlightService,
         private timeVerbose: TimeVerbose
     ) { }
 

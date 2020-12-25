@@ -2,7 +2,7 @@
 
   <nav-bar current="List Forum"></nav-bar>
 
-  <div class="row">
+  <div class="row container main-display">
 
     <div class="col-md-3">
       <div class="blog__sidebar__tags">
@@ -90,11 +90,11 @@
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                 </button>
 
-                <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
-                  <button type="button" class="btn btn-primary" ngbDropdownItem *ngIf="_id == list.idOP"
+                <div *ngIf="_id == list.idOP" ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
+                  <button type="button" class="btn btn-primary" ngbDropdownItem 
                     (click)="edit(list.idForum)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
-                  <a class="btn btn-danger" ngbDropdownItem *ngIf="_id == list.idOP"
+                  <a class="btn btn-danger" ngbDropdownItem 
                     (click)="alertHapus(list.idForum, list.namaForum)">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
                 </div>

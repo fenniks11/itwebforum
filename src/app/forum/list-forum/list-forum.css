@@ -17,3 +17,7 @@
 .forum-title{
     cursor: pointer;
 }
+
+.main-display{
+    margin: auto auto;
+}

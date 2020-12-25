@@ -2,7 +2,7 @@
 
   <nav-bar current="List Pertanyaan"></nav-bar>
 
-  <div id="mainbox">
+  <div id="mainbox" class="container">
 
     <div *ngIf="!showRightBar else rightBar"></div>
 
@@ -16,7 +16,7 @@
         <div ngbDropdown class="d-inline-block">
 
           <button ngbPopover="Filter list pertanyaan" triggers="mouseenter:mouseleave"
-          popoverTitle="Filter"  class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Filter"
+            class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Filter"
             id="dropdownBasic1" (click)="showFilters()">
             <i class="fa fa-filter" aria-hidden="true"></i>
           </button>
@@ -38,11 +38,11 @@
                 <button class="btn" ngbDropdownToggle>
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                 </button>
-                <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
-                  <button type="button" class="btn btn-primary" ngbDropdownItem *ngIf="_id == list.idOP"
+                <div *ngIf="_id == list.idOP" ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
+                  <button type="button" class="btn btn-primary" ngbDropdownItem 
                     (click)="edit(list.idQnA)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
-                  <a class="btn btn-danger" ngbDropdownItem *ngIf="_id == list.idOP"
+                  <a class="btn btn-danger" ngbDropdownItem
                     (click)="alertHapus(list.idQnA, list.namaQnA)">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
                 </div>
@@ -89,7 +89,7 @@
                     <h2 class="card-title question-title" [innerHTML]="list.namaQnA"></h2>
 
                   </a>
-                  <p class="card-title" style="padding-left:10px;">Main OP: {{list.originalPoster}}</p>
+                  <p class="card-title" style="padding-left:10px;">Penanya: {{list.originalPoster}}</p>
                   <h5 class="time-info"><span *ngIf="list.lastEdited != null" data-toggle="tooltip"
                       data-placement="left" title="Last edit: {{getDate(list.lastEdited)}}"
                       class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}}</h5>
@@ -220,6 +220,21 @@
           <p>Maaf, fitur ini belum selesai!</p>
         </mat-expansion-panel>
       </mat-accordion>
+
+      <br>
+
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Urutkan berdasarkan
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>Maaf, fitur ini belum selesai!</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+
     </div>
     <br>
 

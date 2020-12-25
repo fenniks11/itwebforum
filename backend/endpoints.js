@@ -51,4 +51,8 @@ module.exports = function (app, db) {
   answer.img_answer(app, db)
   answer.vote_answer(app, db)
   answer.unvote_answer(app, db)
+
+  let answer_comment = require("./js/answer_qna_comment")
+  answer_comment.ListComment(app, db)
+  answer_comment.TambahComment(app,db)
 };

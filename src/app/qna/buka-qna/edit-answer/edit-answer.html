@@ -1,0 +1,24 @@
+<!-- MAIN -->
+<div *ngIf="logged_in else not_logged">
+    <h1 mat-dialog-title>Edit Jawaban</h1>
+    <div mat-dialog-content>
+        <mat-label>Jawaban: </mat-label>
+        <editor name="editor" [init]="TinyMce" [(ngModel)]="jawaban" data="jawaban" id="editor">
+        </editor>
+    </div>
+    <div  style="width: 100%; padding-top: 15px; text-align: end;">
+        <button mat-button (click)="batal()">Kembali</button>
+        <button mat-button [disabled]="jawaban.length < 17 || jawaban == jawaban_ori" [mat-dialog-close]="jawaban">Edit</button>
+    </div>
+</div>
+
+
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        <div style="height: 20vmax;"></div>
+        <h1>Kamu harus login terlebih dahulu sebelum dapat mengedit jawaban ini!</h1>
+        <button (click)="batal()" mat-button>
+            Kembali
+        </button>
+    </div>
+</ng-template>

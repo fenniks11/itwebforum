@@ -13,6 +13,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { MatCardModule, MatCard } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -44,7 +45,9 @@ import { HighlightService } from './prism.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { TimeVerbose } from './time.component';
 import { NavBar } from './misc/nav-bar/nav-bar.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { EditAnswer } from './qna/buka-qna/edit-answer/edit-answer.component';
+import { PilihAnswer } from './qna/buka-qna/pilih-answer/pilih-answer.component';
 
 
 @NgModule({
@@ -69,8 +72,9 @@ import { NavBar } from './misc/nav-bar/nav-bar.component';
     BukaQnA,
     EditQuestion,
     Err404,
-    NavBar
-
+    NavBar,
+    EditAnswer,
+    PilihAnswer
   ],
   imports: [
     BrowserModule,
@@ -83,6 +87,8 @@ import { NavBar } from './misc/nav-bar/nav-bar.component';
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
+    MatDialogModule,
+    MatSidenavModule,
     FormsModule,
     HttpClientModule,
     MatGridListModule,
@@ -99,6 +105,10 @@ import { NavBar } from './misc/nav-bar/nav-bar.component';
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
+  ],
+  entryComponents:[
+    EditAnswer,
+    PilihAnswer
   ],
   providers: [{ provide: Window, useValue: window }, HighlightService, TimeVerbose],
   bootstrap: [AppComponent]

@@ -1,174 +1,344 @@
-<div class="container-fluid">
+<div id="qna-main-content" class="container-fluid">
 
     <nav-bar [root]="root" current="{{metadata.judul}}"></nav-bar>
 
-    <div class="row">
-        
-        <div class="col-md-3">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a routerLink="home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
-                <br>
-                <li class="list-group-item">Kategori</li>
-                <li class="list-group-item"><a href="#">Frontend</a></li>
-                <li class="list-group-item"><a href="#">Backend</a></li>
+    <div *ngIf="!notFound else err404">
 
-            </ul>
+        <!-- judul -->
+        <h1 id="main-title">{{metadata.judul}}</h1>
+        <h4 id="main-op">Penanya: {{metadata.originalPoster}}</h4>
+
+        <div class="badge badge-success" id="q-status" *ngIf="chosenAnswer">
+            Pertanyaan terjawab <br>
+            <button class="btn btn-outline-secondary qna-jump-button" (click)="toPickedAnswer()">Loncat ke
+                jawaban
+                terpilih</button>
         </div>
+        <!-- judul end -->
 
 
-        <div class="col-md-8">
-            <div *ngIf="!notFound else err404">
+        <!-- MAIN MESSAGE -->
+        <div id="main-msg">
+            <div class="c-mbody">
 
-                <!-- judul -->
-                <h2> <b>{{metadata.judul}}</b>
-                    <p *ngIf="chosenAnswer" style="color: green;">Pertanyaan terjawab</p>
-                </h2>
-                <hr>
+                <!-- top -->
+                <div class="qna-top-mbody">
+
+
+                    <small *ngIf="metadata.lastEdited != null" data-toggle="tooltip" data-placement="left"
+                        title="Last edit: {{verboseTime(metadata.lastEdited)}}"
+                        class="qna-time-info qna-edited">(Edited)
+                    </small>
+                    <small class="qna-time-info">{{verboseTime(metadata.createdDate)}}</small>
+                </div>
+                <!-- top end -->
+
+                <!-- main -->
                 <div class="row">
-                    <div class="col-md-1">
-                        <img #img [src]="metadata.ProfilePicture" width="50px" height="75px"
-                            style="border-radius: 10%;">
-                    </div>
-                    <div class="col-md-7">
-                        <small *ngIf="metadata.lastEdited != null"
-                            style="color: gray">{{verboseTime(metadata.lastEdited)}}</small>
-                        <h4 class="card-title">{{metadata.originalPoster}}</h4>
-                    </div>
-                </div>
-                <p class="card-text" [innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
-                <hr>
-                <!-- judul end -->
 
-                <!-- loop balasan -->
-                <br>
-                <h4>Balasan: {{listAnswer.length}}</h4>
-                <div #semua_balasan *ngIf="listAnswer.length > 0 else balasan_kosong">
-                    <mat-list role="list">
-                        <mat-list-item role="listitem"
-                            *ngFor="let list of listAnswer | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
-
-                            <div id="{{list.idAnswer}}" class="card-body" style="background-color: white;">
-                                <h5 class="card-title">{{list.originalPoster}} mengatakan: <span>Skor:
-                                        {{list.vote.score}}</span>
-                                    <p *ngIf="list.idAnswer == chosenAnswer" style="color: green;">Jawaban terpilih</p>
-                                </h5>
-                                <pre *ngIf="list.lastEdited != null"
-                                    style="float: right; font-size: 80%; color: gray;">Last Edited: {{verboseTime(list.lastEdited)}}</pre>
-                                <td>
-                                    <img #img [src]="list.ProfilePicture" width="50px" height="75px"
-                                        style="border-radius: 10%;">
-
-                                </td>
-                                <td>
-                                    <mat-card-header>
-                                        <span class="card-text" [innerHTML]="list.isiAnswer"></span>
-                                    </mat-card-header>
-                                </td>
-
-                                <!-- action bar -->
-                                <div style="font-size: 12px/smaller; color: rgb(0, 0, 0); text-align: end;">
-
-                                    <a (click)="copylink(list.idAnswer)" class="clickable"><u>Link</u></a>
-                                    <span class="seperator"> | </span>
-                                    <a (click)="commentBar(list.idAnswer)" class="clickable"><u>Komentar</u></a>
-                                    <span class="seperator"> | </span>
-
-                                    <span *ngIf="_id == list.idOP">
-                                        <a (click)="edit(list.idAnswer)" class="clickable"><u>Edit</u></a>
-                                        <span class="seperator"> | </span>
-                                        <a (click)="alertHapus(list.idAnswer)" class="clickable"><u>Hapus</u></a>
-                                        <span class="seperator"> | </span>
-                                    </span>
-
-                                    <span *ngIf="asker && !chosenAnswer">
-                                        <!-- jika user == yang bertanya && pertanyaan belum terjawab / terselesaikan -->
-                                        <a (click)="resolveAnswer(list.idAnswer)" class="clickable"><u>Pilih sebagai
-                                                jawaban</u></a>
-                                        <span class="seperator"> | </span>
-                                    </span>
-
-
-                                    <div *ngIf="!list.vote.list[_id] else voted">
-                                        <!-- jika belum vote -->
-                                        <a (click)="vote(list.idAnswer, 1)" class="clickable"><u>Upvote</u></a>
-                                        <span class="seperator"> | </span>
-                                        <a (click)="vote(list.idAnswer, 0)" class="clickable"><u>Downvote</u></a>
-                                    </div>
-
-                                    <ng-template #voted>
-
-                                        <a (click)="unvote(list.idAnswer)" class="clickable">
-                                            <u *ngIf="list.vote.list[_id].up else unDown">
-                                                Cabut upvote</u></a> <!-- Jika terupvote -->
-
-                                        <ng-template #unDown> <u>Cabut downvote</u> <!-- Jika terdownvote -->
-                                        </ng-template>
-
-                                    </ng-template>
-
-                                    <!-- action bar end -->
-                                </div>
-                            </div>
-                            <br>
-                        </mat-list-item>
-                    </mat-list>
-                </div>
-                <!-- loop balasan end -->
-
-                <!-- paging -->
-                <br>
-                <div>
-                    <table class="d-flex justify-content-end">
-                        <tr *ngIf="listAnswer.length > 0" style="font-size: 50%;">
-                            <h5 style="color: rgb(0, 0, 0); text-align: center;">Tampilkan
-                                <select [(ngModel)]="show" (change)="ngOnInit(id)" class="page-item">
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select></h5>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card-title">
-                    <div #pagination *ngIf="page.length > 1">
-                        <h1 style="text-align: right;">
-                            Page: <span *ngFor="let i of page"><a *ngIf="i != crnPage else disabled_link"
-                                    (click)="next_page(i)" class="clickable"><u>{{i}}</u></a>
-                                <ng-template #disabled_link>{{i}}</ng-template><a *ngIf="i != page.length">, </a>
+                    <!-- user info -->
+                    <div class="col-md-1 qna-user-info">
+                        <img #img [src]="metadata.ProfilePicture" class="qna-p-profile">
+                        <div class="qna-d-profile">
+                            <span class="card-title qna-n-profile">{{metadata.originalPoster}}
                             </span>
-                        </h1>
-                    </div>
-                </div>
-                <!-- paging end -->
-
-
-                <!-- input balasan -->
-                <div #input *ngIf="logged_in else not_logged">
-                    <div *ngIf="!hasAnswered else answered">
-
-                        <div *ngIf="Edit == false; else edit_msg">Tinggalkan jawaban </div>
-                        <ng-template #edit_msg> Edit Jawaban </ng-template>
-                        <div class="card">
-                            <div style=" width: 85%; margin: 0 auto;">
-                                Isi jawaban:*
-                                <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
-                                    id="editor">
-                                </editor>
-                            </div>
-                            <button *ngIf="!Edit else editButton" [disabled]="isiKirim.isi_answer.length < 12"
-                                (click)="kirim()">Kirim</button>
                         </div>
-
                     </div>
+                    <!-- user info end -->
+
+                    <!-- main message -->
+                    <div class="col-md-auto  qna-m-mbody">
+                        <p class="card-text" [innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
+                    </div>
+                    <!-- main message end -->
+
                 </div>
-                <!-- input balasan end -->
+                <!-- main end -->
+
+                <!-- bottom -->
+                <div class="qna-bottom-mbody">
+
+                </div>
 
             </div>
         </div>
+        <!-- MAIN MESSAGE END -->
+
+
+
+        <!-- loop balasan -->
+        <br>
+        <h4><i class="fa fa-commenting fa-2x"></i> Balasan: {{listAnswer.length}}</h4>
+
+
+        <div #semua_balasan *ngIf="listAnswer.length > 0 else balasan_kosong">
+
+            <mat-list role="list">
+                <mat-list-item role="listitem"
+                    *ngFor="let list of listAnswer | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
+
+                    <div class="container-fluid c-mbody" id="{{list.idAnswer}}">
+
+                        <!-- top -->
+                        <div class="qna-top-mbody">
+                            <small *ngIf="list.lastEdited != null" ngbPopover="{{verboseTime(list.lastEdited)}}"
+                                triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                class="qna-time-info qna-edited">(Edited)
+                            </small>
+                            <small class="qna-time-info">{{verboseTime(list.createdDate)}}</small>
+                        </div>
+                        <!-- top end -->
+
+                        <!-- main -->
+                        <div class="row">
+
+
+
+                            <!-- user info -->
+                            <div class="col-md-1 qna-user-info">
+                                <h3 class="qna-answer-id">#{{list.idAnswer}}</h3>
+                                <img #img [src]="list.ProfilePicture" class="qna-p-profile">
+                                <div class="qna-d-profile">
+                                    <span class="card-title qna-n-profile">{{list.originalPoster}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- user info end -->
+
+                            <!-- main message -->
+                            <div class="col-md-auto qna-outer-m-mbody">
+
+                                <div *ngIf="asker && !chosenAnswer" (click)="resolveAnswer(list.idAnswer)"
+                                    class="badge-secondary select-answer">
+                                    <i class="fa fa-check"></i>&nbsp;Pilih sebagai jawaban</div>
+
+                                <div *ngIf="list.idAnswer == chosenAnswer" class="badge-success " id="selected-answer">
+                                    <i class="fa fa-check"></i>&nbsp;Jawaban Terpilih</div>
+
+                                <div class=" qna-m-mbody ">
+
+                                    <p class="card-text" [innerHTML]="list.isiAnswer" style="margin-top: 20px;">
+                                    </p>
+
+                                </div>
+                            </div>
+                            <!-- main message end -->
+
+                            <!-- vote info -->
+                            <div class="col-md-1 qna-vote-info">
+
+                                <!-- upvote -->
+                                <p class="qna-vote-btn fa fa-3x">
+                                    <span (click)="vote(list.idAnswer, 1)" ngbPopover="Upvote jawaban ini"
+                                        triggers="mouseenter:mouseleave" class="fa-chevron-up"
+                                        *ngIf="!list.vote.list[_id] || !list.vote.list[_id].up else upvoted"></span>
+
+                                    <ng-template #upvoted>
+                                        <span (click)="unvote(list.idAnswer)" ngbPopover="Kamu meng-upvote jawaban ini"
+                                            triggers="mouseenter:mouseleave" class="fa-chevron-up"
+                                            style="color: green;"></span>
+                                    </ng-template>
+                                </p>
+                                <!-- upvote end -->
+
+                                <!-- score  -->
+                                <p class="vote-score fa-3x">{{list.vote.score}} </p>
+                                <!-- score end -->
+
+                                <!-- downvote  -->
+                                <p class="qna-vote-btn fa fa-3x ">
+                                    <span (click)="vote(list.idAnswer, 0)" ngbPopover="Downvote jawaban ini"
+                                        triggers="mouseenter:mouseleave" class="fa-chevron-down"
+                                        *ngIf="!list.vote.list[_id] || list.vote.list[_id].up else downvoted"></span>
+
+                                    <ng-template #downvoted>
+                                        <span (click)="unvote(list.idAnswer)" ngbPopover="Kamu men-downvote jawaban ini"
+                                            triggers="mouseenter:mouseleave" class="fa-chevron-down"
+                                            style="color: red;"></span>
+                                    </ng-template>
+                                </p>
+                                <!-- downvote end -->
+
+                            </div>
+                            <!-- vote info end -->
+
+                        </div>
+                        <!-- main end -->
+
+                        <!-- bottom -->
+                        <div class="qna-bottom-mbody">
+                            <span class="qna-bottom-outer-mbody">
+
+                                <a (click)="copylink(list.idAnswer)" ngbPopover="Salin link pesan ini"
+                                    triggers="mouseenter:mouseleave" class="qna-clickable">
+                                    <i class="fa fa-link fa-lg"></i></a>
+
+                                <span class="qna-seperator"> | </span>
+
+                                <a (click)="commentBar(list.idAnswer)" ngbPopover="Buka bar komentar jawaban ini"
+                                    triggers="mouseenter:mouseleave" class="qna-clickable">
+                                    <i class="fa fa-comments-o fa-lg"></i></a>
+
+                                <span *ngIf="_id == list.idOP">
+
+                                    <span class="qna-seperator"> | </span>
+
+                                    <a (click)="edit(list.idAnswer)" ngbPopover="Edit jawaban"
+                                        triggers="mouseenter:mouseleave" class="qna-clickable">
+                                        <i class="fa fa-edit fa-lg"></i></a>
+
+
+                                    <span class="qna-seperator"> | </span>
+                                    <a (click)="alertHapus(list.idAnswer)" ngbPopover="Hapus jawaban"
+                                    triggers="mouseenter:mouseleave" *ngIf="list.idAnswer != chosenAnswer"
+                                        class="qna-clickable"><i class="fa fa-trash-o fa-lg"></i></a>
+
+                                </span>
+
+                            </span>
+
+
+
+
+
+                        </div>
+                        <!-- bottom end -->
+
+                    </div>
+
+                    <hr>
+
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <!-- loop balasan end -->
+
+        <!-- paging -->
+        <br>
+        <div>
+            <table class="d-flex justify-content-end">
+                <tr *ngIf="listAnswer.length > 0" style="font-size: 50%;">
+                    <h5 style="color: rgb(0, 0, 0); text-align: center;">Tampilkan
+                        <select [(ngModel)]="show" (change)="ngOnInit(id)" class="page-item">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select></h5>
+                </tr>
+            </table>
+        </div>
+        <div class="card-title">
+            <div #pagination *ngIf="page.length > 1">
+                <h1 style="text-align: right;">
+                    Page: <span *ngFor="let i of page"><a *ngIf="i != crnPage else disabled_link" (click)="next_page(i)"
+                            class="qna-clickable"><u>{{i}}</u></a>
+                        <ng-template #disabled_link>{{i}}</ng-template><a *ngIf="i != page.length">, </a>
+                    </span>
+                </h1>
+            </div>
+        </div>
+        <!-- paging end -->
+
+
+        <!-- input balasan -->
+        <div #input *ngIf="logged_in else not_logged">
+            <div *ngIf="!hasAnswered else answered">
+
+                <div>Berikan jawaban </div>
+                <div class="card">
+                    <div style=" width: 85%; margin: 0 auto;">
+                        Isi jawaban:*
+                        <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
+                            id="editor">
+                        </editor>
+                    </div>
+                    <button [disabled]="isiKirim.isi_answer.length < 12" (click)="kirim()">Kirim</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- input balasan end -->
+
     </div>
+
 </div>
+
+
+
+
+<!-- komentar sidebar -->
+<div id="comment-bar-overlay" (click)="commentBar(0)" class="sidenav"></div>
+
+
+<div id="comment-bar" class="sidenav">
+    <!-- top  -->
+    <div class="row">
+
+        <div class="col-md-11">
+            <p id="comment-answer-id">Komentar jawaban #{{komentar.idAnswer}}</p>
+        </div>
+
+        <div class="col-md-1">
+            <p triggers="mouseenter:mouseleave" ngbPopover="Tutup bar komentar." (click)="commentBar(0)"
+                class="closebtn">
+                &times;</p>
+        </div>
+
+
+
+    </div>
+
+    <!-- middle  -->
+
+    <div *ngIf="listKomentar.length else noComment" id="comment-bar-loop">
+        <!-- loop start  -->
+
+        <mat-list role="list">
+            <mat-list-item role="listitem" *ngFor="let list of listKomentar">
+
+                <hr>
+
+                <div class="row">
+
+                    <div class="col-md-2 qna-c-user-info">
+
+                        <img #img [src]="list.ProfilePicture" class="qna-c-p-profile">
+                        <div class="qna-c-d-profile">
+                            <h3>{{list.originalPoster}}</h3>
+                        </div>
+                    </div>
+
+                    <div class="col-md-auto">
+                        <p class="card-text" [innerHTML]="list.isiComment"></p>
+                    </div>
+
+                </div>
+
+            </mat-list-item>
+        </mat-list>
+
+        <!-- loop end  -->
+    </div>
+
+    <!-- bottom  -->
+    <div id="comment-input">
+        <form (submit)="comment()" action="#">
+            <mat-form-field id="comment">
+                <input matInput type="text" placeholder="Komentar..." [(ngModel)]="komentar.isiComment" name="comment">
+            </mat-form-field>
+
+            <button type="submit" [disabled]='komentar.isiComment.length < 1' class="btn btn-outline-secondary"
+                style="color: white;">Kirim</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- komentar end sidebar -->
+
+
 
 
 
@@ -188,15 +358,20 @@
 </ng-template>
 
 
-<ng-template #editButton>
-    <button [disabled]="isiKirim.isi_answer.length < 12" (click)="confirm_edit()">Edit</button>
-</ng-template>
 
 
 <ng-template #balasan_kosong>
     <p class="text-center">
-        Wah belum ada yang balas nih. Jadilah orang yang pertama untuk membalas pertanyaan ini!
+        Wah belum ada yang jawab nih. Jadilah orang yang pertama untuk menjawab pertanyaan ini!
     </p>
+</ng-template>
+
+<ng-template #noComment>
+    <div id="noComment">
+        <p class="text-center">
+            Wah belum ada yang komentar nih. Jadilah orang yang pertama untuk mengkomentari jawaban ini!
+        </p>
+    </div>
 </ng-template>
 
 
@@ -209,7 +384,7 @@
 
 <ng-template #answered>
     <h4 class="card-text" style="text-align: center">
-        Kamu sudah menjawab pertanyaan ini
+        Kamu sudah menjawab pertanyaan ini <br>
         <button (click)="focus(hasAnswered)" mat-raised-button>Lihat jawaban saya</button>
     </h4>
 </ng-template>

@@ -5,6 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatDialog } from '@angular/material/dialog';
 import { HighlightService } from 'src/app/prism.component';
+import { TimeVerbose } from 'src/app/time.component';
+import { EditAnswer } from './edit-answer/edit-answer.component';
+import { PilihAnswer } from './pilih-answer/pilih-answer.component';
 
 
 
@@ -16,7 +19,7 @@ import { HighlightService } from 'src/app/prism.component';
 })
 export class BukaQnA implements AfterViewChecked {
 
-    root = {route: "/qna", name: "Question N Answer"}
+    root = { route: "/qna", name: "Question N Answer" }
 
     id = "";
     _id = sessionStorage.getItem("_id");
@@ -35,6 +38,13 @@ export class BukaQnA implements AfterViewChecked {
         // ProfilePicture: "",
         // lastEdited: null
     } as any;
+    komentar = {
+        status: false,
+        idOP: "",
+        idAnswer: "",
+        isiComment: ""
+    }
+    listKomentar = [] as any;
     body = { arr: [], idAnswer: "" }
     listAnswer = [];
     metadataQnA = [];
@@ -42,12 +52,20 @@ export class BukaQnA implements AfterViewChecked {
     crnPage = 1;
     notFound = 0;
     focusTo = 0;
-    Edit = false;
     asker = false;
     hasAnswered = 0;
     chosenAnswer = 0;
     answer_date = 0;
-    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private clipboard: Clipboard, private highlightService: HighlightService) { }
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private router: Router,
+        private snackBar: MatSnackBar,
+        private clipboard: Clipboard,
+        private highlightService: HighlightService,
+        private timeVerbose: TimeVerbose,
+        public dialog: MatDialog
+    ) { }
 
     public TinyMce = {
         height: 500,
@@ -95,16 +113,16 @@ export class BukaQnA implements AfterViewChecked {
 
 
     ngAfterViewChecked() {
-        this.highlightService.start((toCompiler) => {
-            toCompiler.newTab ?
-                window.open(`${window.location.protocol}//${window.location.host}/compilerun;lang=${toCompiler.lang};code=${toCompiler.code}`) :
-                this.router.navigate(["compilerun", { lang: toCompiler.lang, code: toCompiler.code }])
-        });
+        // this.highlightService.start((toCompiler) => {
+        //     toCompiler.newTab ?
+        //         window.open(`${window.location.protocol}//${window.location.host}/compilerun;lang=${toCompiler.lang};code=${toCompiler.code}`) :
+        //         this.router.navigate(["compilerun", { lang: toCompiler.lang, code: toCompiler.code }])
+        // });
 
-        console.clear()
+        // console.clear()
     }
 
-    async ngOnInit(id) {
+    async ngOnInit(id, reFocus = true) {
 
         if (!id || this.id.length < 1) {
             this.id = this.route.snapshot.paramMap.get("id");
@@ -128,6 +146,7 @@ export class BukaQnA implements AfterViewChecked {
             this.metadata.lastEdited = ph.lastEdited
             this.chosenAnswer = ph.resolve_answer
             this.answer_date = ph.resolved_date
+            this.metadata.createdDate = ph.createdDate
             if (ph.idOP == this._id) this.asker = true;
         }
 
@@ -136,14 +155,14 @@ export class BukaQnA implements AfterViewChecked {
         for (let index = 1; index < Math.ceil(this.listAnswer.length / this.show); index) {
             this.page.push(++index)
         }
-        if(this.crnPage > this.page.length) this.crnPage = this.page.length
+        if (this.crnPage > this.page.length) this.crnPage = this.page.length
 
         for (let v of this.listAnswer) if (v.idOP == this._id) this.hasAnswered = v.idAnswer;
 
         this.focusTo = parseInt(window.location.hash.replace("#", ""));
 
 
-        if (this.focusTo) this.focus(this.focusTo)
+        if (this.focusTo && reFocus) this.focus(this.focusTo)
     }
 
     focus(focusTo) {
@@ -190,23 +209,26 @@ export class BukaQnA implements AfterViewChecked {
             .toPromise();
         this.ngOnInit(this.id);
     }
+
     async edit(id) {
         this.body.idAnswer = id;
         var temp = await this.http
             .post('http://localhost:3000/api/answer/metadata', this.body)
             .toPromise() as any[];
-        for (let ph of temp) {
-            this.isiKirim.isi_answer = ph.isiAnswer
-            this.isiKirim.id_op = ph.idOP
-            this.isiKirim.idAnswer = ph.idAnswer
-        }
-        this.Edit = true;
-        this.ngOnInit(this.id);
-        window.location.hash = `#editor`
+
+        const dialogRef = this.dialog.open(EditAnswer, {
+            width: '80%',
+            data: { jawaban: temp[0].isiAnswer }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result) return;
+            this.confirm_edit(temp[0].idAnswer, result, temp[0].idOP)
+        });
     }
 
-    async confirm_edit() {
-        this.body.arr = [this.id, this.isiKirim.idAnswer, this.isiKirim.isi_answer, this.isiKirim.id_op]
+    async confirm_edit(idAnswer, isiAnswer, idOP) {
+        this.body.arr = [this.id, idAnswer, isiAnswer, idOP]
 
         await this.http
             .post('http://localhost:3000/api/answer/edit', this.body)
@@ -214,7 +236,6 @@ export class BukaQnA implements AfterViewChecked {
         this.isiKirim.isi_answer = "";
         this.isiKirim.id_op = "";
         this.isiKirim.idAnswer = null;
-        this.Edit = false;
         this.ngOnInit(this.id)
     }
 
@@ -223,14 +244,14 @@ export class BukaQnA implements AfterViewChecked {
     }
 
     alertHapus(id) {
-        this.snackBar.open(`Hapus answer?`, "Hapus", { duration: 5000 })
+        this.snackBar.open(`Hapus jawaban ini?`, "Hapus", { duration: 5000 })
             .onAction().subscribe(() => {
                 this.hapus(id)
             });
     }
 
     verboseTime(time) {
-        return new Date(time).toUTCString()
+        return this.timeVerbose.parseTime(time).verbose[5]
     }
 
     back() {
@@ -244,29 +265,81 @@ export class BukaQnA implements AfterViewChecked {
         this.clipboard.copy(link)
     }
 
-    commentBar(id) {
+
+
+
+    async commentBar(id, refresh = false) {
+        if (!this.komentar.status || refresh) { /**jika komentar tertutup */
+            this.komentar.status = true
+            this.listKomentar = [] as any;
+            document.getElementById(`comment-bar-overlay`).style.width = "100%"
+            document.getElementById(`comment-bar`).style.width = "500px"
+            this.komentar.idAnswer = id;
+            try { this.listKomentar = (await this.http.post('http://localhost:3000/api/qna/answer/comment/list', { idAnswer: id }).toPromise()) as any[]; }
+            catch (err) { }
+            finally{console.log(this.listKomentar);
+            }
+
+        }
+        else {
+            this.komentar.status = false
+            this.komentar.isiComment = ""
+            document.getElementById(`comment-bar-overlay`).style.width = "0%"
+            document.getElementById(`comment-bar`).style.width = "0px"
+
+
+        }
 
     }
 
+
+    async comment(){
+        this.body.arr = [this.komentar.idAnswer, this.komentar.isiComment, this._id]
+        await this.http.post("http://localhost:3000/api/qna/answer/comment/tambahcomment", this.body).toPromise();
+        this.komentar.isiComment = ""
+        this.commentBar(this.komentar.idAnswer, true)
+    }
+
+
     async vote(id, vote) {
+
         var body = { idAnswer: id, idUser: this._id, vote: vote };
         (await this.http.post("http://localhost:3000/api/qna/answer/vote", body).toPromise()) as any[];
-        window.location.reload()
+        this.ngOnInit(this.id, false)
+
     }
 
     async unvote(id) {
         var body = { idAnswer: id, idUser: this._id };
         (await this.http.post("http://localhost:3000/api/qna/answer/unvote", body).toPromise()) as any[];
-        window.location.reload()
+        this.ngOnInit(this.id, false)
     }
 
     async resolveAnswer(id) {
-        this.snackBar.open(`Kamu tidak bisa mencabut jawaban yang terpilih, yakin ini jawabannya?`, "Pilih sebagai jawaban", { duration: 5000 })
-            .onAction().subscribe(async () => {
-                var body = { idAnswer: id, user_id: this._id, idQnA: this.id };
-                (await this.http.post("http://localhost:3000/api/qna/resolve", body).toPromise()) as any[];
-                window.location.reload()
-            });
+        this.body.idAnswer = id;
+
+        var temp = await this.http
+            .post('http://localhost:3000/api/answer/metadata', this.body)
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(PilihAnswer, {
+            width: '80%',
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            var body = { idAnswer: id, user_id: this._id, idQnA: this.id };
+            (await this.http.post("http://localhost:3000/api/qna/resolve", body).toPromise()) as any[];
+            window.location.reload()
+        });
+
+    }
+
+    toPickedAnswer() {
+        this.focus(this.chosenAnswer)
     }
 
     toLogin() { this.router.navigate(['login']) }
