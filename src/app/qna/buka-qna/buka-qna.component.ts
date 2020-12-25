@@ -113,13 +113,13 @@ export class BukaQnA implements AfterViewChecked {
 
 
     ngAfterViewChecked() {
-        // this.highlightService.start((toCompiler) => {
-        //     toCompiler.newTab ?
-        //         window.open(`${window.location.protocol}//${window.location.host}/compilerun;lang=${toCompiler.lang};code=${toCompiler.code}`) :
-        //         this.router.navigate(["compilerun", { lang: toCompiler.lang, code: toCompiler.code }])
-        // });
+        this.highlightService.start((toCompiler) => {
+            toCompiler.newTab ?
+                window.open(`${window.location.protocol}//${window.location.host}/compilerun;lang=${toCompiler.lang};code=${toCompiler.code}`) :
+                this.router.navigate(["compilerun", { lang: toCompiler.lang, code: toCompiler.code }])
+        });
 
-        // console.clear()
+        console.clear()
     }
 
     async ngOnInit(id, reFocus = true) {
