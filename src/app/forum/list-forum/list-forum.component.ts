@@ -16,14 +16,19 @@ export class ListForum {
   panelOpenState = false;
   @Input() public titleHeader: string;
 
+  showRightBar = false;
   listForum = [];
   body = { idForum: '' };
   _id = '';
+  show = 5;
+  inputShow = 5;
   page = [1];
   crnPage = 1;
+  
   constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private timeVerbose: TimeVerbose) { }
   
   async ngOnInit() {
+
     window.localStorage.setItem("activeTitle", "Daftar Forum")
     this.listForum = (await this.http
       .get('http://localhost:3000/api/forum/list')
@@ -32,10 +37,35 @@ export class ListForum {
     this._id = sessionStorage.getItem('_id') == null ? "0" : sessionStorage.getItem('_id');
 
     this.page = [1]
-    for (let index = 1; index < Math.ceil(this.listForum.length / 5); index) {
+    for (let index = 1; index < Math.ceil(this.listForum.length / this.show); index) {
       this.page.push(++index)
     }
+    if(this.crnPage > this.page.length) this.crnPage = this.page.length
     
+  }
+
+  pagination(show, manual = false){
+    this.show = show;
+    this.ngOnInit()
+    if(manual) return false;
+    
+  }
+
+  showFilters() {
+    console.log(this.showRightBar);
+    
+    if (this.showRightBar == true) {
+      this.showRightBar = false
+      document.querySelector("#mainbox").classList.remove("row")
+      document.querySelector("#listbox").classList.remove("col-md-9")
+    } 
+    else if (this.showRightBar == false){
+      this.showRightBar = true
+      document.querySelector("#mainbox").classList.add("row")
+      document.querySelector("#listbox").classList.add("col-md-9")
+    }
+
+
   }
 
   getDate(ms){

@@ -23,10 +23,8 @@
 
                 <!-- top -->
                 <div class="qna-top-mbody">
-
-
-                    <small *ngIf="metadata.lastEdited != null" data-toggle="tooltip" data-placement="left"
-                        title="Last edit: {{verboseTime(metadata.lastEdited)}}"
+                    <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
+                        triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
                         class="qna-time-info qna-edited">(Edited)
                     </small>
                     <small class="qna-time-info">{{verboseTime(metadata.createdDate)}}</small>
@@ -169,7 +167,7 @@
                         <div class="qna-bottom-mbody">
                             <span class="qna-bottom-outer-mbody">
 
-                                <a (click)="copylink(list.idAnswer)" ngbPopover="Salin link pesan ini"
+                                <a (click)="copylink(list.idAnswer)" ngbPopover="Salin link jawaban ini"
                                     triggers="mouseenter:mouseleave" class="qna-clickable">
                                     <i class="fa fa-link fa-lg"></i></a>
 
@@ -188,9 +186,9 @@
                                         <i class="fa fa-edit fa-lg"></i></a>
 
 
-                                    <span class="qna-seperator"> | </span>
+                                    <span *ngIf="list.idAnswer != chosenAnswer" class="qna-seperator"> | </span>
                                     <a (click)="alertHapus(list.idAnswer)" ngbPopover="Hapus jawaban"
-                                    triggers="mouseenter:mouseleave" *ngIf="list.idAnswer != chosenAnswer"
+                                        triggers="mouseenter:mouseleave" *ngIf="list.idAnswer != chosenAnswer"
                                         class="qna-clickable"><i class="fa fa-trash-o fa-lg"></i></a>
 
                                 </span>

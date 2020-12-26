@@ -15,9 +15,8 @@
           Pertanyaan</button>&nbsp;
         <div ngbDropdown class="d-inline-block">
 
-          <button ngbPopover="Filter list pertanyaan" triggers="mouseenter:mouseleave"
-            class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Filter"
-            id="dropdownBasic1" (click)="showFilters()">
+          <button ngbPopover="Filter list pertanyaan" triggers="mouseenter:mouseleave" class="btn btn-outline-secondary"
+            data-toggle="tooltip" data-placement="bottom" title="Filter" id="dropdownBasic1" (click)="showFilters()">
             <i class="fa fa-filter" aria-hidden="true"></i>
           </button>
 
@@ -32,18 +31,17 @@
           <div class="list-group-item"
             *ngFor="let list of listQnA | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
 
-            <div class="btn-group" style="float: right; padding-right: 20px;" ngbDropdown>
+            <div *ngIf="_id == list.idOP"  class="btn-group" style="float: right; padding-right: 20px;" ngbDropdown>
 
               <div ngbDropdown class="d-inline-block">
                 <button class="btn" ngbDropdownToggle>
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                 </button>
-                <div *ngIf="_id == list.idOP" ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
-                  <button type="button" class="btn btn-primary" ngbDropdownItem 
-                    (click)="edit(list.idQnA)">
+                <div *ngIf="_id == list.idOP" ngbDropdownMenu aria-labelledby="navbarDropdown2"
+                  class="dropdown-menu dropdown-menu-left">
+                  <button type="button" class="btn btn-primary" ngbDropdownItem (click)="edit(list.idQnA)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
-                  <a class="btn btn-danger" ngbDropdownItem
-                    (click)="alertHapus(list.idQnA, list.namaQnA)">
+                  <a class="btn btn-danger" ngbDropdownItem (click)="alertHapus(list.idQnA, list.namaQnA)">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
                 </div>
               </div>
@@ -89,10 +87,11 @@
                     <h2 class="card-title question-title" [innerHTML]="list.namaQnA"></h2>
 
                   </a>
-                  <p class="card-title" style="padding-left:10px;">Penanya: {{list.originalPoster}}</p>
-                  <h5 class="time-info"><span *ngIf="list.lastEdited != null" data-toggle="tooltip"
-                      data-placement="left" title="Last edit: {{getDate(list.lastEdited)}}"
-                      class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}}</h5>
+                  <p class="card-title" style="padding-left:10px;">Original Poster: {{list.originalPoster}}</p>
+
+                  <h5 class="time-info"><span *ngIf="list.lastEdited != null" ngbPopover="{{getDate(list.lastEdited)}}"
+                      triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                      class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}} </h5>
 
 
                   <div class="button-tag">

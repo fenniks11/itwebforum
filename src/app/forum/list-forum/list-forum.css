@@ -14,10 +14,10 @@
     font-weight: bold;
 }
 
-.forum-title{
+.forum-title {
     cursor: pointer;
 }
 
-.main-display{
-    margin: auto auto;
+#mainbox{
+    margin: auto auto
 }

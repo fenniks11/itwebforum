@@ -17,8 +17,11 @@
             <!-- top -->
             <div class="top-mbody">
 
-                <small *ngIf="metadata.lastEdited != null" data-toggle="tooltip" data-placement="left"
-                    title="Last edit: {{verboseTime(metadata.lastEdited)}}" class="time-info edited">(Edited) </small>
+                    <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
+                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                    class="time-info edited">(Edited)
+                </small>
+
                 <small class="time-info">{{verboseTime(metadata.createdDate)}}</small>
             </div>
             <!-- top end -->
@@ -74,8 +77,11 @@
                         <!-- top -->
                         <div class="top-mbody">
 
-                            <small *ngIf="list.lastEdited != null" data-toggle="tooltip" data-placement="left"
-                                title="{{verboseTime(list.lastEdited)}}" class="time-info edited">(Edited) </small>
+                            <small *ngIf="list.lastEdited != null" ngbPopover="{{verboseTime(list.lastEdited)}}"
+                                triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                class="time-info edited">(Edited)
+                            </small>
+
                             <small class="time-info">{{verboseTime(list.createdDate)}}</small>
                         </div>
                         <!-- top end -->
@@ -105,20 +111,33 @@
                         <!-- bottom -->
                         <div class="bottom-mbody">
 
-                            <a (click)="copylink(list.idPesan)"
-                                class="clickable"><u>Link</u></a>
+                            <a (click)="copylink(list.idPesan)" ngbPopover="Salin link pesan ini"
+                                triggers="mouseenter:mouseleave" class="clickable">
+                                <i class="fa fa-link fa-lg"></i></a>
+
                             <span class="seperator"> | </span>
+
                             <span *ngIf="_id == list.idOP else bukanOP">
-                                <a (click)="edit(list.idPesan)"
-                                    class="clickable"><u>Edit</u></a>
-                                <span class="seperator"> |
-                                </span>
-                                <a (click)="alertHapus(list.idPesan)"
-                                    class="clickable"><u>Hapus</u></a>
+
+
+                                <a (click)="edit(list.idPesan)" ngbPopover="Edit pesan" triggers="mouseenter:mouseleave"
+                                    class="clickable">
+                                    <i class="fa fa-edit fa-lg"></i></a>
+
+                                <span class="seperator"> | </span>
+
+                                <a (click)="alertHapus(list.idAnswer)" ngbPopover="Hapus　pesan"
+                                    triggers="mouseenter:mouseleave" class="clickable"><i
+                                        class="fa fa-trash-o fa-lg"></i></a>
+
                             </span>
+
                             <ng-template #bukanOP>
-                                <a (click)="balas(list.idPesan)"
-                                    class="clickable"><u>Balas</u></a>
+
+                                <a (click)="balas(list.idPesan)" ngbPopover="Balas pesan ini"
+                                    triggers="mouseenter:mouseleave" class="clickable">
+                                    <i class="fa fa-comment-o fa-lg"></i></a>
+
                             </ng-template>
 
                         </div>
@@ -162,7 +181,7 @@
 
         <div #input *ngIf="logged_in else not_logged">
             <div *ngIf="Edit == false; else edit_msg">Tinggalkan balasan </div>
-            <ng-template #edit_msg> Edit Jawaban </ng-template>
+            <ng-template #edit_msg> Edit Pesan </ng-template>
             <div class="card">
                 <div style=" width: 85%; margin: 0 auto;">
                     Isi pesan:*
