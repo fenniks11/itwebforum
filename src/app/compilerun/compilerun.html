@@ -7,7 +7,7 @@
         </div>
 
         <div style="background-color: white; text-align: center;">
-            <label for="lang">Pilih bahasa program:</label>
+            <br><label for="lang">Pilih bahasa program:</label>
             &nbsp;
             <select [(ngModel)]="lang" (change)="languageChange()" name="lang" id="lang">
                 <option value="html">HTML / PHP / CSS / JS</option>
@@ -18,15 +18,16 @@
                 <option value="jv">Java</option>
             </select>
             <br>
-
-            <button (click)="copy()">Salin link</button> <label for="code">Kode program: </label>
+            <label for="code">Kode program:</label>
+            <div style="text-align: right; padding-bottom: 5px;">
+            <button (click)="copy()">Salin link</button> 
+            </div>
 
             <div id="editor-container">
                 <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="code">
                 </ngx-monaco-editor>
             </div>
-
-            <br>
+            
             <button (click)="compile()">Compile</button>
             <br><br>
             <label for="result">Hasil kode ({{resultType}}): </label><br>
