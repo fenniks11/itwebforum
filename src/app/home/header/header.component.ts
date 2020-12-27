@@ -4,19 +4,26 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'header-forum',
-  templateUrl: './header.html'
+  selector: 'header-app',
+  templateUrl: './header.html',
+  styleUrls: ['header.css']
 })
-export class HeaderForum {
+export class HeaderApp {
   @Input() public titleHeader: string;
   constructor(private router: Router, private snackBar: MatSnackBar) { };
 
   login = false;
   keywords = "" as string;
   parent = "forum" //default parent
+  smallerWidth = false;
 
   async ngOnInit() {
     this.login = !sessionStorage.getItem("_id") ? false : true
+    this.onResize(0)
+  }
+
+  onResize(event){
+    this.smallerWidth = window.screen.width > 610 ?  false : true;        
   }
 
   async update() {
@@ -41,7 +48,7 @@ export class HeaderForum {
   }
 
   cari() {
-    if (this.keywords.length < 3) return;
+    if (this.keywords.length < 3) return this.router.navigate(['search']);
     this.router.navigate(['search', { keywords: this.keywords }])
   }
 

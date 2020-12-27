@@ -26,99 +26,103 @@
             <h1>Daftar Forum</h1>
             <hr>
 
-            <div class="card-forum">
+            <div class="list-forum">
 
                 <div class="list-group" *ngIf="listForum.length > 0 else forum_kosong" role="list">
                     <div class="list-group-item"
                         *ngFor="let list of listForum | slice: (crnPage - 1) * show: (crnPage - 1) * show + show">
+                        <div class="card-forum">
 
-                        <div *ngIf="_id == list.idOP"  class="btn-group" style="float: right; padding-right: 20px;" ngbDropdown>
+                            <div *ngIf="_id == list.idOP" class="btn-group" style="float: right; padding-right: 20px;"
+                                ngbDropdown>
 
-                            <div ngbDropdown class="d-inline-block">
-                                <button class="btn" ngbDropdownToggle>
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                </button>
-                                <div *ngIf="_id == list.idOP" ngbDropdownMenu aria-labelledby="navbarDropdown2"
-                                    class="dropdown-menu dropdown-menu-left">
-                                    <button type="button" class="btn btn-primary" ngbDropdownItem
-                                        (click)="edit(list.idForum)">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
-                                    <a class="btn btn-danger" ngbDropdownItem
-                                        (click)="alertHapus(list.idForum, list.namaForum)">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
+                                <div ngbDropdown class="d-inline-block">
+                                    <button class="btn" ngbDropdownToggle>
+                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    </button>
+                                    <div *ngIf="_id == list.idOP" ngbDropdownMenu aria-labelledby="navbarDropdown2"
+                                        class="dropdown-menu dropdown-menu-left">
+                                        <button type="button" class="btn btn-primary" ngbDropdownItem
+                                            (click)="edit(list.idForum)">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                                        <a class="btn btn-danger" ngbDropdownItem
+                                            (click)="alertHapus(list.idForum, list.namaForum)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp; Hapus</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="card-body">
-                            <div class="row">
+                            <div class="card-body">
+                                <div class="row">
 
-                                <div class="col-md-1">
+                                    <div class="col-md-1">
 
-                                    <!-- start Button Respon Viewers -->
-                                    <div class="button-aksi">
+                                        <!-- start Button Respon Viewers -->
+                                        <div class="button-aksi">
 
-                                        <a *ngIf="!list.liked.includes(_id) else unlike"
-                                            class="btn btn-ouline-secondary" (click)="like(list.idForum)"
-                                            data-toggle="tooltip" data-placement="left"
-                                            title="{{list.liked.length}} kali disukai. Berikan forum ini like kamu">
-                                            <i class="fa fa-thumbs-o-up fa-2x"></i><br>{{list.liked.length}}</a>
-
-                                        <ng-template #unlike>
-
-                                            <a class="btn btn-ouline-secondary" (click)="like(list.idForum)"
+                                            <a *ngIf="!list.liked.includes(_id) else unlike"
+                                                class="btn btn-ouline-secondary" (click)="like(list.idForum)"
                                                 data-toggle="tooltip" data-placement="left"
-                                                title="{{list.liked.length}} kali disukai. Kamu suka forum ini!">
-                                                <i style="color: blue;"
-                                                    class="fa fa-thumbs-o-up fa-2x"></i><br>{{list.liked.length}} </a>
+                                                title="{{list.liked.length}} kali disukai. Berikan forum ini like kamu">
+                                                <i class="fa fa-thumbs-o-up fa-2x"></i><br>{{list.liked.length}}</a>
 
-                                        </ng-template>
+                                            <ng-template #unlike>
 
-                                        <a class="btn btn-ouline-secondary" (click)="buka(list.idForum)"
-                                            data-toggle="tooltip" data-placement="left"
-                                            title="{{list.responses}} total balasan. Buka forum untuk membalas">
-                                            <i class="fa fa-commenting fa-2x"></i><br>{{list.responses}}</a>
+                                                <a class="btn btn-ouline-secondary" (click)="like(list.idForum)"
+                                                    data-toggle="tooltip" data-placement="left"
+                                                    title="{{list.liked.length}} kali disukai. Kamu suka forum ini!">
+                                                    <i style="color: blue;"
+                                                        class="fa fa-thumbs-o-up fa-2x"></i><br>{{list.liked.length}}
+                                                </a>
 
-                                        <a class="btn btn-ouline-secondary" (click)="buka(list.idForum)"
-                                            data-toggle="tooltip" data-placement="left"
-                                            title="{{list.viewed.length}} kali dilihat.">
-                                            <i class="fa fa-eye fa-2x"></i><br>{{list.viewed.length}}</a>
-                                    </div>
-                                    <!-- end button respon viewer -->
+                                            </ng-template>
 
-                                </div>
+                                            <a class="btn btn-ouline-secondary" (click)="buka(list.idForum)"
+                                                data-toggle="tooltip" data-placement="left"
+                                                title="{{list.responses}} total balasan. Buka forum untuk membalas">
+                                                <i class="fa fa-commenting fa-2x"></i><br>{{list.responses}}</a>
 
-                                <div class="col-md-11" (click)="buka(list.idForum)">
-                                    <a class="nav-link">
-                                        <h2 class="card-title forum-title" [innerHTML]="list.namaForum"></h2>
+                                            <a class="btn btn-ouline-secondary" (click)="buka(list.idForum)"
+                                                data-toggle="tooltip" data-placement="left"
+                                                title="{{list.viewed.length}} kali dilihat.">
+                                                <i class="fa fa-eye fa-2x"></i><br>{{list.viewed.length}}</a>
+                                        </div>
+                                        <!-- end button respon viewer -->
 
-                                    </a>
-                                    <p class="card-title" style="padding-left:10px;">Penanya: {{list.originalPoster}}
-                                    </p>
-
-                                    <h5 class="time-info"><span *ngIf="list.lastEdited != null"
-                                            ngbPopover="{{getDate(list.lastEdited)}}" triggers="mouseenter:mouseleave"
-                                            popoverTitle="Terakhir di Edit"
-                                            class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}} </h5>
-
-
-                                    <div class="button-tag">
-                                        <a class="btn btn-sm btn-secondary mr-2" ngbPopover="Hallo ini JavaScript!"
-                                            triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#"
-                                            role="button">JavaScript</a>
-                                        <a class="btn btn-sm btn-secondary mr-2" ngbPopover="Hallo ini JavaScript!"
-                                            triggers="mouseenter:mouseleave" popoverTitle="JavaScript" href="#"
-                                            role="button">JavaScript</a>
                                     </div>
 
+                                    <div class="col-md-11" (click)="buka(list.idForum)">
+                                        <a class="nav-link">
+                                            <h2 class="card-title forum-title" [innerHTML]="list.namaForum"></h2>
 
+                                        </a>
+                                        <p class="card-title" style="padding-left:10px;">Penanya:
+                                            {{list.originalPoster}}
+                                        </p>
+
+                                        <h5 class="time-info"><span *ngIf="list.lastEdited != null"
+                                                ngbPopover="{{getDate(list.lastEdited)}}"
+                                                triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}}
+                                        </h5>
+
+
+                                        <div class="button-tag">
+                                            <span *ngFor="let tag of list.tagList">
+                                                <a class="btn btn-sm btn-secondary mr-2"
+                                                    [ngbPopover]="tag.tagDescription" triggers="mouseenter:mouseleave"
+                                                    [popoverTitle]="tag.value" role="button">{{tag.value}}</a>
+                                            </span>
+                                        </div>
+
+
+
+                                    </div>
 
                                 </div>
-
                             </div>
+
                         </div>
-
-
 
                     </div>
                 </div>
@@ -148,8 +152,8 @@
 
 <ng-template #forum_kosong>
     <span style="color: white; text-align: center; font-size: 200%;">
-        <p>Wah sepertinya belum ada forum nih, ayo kita mulai forum baru!
-            <br><br><button style="background-color: black;" (click)="tambah()" mat-button>
+        <p style="color: black;">Wah sepertinya belum ada forum nih, ayo kita mulai forum baru!
+            <br><br><button style="background-color: black; color: white;" (click)="tambah()" mat-button>
                 Buat Forum Baru
             </button></p>
     </span>
@@ -203,7 +207,13 @@
                             Berdasarkan Tag
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <p>Maaf, fitur ini belum selesai!</p>
+
+                    <div *ngIf="tagsLoaded else tagLoading">
+                        <div class="tagify--outside">
+                          <tagify name="tagify" (change)="tagChange($event)" class="tags" [settings]="TagifySettings">
+                          </tagify>
+                        </div>
+                      </div>
                 </mat-expansion-panel>
             </mat-accordion>
 
@@ -226,3 +236,5 @@
 
     </div>
 </ng-template>
+
+<ng-template #tagLoading>Memuat Tags...</ng-template>

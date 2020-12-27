@@ -9,6 +9,9 @@ module.exports = {
             var _users = await db.collection("user").find({ username: new RegExp(keys, "i") }).toArray(), id = [], projection = { _id: 0 };
             for (let i = 0; i < _users.length; i++)  id.push(_users[i].user_id);
 
+            //list all tags
+            var _tags = await db.collection("Tags").find({value: new RegExp(keys, "i")}).toArray()
+
             console.log(type);
             for (let i = 0; i < type.length; i++) {
                 let queries = []

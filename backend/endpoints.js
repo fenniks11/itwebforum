@@ -54,5 +54,11 @@ module.exports = function (app, db) {
 
   let answer_comment = require("./js/answer_qna_comment")
   answer_comment.ListComment(app, db)
-  answer_comment.TambahComment(app,db)
+  answer_comment.TambahComment(app, db)
+
+  let tags = require("./js/tag")
+  tags.ListTags(app, db)
+
+  let home = require("./js/home")
+  home.Statistic(app, db)
 };

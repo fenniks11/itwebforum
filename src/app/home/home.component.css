@@ -1,0 +1,78 @@
+.top-home {
+    /* The image used */
+    background-image: url("./../../assets/images/source.gif");
+    height: 500px;
+    filter: blur(2px);
+
+}
+
+.statistic-home {
+    /* The image used */
+    background-image: url("./../../assets/images/source2.gif");
+    height: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.statistic-card{
+    background-color: rgba(112, 128, 144, 0.6);
+    height: 100px;
+    width: 90%;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-bottom: 50px;
+
+}
+
+.statistic-card:last-of-type{
+    margin-bottom: 0;
+    margin-top: 50px;
+}
+
+
+.statistic {
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.statistic-numbers{
+    text-align: center;
+    font-size: 60px;
+    color: rgb(130, 210, 255);
+}
+
+.statistic-description{
+    font-size: 45px;
+    text-align: end;
+    margin: auto;
+}
+
+.parallax {
+    /* Full height */
+    width: 100%;
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-text {
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px groove #f1f1f1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 40%;
+    padding: 20px;
+    text-align: center;
+}

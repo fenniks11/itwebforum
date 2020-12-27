@@ -7,7 +7,7 @@ import { TambahForum } from "./forum/tambah-forum/tambah-forum.component";
 import { Forum } from './forum/forum.component';
 import { Login } from './home/login/login.component';
 import { ListForum } from './forum/list-forum/list-forum.component';
-import { HeaderForum } from './home/header/header.component';
+import { HeaderApp } from './home/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
@@ -48,6 +48,13 @@ import { NavBar } from './misc/nav-bar/nav-bar.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditAnswer } from './qna/buka-qna/edit-answer/edit-answer.component';
 import { PilihAnswer } from './qna/buka-qna/pilih-answer/pilih-answer.component';
+import { TagifyComponent } from "@yaireo/tagify/dist/angular-tagify.component";
+import { TagifyService } from './tagify.service';
+import { FooterComponent } from './home/footer/footer.component';
+import { Contact } from './home/footer/contact/contact.component';
+import { About } from './home/footer/about/about.component';
+import { AdviceDialog } from './home/footer/advice/advice.component';
+
 
 
 @NgModule({
@@ -56,7 +63,7 @@ import { PilihAnswer } from './qna/buka-qna/pilih-answer/pilih-answer.component'
     Forum,
     TambahForum,
     ListForum,
-    HeaderForum,
+    HeaderApp,
     BukaForum,
     EditForum,
     Login,
@@ -74,7 +81,12 @@ import { PilihAnswer } from './qna/buka-qna/pilih-answer/pilih-answer.component'
     Err404,
     NavBar,
     EditAnswer,
-    PilihAnswer
+    TagifyComponent,  
+    PilihAnswer,
+    FooterComponent,
+    Contact,
+    About,
+    AdviceDialog
   ],
   imports: [
     BrowserModule,
@@ -93,7 +105,7 @@ import { PilihAnswer } from './qna/buka-qna/pilih-answer/pilih-answer.component'
     HttpClientModule,
     MatGridListModule,
     MatIconModule,
-    MatStepperModule,
+    MatStepperModule, 
     MatTableModule,
     MatPaginatorModule,
     MatSnackBarModule,
@@ -108,9 +120,12 @@ import { PilihAnswer } from './qna/buka-qna/pilih-answer/pilih-answer.component'
   ],
   entryComponents:[
     EditAnswer,
-    PilihAnswer
+    PilihAnswer,
+    Contact,
+    About,
+    AdviceDialog
   ],
-  providers: [{ provide: Window, useValue: window }, HighlightService, TimeVerbose],
+  providers: [{ provide: Window, useValue: window }, HighlightService, TimeVerbose, TagifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

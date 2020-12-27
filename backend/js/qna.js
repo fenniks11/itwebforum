@@ -14,6 +14,7 @@ module.exports = {
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
                 category: req.body.arr[3],
+                tags: req.body.arr[4],
                 viewed: [],
                 liked: [],
                 vote: {
@@ -33,16 +34,22 @@ module.exports = {
     ListQnA: async function (app, db) {
         app.get("/api/qna/list", async (req, res) => {
             const docs = await db.collection("qna").find({}).toArray();
-            let getUser, getResponses;
+            let getUser, getResponses, getTags;
 
             for (let i = 0; i < docs.length; i++) {
-                0
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
                 docs[i]["originalPoster"] = getUser[0].username;
 
                 getResponses = await db.collection("answer").find({ "idQnA": docs[i].idQnA }).toArray();
                 docs[i]["responses"] = getResponses.length;
+
+                docs[i]["tagList"] = []
+
+                for (let t = 0; t < docs[i].tags.length; t++) {
+                    let tag = await db.collection("tags").find({ "idTag": docs[i].tags[t] }).project({ "value": 1, "tagDescription": 1, "idTag": 1 }).toArray()
+                    docs[i]["tagList"].push(tag[0])
+                }
             }
 
             if (!docs)

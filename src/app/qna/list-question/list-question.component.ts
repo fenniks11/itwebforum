@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TimeVerbose } from 'src/app/time.component';
+import { TagifyService } from "../../tagify.service";
 
 
 
@@ -21,22 +22,65 @@ export class ListQuestion {
   _id = '';
   page = [1];
   show = 5;
+  tagify: any;
+  tagsLoaded = false;
+  tags = [] as any;
   inputShow = 5;
   crnPage = 1;
+  tagFilter = [] as any;
   filterIn = ""
 
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private window: Window, private route: ActivatedRoute, private timeVerbose: TimeVerbose) { }
+  public TagifySettings = {
+
+    enforceWhitelist: true,
+    whitelist: [],
+    placeholder: "Ketik sebuah tag",
+    maxTags: 5,
+    dropdown: {
+      maxItems: 20,
+      position: "input",      // <- mixumum allowed rendered suggestions
+      classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+      enabled: 1
+    }
+  };
+
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private window: Window, private route: ActivatedRoute, private timeVerbose: TimeVerbose, private Tagify: TagifyService) { }
 
   async ngOnInit() {
     window.localStorage.setItem("activeTitle", "Daftar Pertanyaan")
+
+
+
     this.listQnA = (await this.http
       .get('http://localhost:3000/api/qna/list')
       .toPromise()) as any[];
+
+    if (!this.tagsLoaded) {
+      var tag = (await this.http
+        .get('http://localhost:3000/api/tags/list')
+        .toPromise()) as any[];
+
+      this.TagifySettings = { ...this.TagifySettings, whitelist: tag }
+      this.tagsLoaded = true
+    }
+
 
     var filter = this.route.snapshot.paramMap.get("show");
     if (filter) {
       for (let i = this.listQnA.length - 1; i >= 0; i--) {
         if (this.listQnA[i].category != filter) this.listQnA.splice(i, 1)
+      }
+    }
+
+    if (this.tagFilter.length > 0) {
+      for (let i = this.listQnA.length - 1; i >= 0; i--) { //list loop
+        var obj = this.listQnA[i].tags
+
+        var check = this.tagFilter.every((el) => {
+          return obj.indexOf(el) !== -1;
+        });
+
+        if (!check) this.listQnA.splice(i, 1)
       }
     }
 
@@ -47,32 +91,47 @@ export class ListQuestion {
     for (let index = 1; index < Math.ceil(this.listQnA.length / this.show); index) {
       this.page.push(++index)
     }
-    if(this.crnPage > this.page.length) this.crnPage = this.page.length
+    if (this.crnPage > this.page.length) this.crnPage = this.page.length
 
-    
+
+
+
   }
 
-  getDate(ms){
+
+  tagChange(event) {
+    if (event.target.value.length < 1) { this.tagFilter = []; this.ngOnInit(); return }
+
+    let temp = [], obj = JSON.parse(event.target.value)
+    for (let i = 0; i < obj.length; i++) {
+      temp.push(obj[i]["idTag"])
+    }
+    this.tagFilter = temp
+    this.ngOnInit()
+  }
+
+
+  getDate(ms) {
     return this.timeVerbose.parseTime(ms).verbose[5]
   }
 
-  pagination(show, manual = false){
+  pagination(show, manual = false) {
     this.show = show;
     this.ngOnInit()
-    if(manual) return false;
-    
+    if (manual) return false;
+
   }
 
 
   showFilters() {
     console.log(this.showRightBar);
-    
+
     if (this.showRightBar == true) {
       this.showRightBar = false
       document.querySelector("#mainbox").classList.remove("row")
       document.querySelector("#listbox").classList.remove("col-md-9")
-    } 
-    else if (this.showRightBar == false){
+    }
+    else if (this.showRightBar == false) {
       this.showRightBar = true
       document.querySelector("#mainbox").classList.add("row")
       document.querySelector("#listbox").classList.add("col-md-9")

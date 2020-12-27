@@ -1,42 +1,49 @@
+<mat-toolbar (window:resize)="onResize($event)">
+  <mat-toolbar-row id="toolbar-wrapper" >
 
-<mat-toolbar>
-  <mat-toolbar-row>
     <span>
       <button style="color: white" mat-button routerLink='home'>
-        <i class="fa fa-home">&nbsp;Home</i>
+        <i class="fa fa-home"><span *ngIf="!smallerWidth">&nbsp;Home</span></i>
       </button>
     </span>
+    
     <span>
-    <button style="color: white" routerLink='forum' mat-button>
-      <i class="fa fa-globe">&nbsp;Forum</i>
-    </button>
-    <button style="color: white" routerLink='qna' mat-button>
-      <i class="fa fa-comments-o">&nbsp;QnA</i>
-    </button>
-  </span>
+
+      <button style="color: white" mat-button  routerLink='forum'>
+        <i class="fa fa-globe"><span *ngIf="!smallerWidth">&nbsp;Forum</span></i>
+      </button>
+
+      <button style="color: white"  mat-button routerLink='qna'>
+        <i class="fa fa-comments-o"><span *ngIf="!smallerWidth">&nbsp;QnA</span></i>
+      </button>
+
+    </span>
+
     <mat-toolbar-row>
       <form class="form-inline my-2 my-lg-0">
-        <input [(ngModel)]="keywords" [ngModelOptions]="{standalone: true}" class="form-control mr-sm-2" type="search" placeholder="Pencarian..." aria-label="Search">
-        <button (click)="cari()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <input id="search-bar" [(ngModel)]="keywords" [ngModelOptions]="{standalone: true}" class="form-control mr-sm-2"
+          type="search" placeholder="Pencarian..." aria-label="Search">
+        <button (click)="cari()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"
+            aria-hidden="true"></i></button>
       </form>
     </mat-toolbar-row>
-    
+
+    <button style="color: white; " (click)="compilerun()" ngbPopover="Ke Compile Run"
+    triggers="mouseenter:mouseleave" mat-button>
+      <i class="fa fa-code" aria-hidden="true"></i>
+    </button>
+
     <div *ngIf="login else notLogged">
       <mat-toolbar-row>
-        <button style="color: white; " (click)="compilerun()" 
-        data-bs-toggle="tooltip"  title="Jalankan Kode"
-        mat-button>
-          <i class="fa fa-code" aria-hidden="true"></i>
-        </button>
+
         <span style="float:right;">
           <button style="color: white; " (click)="profile()" mat-button>
-            <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;Profile
+            <i class="fa fa-user-o" aria-hidden="true"></i><span *ngIf="!smallerWidth">&nbsp;Profile</span>
           </button></span>
-          <span style="float:right;">
-            <button style="color: white; " (click)="logout()"
-            data-bs-toggle="tooltip"  title="Logout" mat-button>
-              <i class="fa fa-sign-out" aria-hidden="true"></i>
-            </button></span>
+        <span style="float:right;">
+          <button style="color: white; " (click)="logout()" data-bs-toggle="tooltip" title="Logout" mat-button>
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+          </button></span>
       </mat-toolbar-row>
     </div>
     <!-- </div> -->
@@ -44,7 +51,7 @@
     <ng-template #notLogged>
       <span style="margin-right: 0%; position: relative;">
         <button class="btn btn-success" (click)="Login()" mat-button>
-          <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+          <i class="fa fa-sign-in" aria-hidden="true"></i><span *ngIf="!smallerWidth">&nbsp;Login</span>
         </button></span>
     </ng-template>
   </mat-toolbar-row>

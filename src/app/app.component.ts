@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
 import { EventEmitter } from 'events';
-import { HeaderForum } from './home/header/header.component';
+import { HeaderApp } from './home/header/header.component';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +23,7 @@ export class AppComponent {
         else if (ev.url.includes("qna")) window.localStorage.setItem("parent", "qna")
 
         window.localStorage.setItem("activeTitle", "")
-        HeaderForum.prototype.titleHeader = "";
-        setTimeout(() => { HeaderForum.prototype.update() }, 0);
+        setTimeout(() => { HeaderApp.prototype.update() }, 0);
       }
     });
 

@@ -6,9 +6,11 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "./node_modules/@yaireo/tagify/dist/angular-tagify.component.ts"
   ],
   "include": [
+    "node_modules/@yaireo/tagify/dist/*.ts",
     "src/**/*.d.ts"
   ]
 }

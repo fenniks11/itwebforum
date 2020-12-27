@@ -1,0 +1,25 @@
+.closebtn {
+    width: 100%;
+    padding-top: 15px;
+    text-align: end;
+}
+
+.dialog-content {
+    text-align: center;
+    justify-content: center;
+}
+
+.contact-holder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+
+.contact-holder:last-of-type{
+    margin-bottom: 0;
+    margin-top: 20px;
+}

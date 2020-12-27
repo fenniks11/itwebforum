@@ -13,6 +13,7 @@ module.exports = {
                 namaForum: req.body.arr[0],
                 idOP: req.body.arr[1],
                 pesanUtama: req.body.arr[2],
+                tags: req.body.arr[3],
                 viewed: [],
                 liked: [],
                 lastEdited: null
@@ -35,6 +36,13 @@ module.exports = {
 
                 getResponses = await db.collection("pesan").find({ "idForum": docs[i].idForum }).toArray();
                 docs[i]["responses"] = getResponses.length;
+
+                docs[i]["tagList"] = []
+
+                for (let t = 0; t < docs[i].tags.length; t++) {
+                    let tag = await db.collection("tags").find({ "idTag": docs[i].tags[t] }).project({ "value": 1, "tagDescription": 1, "idTag": 1 }).toArray()
+                    docs[i]["tagList"].push(tag[0])
+                }
             }
 
             if (!docs)

@@ -84,23 +84,33 @@
                     </div>
                     <div class="create__section">
                         <label class="create__label" for="tags">&nbsp;&nbsp; Tambahkan Tag</label>
-                        &nbsp;&nbsp; <input id="tags" type="text" placeholder="e.g. css, html, etc.">
+                        <div *ngIf="tagsLoaded else tagLoading">
+                            <div class="tagify-container">
+                                <tagify name="tagify" (change)="tagChange($event)" class="tags"
+                                    placeholder="Ketik sesuatu..." [settings]="TagifySettings">
+                                </tagify>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17 || category == '_empty'" mat-raised-button
-                    color="primary">Tambah</button>
+                <button (click)="kirim()"
+                    [disabled]="nama_baru.length < 5 || pesan_utama.length < 17 || category == '_empty' || tags.length < 1"
+                    mat-raised-button color="primary">Tambah</button>
                 <button mat-button mat-dialog-close>Cancel</button>
             </div>
         </div>
     </div>
+</div>
 
 
-    <ng-template #not_logged>
-        <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
-            <div style="height: 20vmax;"></div>
-            <h1>Kamu harus login terlebih dahulu sebelum dapat mengajukan pertanyaan baru!</h1>
-            <button (click)="toLogin()" mat-button>
-                Login
-            </button>
-        </div>
-    </ng-template>
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        <div style="height: 20vmax;"></div>
+        <h1>Kamu harus login terlebih dahulu sebelum dapat mengajukan pertanyaan baru!</h1>
+        <button (click)="toLogin()" mat-button>
+            Login
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #tagLoading>Memuat Tags...</ng-template>

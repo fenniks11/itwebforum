@@ -1,7 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { HeaderForum } from '../../home/header/header.component';
 
 @Component({
     selector: 'edit-question',
@@ -63,7 +62,6 @@ export class EditQuestion {
 
     async ngOnInit() {
         if (sessionStorage.getItem("_id") == null) return this.router.navigate(['/'])
-        HeaderForum.prototype.titleHeader = "Edit forum?"
         this.id = this.route.snapshot.paramMap.get("id")
         this.body.arr.push(this.id)
         this.placeholder = (await this.http.post('http://localhost:3000/api/qna/metadata', this.body).toPromise()) as any[];

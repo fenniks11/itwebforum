@@ -1,0 +1,10 @@
+@media screen and (max-width: 905px) {
+    #search-bar {
+        display: none !important;
+    }
+}
+
+#toolbar-wrapper{
+    overflow-x: auto;
+    overflow-y: hidden;
+}
