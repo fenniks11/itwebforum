@@ -11,12 +11,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="create__section">
-                        <label class="create__label" for="category">Select Category</label>
+                        <label class="create__label" for="category">Pilih Kategori</label>
                         <label class="custom-select">
-                            <select id="category">
-                                <option>Choose</option>
-                                <option>Frontend</option>
-                                <option>Backend</option>
+                            <select [(ngModel)]="category" id="category">
+                                <option value="_empty">Frontend atau Backend?</option>
+                                <option value="fb">Frontend dan Backend</option>
+                                <option value="f">Frontend</option>
+                                <option value="b">Backend</option>
                             </select>
                         </label>
                     </div>
@@ -38,7 +39,13 @@
             </div>
             <div class="create__section">
                 <label class="create__label" for="tags">&nbsp;&nbsp; Tambahkan Tag</label>
-                &nbsp;&nbsp; <input type="text" class="form-control" id="tags" placeholder="e.g. css, html, etc.">
+                <div *ngIf="tagsLoaded else tagLoading">
+                    <div class="tagify-container">
+                        <tagify name="tagify" (change)="tagChange($event)" class="tags"
+                            placeholder="Ketik sesuatu..." [settings]="TagifySettings">
+                        </tagify>
+                    </div>
+                </div>
             </div>
             <button (click)="kirim()" [disabled]="nama_baru.length < 5 || pesan_utama.length < 17" mat-raised-button
             color="primary">Edit</button>
@@ -56,3 +63,5 @@
     </button>
 </div>
 </ng-template>
+
+<ng-template #tagLoading>Memuat Tags...</ng-template>

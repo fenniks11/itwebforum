@@ -5,8 +5,7 @@ module.exports = {
 
     TambahForum: async function (app, db) {
         app.post("/api/forum/tambah", async (req, res) => {
-            var id = await db.collection("forum").find({}).toArray();
-            id = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000))
+            var id  = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000));
             db.collection("forum").insertOne({
                 idForum: id,
                 createdDate: new Date().getTime(),
@@ -16,7 +15,14 @@ module.exports = {
                 tags: req.body.arr[3],
                 viewed: [],
                 liked: [],
-                lastEdited: null
+                lastEdited: null,
+                edittedBy: 0,
+                ban: {
+                    status: false,
+                    ban_Date: null,
+                    reason: null,
+                    banner: null
+                }
             });
             return res.json({
                 id: id,
@@ -26,7 +32,7 @@ module.exports = {
 
     ListForum: async function (app, db) {
         app.get("/api/forum/list", async (req, res) => {
-            const docs = await db.collection("forum").find({}).toArray();
+            const docs = await db.collection("forum").find({"ban.status": false}).toArray();
             let getUser, getResponses;
 
             for (let i = 0; i < docs.length; i++) {
@@ -102,7 +108,15 @@ module.exports = {
             getResponses = await db.collection("pesan").find({ "idForum": docs[0].idForum }).toArray();
             docs[0]["responses"] = getResponses.length;
 
-            console.log(docs);
+            if(docs[0].ban.status){
+                let getBanner, banner_id = docs[0].ban.banner;
+                docs[0].ban.banner = {}
+                getBanner = await db.collection("user").find({ "user_id": banner_id }).toArray();
+                docs[0].ban.banner["ProfilePicture"] = getBanner[0].profile_picture;
+                docs[0].ban.banner["originalPoster"] = getBanner[0].username;
+            }
+
+
             res.json(docs);
 
         });
@@ -113,10 +127,12 @@ module.exports = {
             var id = parseInt(req.body.arr[0])
             var crnDate = new Date().getTime()
             db.collection("forum").update({ idForum: id }, {
-                $set:{
+                $set: {
                     lastEdited: crnDate,
+                    edittedBy: req.body.arr[5],
                     pesanUtama: req.body.arr[3],
                     namaForum: req.body.arr[1],
+                    tags: req.body.arr[4],
                 }
             })
             res.status(200).send();
@@ -160,7 +176,7 @@ module.exports = {
             if (!viewer) return res.status(403).send(); // wajib login untuk like
 
             if (!docs[0].liked.includes(viewer)) docs[0].liked.push(viewer)
-            else docs[0].liked.remove(viewer) 
+            else docs[0].liked.remove(viewer)
 
             await db.collection("forum").update({ "idForum": id, }, {
                 $set: { liked: docs[0].liked }

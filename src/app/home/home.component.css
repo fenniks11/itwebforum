@@ -3,7 +3,6 @@
     background-image: url("./../../assets/images/source.gif");
     height: 500px;
     filter: blur(2px);
-
 }
 
 .statistic-home {
@@ -16,37 +15,45 @@
     justify-content: center;
 }
 
-.statistic-card{
+.statistic-card {
     background-color: rgba(112, 128, 144, 0.6);
     height: 100px;
     width: 90%;
     max-width: 100%;
     margin: 0 auto;
     margin-bottom: 50px;
-
 }
 
-.statistic-card:last-of-type{
+.statistic-card:last-of-type {
     margin-bottom: 0;
     margin-top: 50px;
 }
 
+@media screen and (max-width: 381px) {
+    .statistic-numbers {
+        font-size: 35px !important;
+    }
+    .statistic-description {
+        font-size: 20px !important;
+    }
+}
 
 .statistic {
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.statistic-numbers{
+.statistic-numbers {
+    margin: auto;
     text-align: center;
-    font-size: 60px;
     color: rgb(130, 210, 255);
+    font-size: 4vw;
 }
 
-.statistic-description{
-    font-size: 45px;
+.statistic-description {
     text-align: end;
     margin: auto;
+    font-size: 3vw;
 }
 
 .parallax {

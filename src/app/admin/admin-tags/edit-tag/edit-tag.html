@@ -1,0 +1,32 @@
+<!-- MAIN -->
+<div *ngIf="logged_in else not_logged">
+
+    <h1 mat-dialog-title>Edit tag</h1>
+
+    <div mat-dialog-content>
+        <label for="tag-name">Nama Tag</label>
+        <input type="text" name="tag-name" [(ngModel)]="selected.value" placeholder='{{data.value}}'
+            class="form-control" required>
+
+        <label for="tag-desc">Deskripsi Tag</label>
+        <textarea name="tag-desc" [(ngModel)]="selected.description" placeholder='{{data.description}}'
+            class="form-control" required></textarea>
+
+
+
+        <br>
+    </div>
+
+
+</div>
+<div style="width: 100%; padding-top: 15px; text-align: end;">
+    <button mat-button (click)="batal()">Kembali</button>
+    <button mat-button class="btn btn-primary" [mat-dialog-close]="selected">Edit Tag</button>
+</div>
+
+
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        Unauthorized
+    </div>
+</ng-template>

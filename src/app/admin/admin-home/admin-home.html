@@ -1,0 +1,11 @@
+<div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
+    HOME PAGE
+</div>
+
+<ng-template #unauthorizedAccess class="overlay">
+    <div class="overlay-content"> Unauthorized! </div>
+</ng-template>
+
+<ng-template *ngIf="check == 0" class="overlay">
+    <div class="overlay-content"> Authorization Initializing... </div>
+</ng-template>

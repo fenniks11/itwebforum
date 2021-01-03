@@ -1,19 +1,19 @@
 <h1 mat-dialog-title>Hubungi Kami</h1>
 <div mat-dialog-content class="dialog-content">
 
-    <div class="contact-holder" >
+    <div class="contact-holder" (click)="copy('email')" >
         <i class="fa fa-at fa-3x"></i>&nbsp;
-        <input type="email" width="min-content" style="text-align: center;" value="forum_ti@usu.ac.id" disabled>
+        <input type="email" width="min-content" class="contact-content" [value]="email" disabled>
     </div>
 
-    <div class="contact-holder">
+    <div class="contact-holder"  (click)="copy('phone')">
         <i class="fa fa-phone fa-3x"></i>&nbsp;
-        <input type="text" width="min-content" style="text-align: center;" value="0811000XX123" disabled>
+        <input type="text" width="min-content" class="contact-content" [value]="phone" disabled>
     </div>
 
-    <div class="contact-holder">
+    <div class="contact-holder"  (click)="copy('whatsapp')">
         <i class="fa fa-whatsapp fa-3x"></i>&nbsp;
-        <input type="text" width="min-content" style="text-align: center;" value="0811000XX123" disabled>
+        <input type="text" width="min-content" class="contact-content" [value]="whatsapp" disabled>
     </div>
 
 </div>

@@ -11,7 +11,6 @@ module.exports = {
 
 
 
-            console.log(docs);
             if (!docs)
                 return res.json({
                     error: "Gagal mendapatkan list",

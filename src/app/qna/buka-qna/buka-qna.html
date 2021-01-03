@@ -4,60 +4,100 @@
 
     <div *ngIf="!notFound else err404">
 
+        <!-- ban status  -->
+        <div *ngIf="ban.status">
+            <h1 style="font-size: 100px; text-align: center;"><span class="badge badge-danger">Banned</span></h1>
+        </div>
+        <!-- ban status end -->
+
         <!-- judul -->
         <h1 id="main-title">{{metadata.judul}}</h1>
         <h4 id="main-op">Penanya: {{metadata.originalPoster}}</h4>
 
-        <div class="badge badge-success" id="q-status" *ngIf="chosenAnswer">
-            Pertanyaan terjawab <br>
-            <button class="btn btn-outline-secondary qna-jump-button" (click)="toPickedAnswer()">Loncat ke
-                jawaban
-                terpilih</button>
+        <div *ngIf="!ban.status">
+            <div class="badge badge-success" id="q-status" *ngIf="chosenAnswer">
+                Pertanyaan terjawab <br>
+                <button class="btn btn-outline-secondary qna-jump-button" (click)="toPickedAnswer()">Loncat ke
+                    jawaban
+                    terpilih</button>
+            </div>
         </div>
         <!-- judul end -->
 
 
         <!-- MAIN MESSAGE -->
-        <div id="main-msg">
-            <div class="c-mbody">
 
-                <!-- top -->
-                <div class="qna-top-mbody">
-                    <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
-                        triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
-                        class="qna-time-info qna-edited">(Edited)
-                    </small>
-                    <small class="qna-time-info">{{verboseTime(metadata.createdDate)}}</small>
-                </div>
-                <!-- top end -->
+        <div class="c-mbody" *ngIf="!ban.status else bannedMessage">
+            <div id="main-msg">
+                <div class="c-mbody">
 
-                <!-- main -->
-                <div class="row">
+                    <!-- top -->
+                    <div class="qna-top-mbody">
+                        <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
+                            triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                            class="qna-time-info qna-edited">(Edited)
+                        </small>
+                        <small class="qna-time-info">{{verboseTime(metadata.createdDate)}}</small>
+                    </div>
+                    <!-- top end -->
 
-                    <!-- user info -->
-                    <div class="col-md-1 qna-user-info">
-                        <img #img [src]="metadata.ProfilePicture" class="qna-p-profile">
-                        <div class="qna-d-profile">
-                            <span class="card-title qna-n-profile">{{metadata.originalPoster}}
-                            </span>
+                    <!-- main -->
+                    <div class="row">
+
+                        <!-- user info -->
+                        <div class="col-md-1 qna-user-info">
+                            <img #img [src]="metadata.ProfilePicture" class="qna-p-profile">
+                            <div class="qna-d-profile">
+                                <span class="card-title qna-n-profile">{{metadata.originalPoster}}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <!-- user info end -->
+                        <!-- user info end -->
 
-                    <!-- main message -->
-                    <div class="col-md-auto  qna-m-mbody">
-                        <p class="card-text" [innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
+                        <!-- main message -->
+                        <div class="col-md-auto  qna-m-mbody">
+                            <p class="card-text" [innerHTML]="metadata.pesanUtama" style="margin-top: 20px;"></p>
+                        </div>
+                        <!-- main message end -->
+
                     </div>
-                    <!-- main message end -->
+                    <!-- main end -->
+
+                    <!-- bottom -->
+                    <div class="qna-bottom-mbody">
+
+
+                        <span class="qna-bottom-outer-mbody">
+
+                            <a (click)="reportQnA()" ngbPopover="Laporkan pertanyaan ini"
+                                triggers="mouseenter:mouseleave" class="qna-clickable">
+                                <i class="fa fa-exclamation fa-lg"></i></a>
+
+                            <span *ngIf="_id == metadata.idOP">
+
+                                <span class="seperator"> | </span>
+
+                                <a (click)="editQnA()" ngbPopover="Edit pertanyaan" triggers="mouseenter:mouseleave"
+                                    class="qna-clickable">
+                                    <i class="fa fa-edit fa-lg"></i></a>
+
+                            </span>
+
+                            <span *ngIf="is_admin">
+                                <span class="seperator"> | </span>
+
+                                <a (click)="banQnA()" ngbPopover="Ban pertanyaan" triggers="mouseenter:mouseleave"
+                                    class="qna-clickable">
+                                    <i class="fa fa-ban fa-lg"></i></a>
+                            </span>
+
+                        </span>
+
+
+                    </div>
+                    <!-- bottom end -->
 
                 </div>
-                <!-- main end -->
-
-                <!-- bottom -->
-                <div class="qna-bottom-mbody">
-
-                </div>
-
             </div>
         </div>
         <!-- MAIN MESSAGE END -->
@@ -79,6 +119,9 @@
 
                         <!-- top -->
                         <div class="qna-top-mbody">
+                            <span *ngIf="list.ban.status" style="font-size: 15px;"><span
+                                class="badge badge-danger">Banned</span>&nbsp;</span>
+
                             <small *ngIf="list.lastEdited != null" ngbPopover="{{verboseTime(list.lastEdited)}}"
                                 triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
                                 class="qna-time-info qna-edited">(Edited)
@@ -106,24 +149,33 @@
                             <!-- main message -->
                             <div class="col-md-auto qna-outer-m-mbody">
 
-                                <div *ngIf="asker && !chosenAnswer" (click)="resolveAnswer(list.idAnswer)"
+                                <div *ngIf="asker && !chosenAnswer && !list.ban.status" (click)="resolveAnswer(list.idAnswer)"
                                     class="badge-secondary select-answer">
-                                    <i class="fa fa-check"></i>&nbsp;Pilih sebagai jawaban</div>
+                                    <i class="fa fa-check"></i>&nbsp;Pilih sebagai jawaban
+                                </div>
 
                                 <div *ngIf="list.idAnswer == chosenAnswer" class="badge-success " id="selected-answer">
-                                    <i class="fa fa-check"></i>&nbsp;Jawaban Terpilih</div>
+                                    <i class="fa fa-check"></i>&nbsp;Jawaban Terpilih
+                                </div>
 
                                 <div class=" qna-m-mbody ">
 
-                                    <p class="card-text" [innerHTML]="list.isiAnswer" style="margin-top: 20px;">
+                                    <p *ngIf="!list.ban.status else bannedMsg" class="card-text" [innerHTML]="list.isiAnswer" style="margin-top: 20px;">
                                     </p>
+
+                                    <ng-template #bannedMsg>
+                                        Jawaban ini sudah di ban dengan alasan:
+                                        <blockquote>{{list.ban.reason}}</blockquote>
+                                        Oleh: {{list.ban.banner.originalPoster}}
+                                        <blockquote>{{verboseTime(list.ban.ban_Date)}}</blockquote>
+                                    </ng-template>
 
                                 </div>
                             </div>
                             <!-- main message end -->
 
                             <!-- vote info -->
-                            <div class="col-md-1 qna-vote-info">
+                            <div class="col-md-1 qna-vote-info"  *ngIf="!list.ban.status">
 
                                 <!-- upvote -->
                                 <p class="qna-vote-btn fa fa-3x">
@@ -164,7 +216,7 @@
                         <!-- main end -->
 
                         <!-- bottom -->
-                        <div class="qna-bottom-mbody">
+                        <div class="qna-bottom-mbody"  *ngIf="!list.ban.status">
                             <span class="qna-bottom-outer-mbody">
 
                                 <a (click)="copylink(list.idAnswer)" ngbPopover="Salin link jawaban ini"
@@ -176,6 +228,13 @@
                                 <a (click)="commentBar(list.idAnswer)" ngbPopover="Buka bar komentar jawaban ini"
                                     triggers="mouseenter:mouseleave" class="qna-clickable">
                                     <i class="fa fa-comments-o fa-lg"></i></a>
+
+                                <span class="qna-seperator"> | </span>
+
+                                <a (click)="reportAnswer(list.idAnswer)" ngbPopover="Laporkan jawaban ini"
+                                    triggers="mouseenter:mouseleave" class="qna-clickable">
+                                    <i class="fa fa-exclamation fa-lg"></i></a>
+
 
                                 <span *ngIf="_id == list.idOP">
 
@@ -191,6 +250,14 @@
                                         triggers="mouseenter:mouseleave" *ngIf="list.idAnswer != chosenAnswer"
                                         class="qna-clickable"><i class="fa fa-trash-o fa-lg"></i></a>
 
+                                </span>
+
+                                <span *ngIf="is_admin">
+                                    <span class="qna-seperator"> | </span>
+    
+                                    <a (click)="banAnswer(list.idAnswer)" ngbPopover="Ban jawaban"
+                                        triggers="mouseenter:mouseleave" class="qna-clickable">
+                                        <i class="fa fa-ban fa-lg"></i></a>
                                 </span>
 
                             </span>
@@ -223,7 +290,8 @@
                             <option value="20">20</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
-                        </select></h5>
+                        </select>
+                    </h5>
                 </tr>
             </table>
         </div>
@@ -242,19 +310,24 @@
 
         <!-- input balasan -->
         <div #input *ngIf="logged_in else not_logged">
-            <div *ngIf="!hasAnswered else answered">
+            <div *ngIf="!ban.status else bannedInput">
+                <div *ngIf="!hasAnswered else answered">
 
-                <div>Berikan jawaban </div>
-                <div class="card">
-                    <div style=" width: 85%; margin: 0 auto;">
-                        Isi jawaban:*
-                        <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
-                            id="editor">
-                        </editor>
+                    <div>Berikan jawaban </div>
+                    <div class="card">
+                        <div style=" width: 85%; margin: 0 auto;">
+                            Isi jawaban:*
+                            <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_answer" data="isiKirim.isi_answer"
+                                id="editor">
+                            </editor>
+                        </div>
+                        <div style="width: 100%; margin: 0 auto; justify-content: flex-end; display: flex;">
+                            <P>*Syarat: Jawaban minimal 5 karakter</P> &nbsp;
+                            <button style="color: black; width: fit-content;" class="btn btn-outline-secondary"
+                                [disabled]="isiKirim.isi_answer.length < 12" (click)="kirim()">Kirim</button>
+                        </div>
                     </div>
-                    <button [disabled]="isiKirim.isi_answer.length < 12" (click)="kirim()">Kirim</button>
                 </div>
-
             </div>
         </div>
         <!-- input balasan end -->
@@ -385,4 +458,61 @@
         Kamu sudah menjawab pertanyaan ini <br>
         <button (click)="focus(hasAnswered)" mat-raised-button>Lihat jawaban saya</button>
     </h4>
+</ng-template>
+
+<ng-template #bannedMessage>
+
+    <div class="qna-c-mbody">
+
+        <!-- top -->
+        <div class="qna-top-mbody">
+
+            <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
+                triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                class="qna-time-info qna-edited">(Edited)
+            </small>
+
+            <small class="qna-time-info">{{verboseTime(ban.ban_Date)}}</small>
+        </div>
+        <!-- top end -->
+
+        <!-- main -->
+        <div class="row">
+
+            <!-- user info -->
+            <div class="col-md-1 qna-user-info">
+                <img #img [src]="ban.banner.ProfilePicture" class="qna-p-profile">
+                <div class="qna-d-profile">
+                    <span class="card-title qna-n-profile">{{ban.banner.originalPoster}}
+                    </span>
+                </div>
+            </div>
+            <!-- user info end -->
+
+            <!-- main message -->
+            <div class="col-md-auto  qna-m-mbody">
+                <h1 class="card-text" style="margin-top: 20px;">
+                    Pertanyaan ini sudah di ban dengan alasan:
+                    <blockquote>{{ban.reason}}</blockquote>
+                </h1>
+            </div>
+            <!-- main message end -->
+
+        </div>
+        <!-- main end -->
+
+        <!-- bottom -->
+        <div class="qna-bottom-mbody">
+
+
+        </div>
+        <!-- bottom end -->
+
+    </div>
+
+</ng-template>
+
+<ng-template #bannedInput>
+    <strong style="margin: auto; text-align: center; display: block;">Kamu tidak dapat menjawab pertanyaan yang sudah di
+        ban</strong>
 </ng-template>

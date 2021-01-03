@@ -1,0 +1,12 @@
+.tag-cards {
+    margin-bottom: 5px;
+    color: white;
+}
+
+.tag-input{
+    width: 100%;
+}
+
+.tag-action-buttons {
+    text-align: end;
+}

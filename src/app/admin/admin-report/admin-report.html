@@ -1,0 +1,1496 @@
+<div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
+    Laporan tentang masalah atau pelanggaran aturan
+
+    <mat-tab-group>
+        <mat-tab label="Baru"> 
+            <div *ngFor="let report of reports">
+
+                <mat-expansion-panel class="report-cards" *ngIf="!report.status.handled">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                        <mat-panel-title>
+                            {{report.judul}}
+                        </mat-panel-title>
+
+                        <mat-panel-description>
+                            #{{report.reportId}}
+                            <span *ngIf="report.status.handled">
+                                &nbsp;||
+                                <span class="text-success">Selesai</span>
+                                <span *ngIf="report.status.response == '!!SPAM!!'">&nbsp;|| <span
+                                        class="text-danger">SPAM</span>
+                                </span></span>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+
+                    <!-- main content  -->
+
+                    <!-- report description  -->
+                    <div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                Pelapor
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9"><img #img [src]="report.reporter.profile_picture"
+                                    class="p-profile">&nbsp;{{report.reporter.username}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Waktu
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{verboseTime(report.lastReport)}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Judul
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{report.judul}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Deskripsi
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{report.describe}}</div>
+                        </div>
+
+                        <mat-expansion-panel class="report-problem">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="report-problem-header">
+                                    Masalah
+                                </mat-panel-title>
+                                <mat-panel-description class="report-problem-header">
+                                    {{report.type}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <div style="color: black;">
+                                <div [ngSwitch]="report.type">
+
+                                    <!-- if type == "qna" -->
+                                    <div *ngSwitchCase="'qna'">
+
+                                        <div class="c-mbody">
+                                            <div id="main-msg">
+                                                <div class="c-mbody">
+
+                                                    <!-- top -->
+                                                    <div class="qna-top-mbody">
+                                                        <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                            ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                            triggers="mouseenter:mouseleave"
+                                                            popoverTitle="Terakhir di Edit"
+                                                            class="qna-time-info qna-edited">(Edited)
+                                                        </small>
+                                                        <small
+                                                            class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                                    </div>
+                                                    <!-- top end -->
+
+                                                    <!-- main -->
+                                                    <div class="row">
+
+                                                        <!-- user info -->
+                                                        <div class="col-md-1 qna-user-info">
+                                                            <img #img [src]="report.reported.OP.profile_picture"
+                                                                class="qna-p-profile">
+                                                            <div class="qna-d-profile">
+                                                                <span
+                                                                    class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- user info end -->
+
+                                                        <!-- main message -->
+                                                        <div class="col-md-auto  qna-m-mbody">
+                                                            <p class="card-text"
+                                                                [innerHTML]="report.reported.metadata.pesanUtama"
+                                                                style="margin-top: 20px;"></p>
+                                                        </div>
+                                                        <!-- main message end -->
+
+                                                    </div>
+                                                    <!-- main end -->
+
+                                                    <!-- bottom -->
+                                                    <div class="qna-bottom-mbody">
+
+
+                                                    </div>
+                                                    <!-- bottom end -->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- if type == "forum" -->
+                                    <div *ngSwitchCase="'forum'">
+
+
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="time-info edited">(Edited)
+                                                </small>
+
+                                                <small
+                                                    class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="d-profile">
+                                                        <span
+                                                            class="card-title n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  m-mbody">
+                                                    <p class="card-text"
+                                                        [innerHTML]="report.reported.metadata.pesanUtama"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="bottom-mbody">
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- if type == "answer" -->
+                                    <div *ngSwitchCase="'answer'">
+
+                                        <div class="container-fluid c-mbody" id="{{report.reported.metadata.idAnswer}}">
+
+                                            <!-- top -->
+                                            <div class="qna-top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="qna-time-info qna-edited">(Edited)
+                                                </small>
+                                                <small
+                                                    class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 qna-user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="qna-d-profile">
+                                                        <span
+                                                            class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto qna-outer-m-mbody">
+
+                                                    <div class=" qna-m-mbody ">
+
+                                                        <p class="card-text"
+                                                            [innerHTML]="report.reported.metadata.isiAnswer"
+                                                            style="margin-top: 20px;">
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                                <!-- main message end -->
+
+                                                <!-- vote info -->
+                                                <div class="col-md-1 qna-vote-info">
+
+                                                    <!-- upvote -->
+                                                    <p class="qna-vote-btn fa fa-3x">
+                                                        <span class="fa-chevron-up"></span>
+                                                    </p>
+                                                    <!-- upvote end -->
+
+                                                    <!-- score  -->
+                                                    <p class="vote-score fa-3x">{{report.reported.metadata.vote.score}}
+                                                    </p>
+                                                    <!-- score end -->
+
+                                                    <!-- downvote  -->
+                                                    <p class="qna-vote-btn fa fa-3x ">
+                                                        <span class="fa-chevron-down"></span>
+                                                    </p>
+                                                    <!-- downvote end -->
+
+                                                </div>
+                                                <!-- vote info end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="qna-bottom-mbody"> </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- if type == "pesan" -->
+                                    <div *ngSwitchCase="'pesan'">
+
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="time-info edited">(Edited)
+                                                </small>
+
+                                                <small
+                                                    class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="d-profile">
+                                                        <span
+                                                            class="card-title n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  m-mbody">
+                                                    <p class="card-text" [innerHTML]="report.reported.metadata.isiPesan"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="bottom-mbody">
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </mat-expansion-panel>
+
+                        <div class="report-action-buttons">
+
+                            <span *ngIf="!report.status.handled else handledResponse">
+
+                                <button (click)="closeCase(report.reportId, '!!SPAM!!')" class="btn btn-danger">Tandai
+                                    sebagai
+                                    spam</button>&nbsp;
+
+                                <button (click)="ban(report.type, report.reported.id, report.reportId)"
+                                    class="btn btn-danger">Ban</button>&nbsp;
+
+                            </span>
+
+                            <button (click)="chat()" class="btn btn-warning">Chat ke target</button>&nbsp;
+                            <button (click)="chat()" class="btn btn-warning">Chat ke pelapor</button>&nbsp;
+
+                            <button (click)="open(report.type, report.reported.id, report.reported.metadata)"
+                                class="btn btn-primary">Lihat langsung</button>&nbsp;
+
+                            <button (click)="getResponse(report.reportId)" class="btn btn-success"
+                                *ngIf="!report.status.handled">Selesai</button>&nbsp;
+
+                        </div>
+
+                        <ng-template #handledResponse>
+                            <span>
+                                Sudah ditangani oleh {{report.status.handler.username}} pada waktu
+                                {{verboseTime(report.status.handle_date)}} dengan jawaban:
+                                "{{report.status.response}}"
+                            </span>
+                        </ng-template>
+
+                    </div>
+                    <!-- report description end  -->
+
+                </mat-expansion-panel>
+
+            </div>
+        </mat-tab>
+
+
+        <mat-tab label="Selesai"> 
+            <div *ngFor="let report of reports">
+
+                <mat-expansion-panel class="report-cards" *ngIf="report.status.handled && report.status.response != '!!SPAM!!'">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                        <mat-panel-title>
+                            {{report.judul}}
+                        </mat-panel-title>
+
+                        <mat-panel-description>
+                            #{{report.reportId}}
+                            <span *ngIf="report.status.handled">
+                                &nbsp;||
+                                <span class="text-success">Selesai</span>
+                                <span *ngIf="report.status.response == '!!SPAM!!'">&nbsp;|| <span
+                                        class="text-danger">SPAM</span>
+                                </span></span>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+
+                    <!-- main content  -->
+
+                    <!-- report description  -->
+                    <div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                Pelapor
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9"><img #img [src]="report.reporter.profile_picture"
+                                    class="p-profile">&nbsp;{{report.reporter.username}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Waktu
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{verboseTime(report.lastReport)}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Judul
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{report.judul}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Deskripsi
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{report.describe}}</div>
+                        </div>
+
+                        <mat-expansion-panel class="report-problem">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="report-problem-header">
+                                    Masalah
+                                </mat-panel-title>
+                                <mat-panel-description class="report-problem-header">
+                                    {{report.type}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <div style="color: black;">
+                                <div [ngSwitch]="report.type">
+
+                                    <!-- if type == "qna" -->
+                                    <div *ngSwitchCase="'qna'">
+
+                                        <div class="c-mbody">
+                                            <div id="main-msg">
+                                                <div class="c-mbody">
+
+                                                    <!-- top -->
+                                                    <div class="qna-top-mbody">
+                                                        <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                            ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                            triggers="mouseenter:mouseleave"
+                                                            popoverTitle="Terakhir di Edit"
+                                                            class="qna-time-info qna-edited">(Edited)
+                                                        </small>
+                                                        <small
+                                                            class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                                    </div>
+                                                    <!-- top end -->
+
+                                                    <!-- main -->
+                                                    <div class="row">
+
+                                                        <!-- user info -->
+                                                        <div class="col-md-1 qna-user-info">
+                                                            <img #img [src]="report.reported.OP.profile_picture"
+                                                                class="qna-p-profile">
+                                                            <div class="qna-d-profile">
+                                                                <span
+                                                                    class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- user info end -->
+
+                                                        <!-- main message -->
+                                                        <div class="col-md-auto  qna-m-mbody">
+                                                            <p class="card-text"
+                                                                [innerHTML]="report.reported.metadata.pesanUtama"
+                                                                style="margin-top: 20px;"></p>
+                                                        </div>
+                                                        <!-- main message end -->
+
+                                                    </div>
+                                                    <!-- main end -->
+
+                                                    <!-- bottom -->
+                                                    <div class="qna-bottom-mbody">
+
+
+                                                    </div>
+                                                    <!-- bottom end -->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- if type == "forum" -->
+                                    <div *ngSwitchCase="'forum'">
+
+
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="time-info edited">(Edited)
+                                                </small>
+
+                                                <small
+                                                    class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="d-profile">
+                                                        <span
+                                                            class="card-title n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  m-mbody">
+                                                    <p class="card-text"
+                                                        [innerHTML]="report.reported.metadata.pesanUtama"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="bottom-mbody">
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- if type == "answer" -->
+                                    <div *ngSwitchCase="'answer'">
+
+                                        <div class="container-fluid c-mbody" id="{{report.reported.metadata.idAnswer}}">
+
+                                            <!-- top -->
+                                            <div class="qna-top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="qna-time-info qna-edited">(Edited)
+                                                </small>
+                                                <small
+                                                    class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 qna-user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="qna-d-profile">
+                                                        <span
+                                                            class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto qna-outer-m-mbody">
+
+                                                    <div class=" qna-m-mbody ">
+
+                                                        <p class="card-text"
+                                                            [innerHTML]="report.reported.metadata.isiAnswer"
+                                                            style="margin-top: 20px;">
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                                <!-- main message end -->
+
+                                                <!-- vote info -->
+                                                <div class="col-md-1 qna-vote-info">
+
+                                                    <!-- upvote -->
+                                                    <p class="qna-vote-btn fa fa-3x">
+                                                        <span class="fa-chevron-up"></span>
+                                                    </p>
+                                                    <!-- upvote end -->
+
+                                                    <!-- score  -->
+                                                    <p class="vote-score fa-3x">{{report.reported.metadata.vote.score}}
+                                                    </p>
+                                                    <!-- score end -->
+
+                                                    <!-- downvote  -->
+                                                    <p class="qna-vote-btn fa fa-3x ">
+                                                        <span class="fa-chevron-down"></span>
+                                                    </p>
+                                                    <!-- downvote end -->
+
+                                                </div>
+                                                <!-- vote info end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="qna-bottom-mbody"> </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- if type == "pesan" -->
+                                    <div *ngSwitchCase="'pesan'">
+
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="time-info edited">(Edited)
+                                                </small>
+
+                                                <small
+                                                    class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="d-profile">
+                                                        <span
+                                                            class="card-title n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  m-mbody">
+                                                    <p class="card-text" [innerHTML]="report.reported.metadata.isiPesan"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="bottom-mbody">
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </mat-expansion-panel>
+
+                        <div class="report-action-buttons">
+
+                            <span *ngIf="!report.status.handled else handledResponse">
+
+                                <button (click)="closeCase(report.reportId, '!!SPAM!!')" class="btn btn-danger">Tandai
+                                    sebagai
+                                    spam</button>&nbsp;
+
+                                <button (click)="ban(report.type, report.reported.id, report.reportId)"
+                                    class="btn btn-danger">Ban</button>&nbsp;
+
+                            </span>
+
+                            <button (click)="chat()" class="btn btn-warning">Chat ke target</button>&nbsp;
+                            <button (click)="chat()" class="btn btn-warning">Chat ke pelapor</button>&nbsp;
+
+                            <button (click)="open(report.type, report.reported.id, report.reported.metadata)"
+                                class="btn btn-primary">Lihat langsung</button>&nbsp;
+
+                            <button (click)="getResponse(report.reportId)" class="btn btn-success"
+                                *ngIf="!report.status.handled">Selesai</button>&nbsp;
+
+                        </div>
+
+                        <ng-template #handledResponse>
+                            <span>
+                                Sudah ditangani oleh {{report.status.handler.username}} pada waktu
+                                {{verboseTime(report.status.handle_date)}} dengan jawaban:
+                                "{{report.status.response}}"
+                            </span>
+                        </ng-template>
+
+                    </div>
+                    <!-- report description end  -->
+
+                </mat-expansion-panel>
+
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Spam"> 
+            
+    <div *ngFor="let report of reports">
+
+        <mat-expansion-panel class="report-cards" *ngIf="report.status.response == '!!SPAM!!'">
+
+            <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                <mat-panel-title>
+                    {{report.judul}}
+                </mat-panel-title>
+
+                <mat-panel-description>
+                    #{{report.reportId}}
+                    <span *ngIf="report.status.handled">
+                        &nbsp;||
+                        <span class="text-success">Selesai</span>
+                        <span *ngIf="report.status.response == '!!SPAM!!'">&nbsp;|| <span
+                                class="text-danger">SPAM</span>
+                        </span></span>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+
+            <!-- main content  -->
+
+            <!-- report description  -->
+            <div>
+                <div class="row">
+                    <div class="col-md-1">
+                        Pelapor
+                    </div>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-9"><img #img [src]="report.reporter.profile_picture"
+                            class="p-profile">&nbsp;{{report.reporter.username}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        Waktu
+                    </div>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-9">{{verboseTime(report.lastReport)}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        Judul
+                    </div>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-9">{{report.judul}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        Deskripsi
+                    </div>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-9">{{report.describe}}</div>
+                </div>
+
+                <mat-expansion-panel class="report-problem">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="report-problem-header">
+                            Masalah
+                        </mat-panel-title>
+                        <mat-panel-description class="report-problem-header">
+                            {{report.type}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <div style="color: black;">
+                        <div [ngSwitch]="report.type">
+
+                            <!-- if type == "qna" -->
+                            <div *ngSwitchCase="'qna'">
+
+                                <div class="c-mbody">
+                                    <div id="main-msg">
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="qna-top-mbody">
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="qna-time-info qna-edited">(Edited)
+                                                </small>
+                                                <small
+                                                    class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 qna-user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="qna-d-profile">
+                                                        <span
+                                                            class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  qna-m-mbody">
+                                                    <p class="card-text"
+                                                        [innerHTML]="report.reported.metadata.pesanUtama"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="qna-bottom-mbody">
+
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- if type == "forum" -->
+                            <div *ngSwitchCase="'forum'">
+
+
+                                <div class="c-mbody">
+
+                                    <!-- top -->
+                                    <div class="top-mbody">
+
+                                        <small *ngIf="report.reported.metadata.lastEdited != null"
+                                            ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                            triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                            class="time-info edited">(Edited)
+                                        </small>
+
+                                        <small
+                                            class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                    </div>
+                                    <!-- top end -->
+
+                                    <!-- main -->
+                                    <div class="row">
+
+                                        <!-- user info -->
+                                        <div class="col-md-1 user-info">
+                                            <img #img [src]="report.reported.OP.profile_picture" class="qna-p-profile">
+                                            <div class="d-profile">
+                                                <span class="card-title n-profile">{{report.reported.OP.username}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- user info end -->
+
+                                        <!-- main message -->
+                                        <div class="col-md-auto  m-mbody">
+                                            <p class="card-text" [innerHTML]="report.reported.metadata.pesanUtama"
+                                                style="margin-top: 20px;"></p>
+                                        </div>
+                                        <!-- main message end -->
+
+                                    </div>
+                                    <!-- main end -->
+
+                                    <!-- bottom -->
+                                    <div class="bottom-mbody">
+
+                                    </div>
+                                    <!-- bottom end -->
+
+                                </div>
+
+
+                            </div>
+
+                            <!-- if type == "answer" -->
+                            <div *ngSwitchCase="'answer'">
+
+                                <div class="container-fluid c-mbody" id="{{report.reported.metadata.idAnswer}}">
+
+                                    <!-- top -->
+                                    <div class="qna-top-mbody">
+
+                                        <small *ngIf="report.reported.metadata.lastEdited != null"
+                                            ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                            triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                            class="qna-time-info qna-edited">(Edited)
+                                        </small>
+                                        <small
+                                            class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                    </div>
+                                    <!-- top end -->
+
+                                    <!-- main -->
+                                    <div class="row">
+
+
+
+                                        <!-- user info -->
+                                        <div class="col-md-1 qna-user-info">
+                                            <img #img [src]="report.reported.OP.profile_picture" class="qna-p-profile">
+                                            <div class="qna-d-profile">
+                                                <span class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- user info end -->
+
+                                        <!-- main message -->
+                                        <div class="col-md-auto qna-outer-m-mbody">
+
+                                            <div class=" qna-m-mbody ">
+
+                                                <p class="card-text" [innerHTML]="report.reported.metadata.isiAnswer"
+                                                    style="margin-top: 20px;">
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                        <!-- main message end -->
+
+                                        <!-- vote info -->
+                                        <div class="col-md-1 qna-vote-info">
+
+                                            <!-- upvote -->
+                                            <p class="qna-vote-btn fa fa-3x">
+                                                <span class="fa-chevron-up"></span>
+                                            </p>
+                                            <!-- upvote end -->
+
+                                            <!-- score  -->
+                                            <p class="vote-score fa-3x">{{report.reported.metadata.vote.score}} </p>
+                                            <!-- score end -->
+
+                                            <!-- downvote  -->
+                                            <p class="qna-vote-btn fa fa-3x ">
+                                                <span class="fa-chevron-down"></span>
+                                            </p>
+                                            <!-- downvote end -->
+
+                                        </div>
+                                        <!-- vote info end -->
+
+                                    </div>
+                                    <!-- main end -->
+
+                                    <!-- bottom -->
+                                    <div class="qna-bottom-mbody"> </div>
+                                    <!-- bottom end -->
+
+                                </div>
+
+                            </div>
+
+                            <!-- if type == "pesan" -->
+                            <div *ngSwitchCase="'pesan'">
+
+                                <div class="c-mbody">
+
+                                    <!-- top -->
+                                    <div class="top-mbody">
+
+                                        <small *ngIf="report.reported.metadata.lastEdited != null"
+                                            ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                            triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                            class="time-info edited">(Edited)
+                                        </small>
+
+                                        <small
+                                            class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                    </div>
+                                    <!-- top end -->
+
+                                    <!-- main -->
+                                    <div class="row">
+
+                                        <!-- user info -->
+                                        <div class="col-md-1 user-info">
+                                            <img #img [src]="report.reported.OP.profile_picture" class="qna-p-profile">
+                                            <div class="d-profile">
+                                                <span class="card-title n-profile">{{report.reported.OP.username}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- user info end -->
+
+                                        <!-- main message -->
+                                        <div class="col-md-auto  m-mbody">
+                                            <p class="card-text" [innerHTML]="report.reported.metadata.isiPesan"
+                                                style="margin-top: 20px;"></p>
+                                        </div>
+                                        <!-- main message end -->
+
+                                    </div>
+                                    <!-- main end -->
+
+                                    <!-- bottom -->
+                                    <div class="bottom-mbody">
+
+                                    </div>
+                                    <!-- bottom end -->
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </mat-expansion-panel>
+
+                <div class="report-action-buttons">
+
+                    <span *ngIf="!report.status.handled else handledResponse">
+
+                        <button (click)="closeCase(report.reportId, '!!SPAM!!')" class="btn btn-danger">Tandai sebagai
+                            spam</button>&nbsp;
+
+                        <button (click)="ban(report.type, report.reported.id, report.reportId)"
+                            class="btn btn-danger">Ban</button>&nbsp;
+
+                    </span>
+
+                    <button (click)="chat()" class="btn btn-warning">Chat ke target</button>&nbsp;
+                    <button (click)="chat()" class="btn btn-warning">Chat ke pelapor</button>&nbsp;
+
+                    <button (click)="open(report.type, report.reported.id, report.reported.metadata)"
+                        class="btn btn-primary">Lihat langsung</button>&nbsp;
+
+                    <button (click)="getResponse(report.reportId)" class="btn btn-success"
+                        *ngIf="!report.status.handled">Selesai</button>&nbsp;
+
+                </div>
+
+                <ng-template #handledResponse>
+                    <span>
+                        Sudah ditangani oleh {{report.status.handler.username}} pada waktu
+                        {{verboseTime(report.status.handle_date)}} dengan jawaban:
+                        "{{report.status.response}}"
+                    </span>
+                </ng-template>
+
+            </div>
+            <!-- report description end  -->
+
+        </mat-expansion-panel>
+
+    </div>
+
+        </mat-tab>
+
+        <mat-tab label="Semua">
+
+            <div *ngFor="let report of reports">
+
+                <mat-expansion-panel class="report-cards">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                        <mat-panel-title>
+                            {{report.judul}}
+                        </mat-panel-title>
+
+                        <mat-panel-description>
+                            #{{report.reportId}}
+                            <span *ngIf="report.status.handled">
+                                &nbsp;||
+                                <span class="text-success">Selesai</span>
+                                <span *ngIf="report.status.response == '!!SPAM!!'">&nbsp;|| <span
+                                        class="text-danger">SPAM</span>
+                                </span></span>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+
+                    <!-- main content  -->
+
+                    <!-- report description  -->
+                    <div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                Pelapor
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9"><img #img [src]="report.reporter.profile_picture"
+                                    class="p-profile">&nbsp;{{report.reporter.username}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Waktu
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{verboseTime(report.lastReport)}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Judul
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{report.judul}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                Deskripsi
+                            </div>
+                            <div class="col-md-1">:</div>
+                            <div class="col-md-9">{{report.describe}}</div>
+                        </div>
+
+                        <mat-expansion-panel class="report-problem">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="report-problem-header">
+                                    Masalah
+                                </mat-panel-title>
+                                <mat-panel-description class="report-problem-header">
+                                    {{report.type}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <div style="color: black;">
+                                <div [ngSwitch]="report.type">
+
+                                    <!-- if type == "qna" -->
+                                    <div *ngSwitchCase="'qna'">
+
+                                        <div class="c-mbody">
+                                            <div id="main-msg">
+                                                <div class="c-mbody">
+
+                                                    <!-- top -->
+                                                    <div class="qna-top-mbody">
+                                                        <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                            ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                            triggers="mouseenter:mouseleave"
+                                                            popoverTitle="Terakhir di Edit"
+                                                            class="qna-time-info qna-edited">(Edited)
+                                                        </small>
+                                                        <small
+                                                            class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                                    </div>
+                                                    <!-- top end -->
+
+                                                    <!-- main -->
+                                                    <div class="row">
+
+                                                        <!-- user info -->
+                                                        <div class="col-md-1 qna-user-info">
+                                                            <img #img [src]="report.reported.OP.profile_picture"
+                                                                class="qna-p-profile">
+                                                            <div class="qna-d-profile">
+                                                                <span
+                                                                    class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- user info end -->
+
+                                                        <!-- main message -->
+                                                        <div class="col-md-auto  qna-m-mbody">
+                                                            <p class="card-text"
+                                                                [innerHTML]="report.reported.metadata.pesanUtama"
+                                                                style="margin-top: 20px;"></p>
+                                                        </div>
+                                                        <!-- main message end -->
+
+                                                    </div>
+                                                    <!-- main end -->
+
+                                                    <!-- bottom -->
+                                                    <div class="qna-bottom-mbody">
+
+
+                                                    </div>
+                                                    <!-- bottom end -->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- if type == "forum" -->
+                                    <div *ngSwitchCase="'forum'">
+
+
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="time-info edited">(Edited)
+                                                </small>
+
+                                                <small
+                                                    class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="d-profile">
+                                                        <span
+                                                            class="card-title n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  m-mbody">
+                                                    <p class="card-text"
+                                                        [innerHTML]="report.reported.metadata.pesanUtama"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="bottom-mbody">
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- if type == "answer" -->
+                                    <div *ngSwitchCase="'answer'">
+
+                                        <div class="container-fluid c-mbody" id="{{report.reported.metadata.idAnswer}}">
+
+                                            <!-- top -->
+                                            <div class="qna-top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="qna-time-info qna-edited">(Edited)
+                                                </small>
+                                                <small
+                                                    class="qna-time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 qna-user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="qna-d-profile">
+                                                        <span
+                                                            class="card-title qna-n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto qna-outer-m-mbody">
+
+                                                    <div class=" qna-m-mbody ">
+
+                                                        <p class="card-text"
+                                                            [innerHTML]="report.reported.metadata.isiAnswer"
+                                                            style="margin-top: 20px;">
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                                <!-- main message end -->
+
+                                                <!-- vote info -->
+                                                <div class="col-md-1 qna-vote-info">
+
+                                                    <!-- upvote -->
+                                                    <p class="qna-vote-btn fa fa-3x">
+                                                        <span class="fa-chevron-up"></span>
+                                                    </p>
+                                                    <!-- upvote end -->
+
+                                                    <!-- score  -->
+                                                    <p class="vote-score fa-3x">{{report.reported.metadata.vote.score}}
+                                                    </p>
+                                                    <!-- score end -->
+
+                                                    <!-- downvote  -->
+                                                    <p class="qna-vote-btn fa fa-3x ">
+                                                        <span class="fa-chevron-down"></span>
+                                                    </p>
+                                                    <!-- downvote end -->
+
+                                                </div>
+                                                <!-- vote info end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="qna-bottom-mbody"> </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- if type == "pesan" -->
+                                    <div *ngSwitchCase="'pesan'">
+
+                                        <div class="c-mbody">
+
+                                            <!-- top -->
+                                            <div class="top-mbody">
+
+                                                <small *ngIf="report.reported.metadata.lastEdited != null"
+                                                    ngbPopover="{{verboseTime(report.reported.metadata.lastEdited)}}"
+                                                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                                                    class="time-info edited">(Edited)
+                                                </small>
+
+                                                <small
+                                                    class="time-info">{{verboseTime(report.reported.metadata.createdDate)}}</small>
+                                            </div>
+                                            <!-- top end -->
+
+                                            <!-- main -->
+                                            <div class="row">
+
+                                                <!-- user info -->
+                                                <div class="col-md-1 user-info">
+                                                    <img #img [src]="report.reported.OP.profile_picture"
+                                                        class="qna-p-profile">
+                                                    <div class="d-profile">
+                                                        <span
+                                                            class="card-title n-profile">{{report.reported.OP.username}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- user info end -->
+
+                                                <!-- main message -->
+                                                <div class="col-md-auto  m-mbody">
+                                                    <p class="card-text" [innerHTML]="report.reported.metadata.isiPesan"
+                                                        style="margin-top: 20px;"></p>
+                                                </div>
+                                                <!-- main message end -->
+
+                                            </div>
+                                            <!-- main end -->
+
+                                            <!-- bottom -->
+                                            <div class="bottom-mbody">
+
+                                            </div>
+                                            <!-- bottom end -->
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </mat-expansion-panel>
+
+                        <div class="report-action-buttons">
+
+                            <span *ngIf="!report.status.handled else handledResponse">
+
+                                <button (click)="closeCase(report.reportId, '!!SPAM!!')" class="btn btn-danger">Tandai
+                                    sebagai
+                                    spam</button>&nbsp;
+
+                                <button (click)="ban(report.type, report.reported.id, report.reportId)"
+                                    class="btn btn-danger">Ban</button>&nbsp;
+
+                            </span>
+
+                            <button (click)="chat()" class="btn btn-warning">Chat ke target</button>&nbsp;
+                            <button (click)="chat()" class="btn btn-warning">Chat ke pelapor</button>&nbsp;
+
+                            <button (click)="open(report.type, report.reported.id, report.reported.metadata)"
+                                class="btn btn-primary">Lihat langsung</button>&nbsp;
+
+                            <button (click)="getResponse(report.reportId)" class="btn btn-success"
+                                *ngIf="!report.status.handled">Selesai</button>&nbsp;
+
+                        </div>
+
+                        <ng-template #handledResponse>
+                            <span>
+                                Sudah ditangani oleh {{report.status.handler.username}} pada waktu
+                                {{verboseTime(report.status.handle_date)}} dengan jawaban:
+                                "{{report.status.response}}"
+                            </span>
+                        </ng-template>
+
+                    </div>
+                    <!-- report description end  -->
+
+                </mat-expansion-panel>
+
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+
+</div>
+
+<ng-template #unauthorizedAccess class="overlay">
+    <div class="overlay-content"> Unauthorized! </div>
+</ng-template>
+
+<ng-template *ngIf="check == 0" class="overlay">
+    <div class="overlay-content"> Authorization Initializing... </div>
+</ng-template>

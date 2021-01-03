@@ -83,13 +83,13 @@ export class TambahForum {
   };
 
   tagChange(event) {
-    
+
     let temp = [], obj = JSON.parse(event.target.value)
     for (let i = 0; i < obj.length; i++) {
       temp.push(obj[i]["idTag"])
-      
+
     }
-    
+
     this.tags = temp
 
   }
@@ -104,7 +104,7 @@ export class TambahForum {
 
 
 
-0
+
     if (sessionStorage.getItem("_id") == null) return this.router.navigate(['/'])
 
 
@@ -115,7 +115,7 @@ export class TambahForum {
 
     this.id_op = sessionStorage.getItem("_id")
     this.body = { "arr": [this.nama_baru, this.id_op, this.pesan_utama, this.tags] };
-    
+
     var res;
     res = await this.http.post("http://localhost:3000/api/forum/tambah", this.body).toPromise();
     var id = res.id

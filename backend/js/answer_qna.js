@@ -17,6 +17,13 @@ module.exports = {
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
                 docs[i]["originalPoster"] = getUser[0].username;
+
+                if(docs[i].ban.status){
+                    let getBanner, banner_id = docs[i].ban.banner;
+                    docs[i].ban.banner = {}
+                    getBanner = await db.collection("user").find({ "user_id": banner_id }).toArray();
+                    docs[i].ban.banner["originalPoster"] = getBanner[0].username;
+                }
             }
             if (!docs)
                 return res.json({
@@ -29,9 +36,9 @@ module.exports = {
 
     TambahAnswer: async function (app, db) {
         app.post("/api/qna/answer/tambahanswer", async (req, res) => {
-            var answer = await db.collection("answer").find({ "idOP": req.body.arr[2] }).toArray()
-            if (answer.length) return res.status(403).send()
             var id = parseInt(req.body.arr[0])
+            var answer = await db.collection("answer").find({ "idOP": req.body.arr[2], idQnA: id }).toArray()
+            if (answer.length) return res.status(403).send()
             var idp = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000));
             db.collection("answer").insertOne({
                 idQnA: id,
@@ -43,7 +50,14 @@ module.exports = {
                     score: 0,
                     list: {}
                 },
-                lastEdited: null
+                lastEdited: null,
+                edittedBy: 0,
+                ban: {
+                    status: false,
+                    ban_Date: null,
+                    reason: null,
+                    banner: null
+                }
             });
             res.status(200).send();
         });
@@ -87,6 +101,7 @@ module.exports = {
             db.collection("answer").update({ idAnswer: req.body.arr[1] }, {
                 $set: {
                     lastEdited: crnDate,
+                    edittedBy: req.body.arr[4],
                     isiAnswer: req.body.arr[2]
                 }
             })
@@ -116,7 +131,6 @@ module.exports = {
 
     vote_answer: async function (app, db) {
         app.post("/api/qna/answer/vote", async (req, res) => {
-            console.log(req.body);
             var idAnswer = req.body.idAnswer
                 , idUser = req.body.idUser
                 , vote = req.body.vote
@@ -138,9 +152,7 @@ module.exports = {
                 }
             })
 
-            console.log(idUser in answer[0].vote.list);
-            console.log(answer[0].vote.list);
-            console.log(answer[0]);
+
             res.status(200).send()
 
 
@@ -149,7 +161,6 @@ module.exports = {
 
     unvote_answer: async function (app, db) {
         app.post("/api/qna/answer/unvote", async (req, res) => {
-            console.log(req.body);
             var idAnswer = req.body.idAnswer
                 , idUser = req.body.idUser
                 , answer = await db.collection("answer").find({ "idAnswer": idAnswer }).project({ vote: 1, _id: 0 }).toArray()
@@ -172,9 +183,6 @@ module.exports = {
                 }
             })
 
-            console.log(idUser in answer[0].vote.list);
-            console.log(answer[0].vote.list);
-            console.log(answer[0]);
             res.status(200).send()
 
 

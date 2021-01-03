@@ -1,0 +1,26 @@
+<!-- MAIN -->
+<div *ngIf="logged_in else not_logged">
+
+    <h1 mat-dialog-title>Tutup laporan ini</h1>
+
+    <div mat-dialog-content>
+        <p>Sertakan respon untuk laporan ini</p>
+        <input type="text" name="response" [(ngModel)]="response" placeholder="Ketik respon untuk laporan ini..."
+            class="form-control" required>
+
+        <br>
+    </div>
+
+
+</div>
+<div style="width: 100%; padding-top: 15px; text-align: end;">
+    <button mat-button (click)="batal()">Kembali</button>
+    <button mat-button [mat-dialog-close]="response">Tutup laporan</button>
+</div>
+
+
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        Unauthorized
+    </div>
+</ng-template>

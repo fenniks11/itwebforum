@@ -6,6 +6,11 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { MatDialog } from '@angular/material/dialog';
 import { HighlightService } from 'src/app/prism.component';
 import { TimeVerbose } from 'src/app/time.component';
+import { EditPesan } from './edit-answer/edit-pesan.component';
+import { BanForum } from './ban-forum/ban-forum.component';
+import { ReportForum } from './report-forum/report-forum.component';
+import { BanPesan } from './ban-pesan/ban-pesan.component';
+import { ReportPesan } from './report-pesan/report-pesan.component';
 
 
 
@@ -18,11 +23,13 @@ import { TimeVerbose } from 'src/app/time.component';
 })
 export class BukaForum implements AfterViewChecked {
 
-    root = {route: "/forum", name: "Forum"}
+    root = { route: "/forum", name: "Forum" }
 
     id = "";
     _id = sessionStorage.getItem("_id");
     logged_in = !sessionStorage.getItem("_id") ? false : true;
+    is_admin = false;
+    ban = {} as any;
     show = 5;
     isiKirim = {
         id_op: "",
@@ -44,15 +51,15 @@ export class BukaForum implements AfterViewChecked {
     crnPage = 1;
     notFound = 0;
     focusTo = 0;
-    Edit = false;
 
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
         private router: Router,
         private snackBar: MatSnackBar,
-        private clipboard: Clipboard, 
+        private clipboard: Clipboard,
         private highlightService: HighlightService,
+        public dialog: MatDialog,
         private timeVerbose: TimeVerbose
     ) { }
 
@@ -116,11 +123,13 @@ export class BukaForum implements AfterViewChecked {
             this.id = this.route.snapshot.paramMap.get("id");
         }
 
+        let adminCheck = (await this.http.post('http://localhost:3000/api/admin/check', { id: this._id }).toPromise()) as any;
+        adminCheck.isAdmin ? this.is_admin = true : 0;
+
+
         this.body.arr = [this.id, this._id]
         try { this.metadataForum = (await this.http.post('http://localhost:3000/api/forum/metadata', this.body).toPromise()) as any[]; }
         catch (err) { if (err) return this.notFound = 1; }
-
-        this.listPesan = (await this.http.post('http://localhost:3000/api/forum/pesan/list', this.body).toPromise()) as any[];
 
         for (let ph of this.metadataForum) {
             this.metadata.judul = ph.namaForum
@@ -130,18 +139,110 @@ export class BukaForum implements AfterViewChecked {
             this.metadata.ProfilePicture = ph.ProfilePicture
             this.metadata.lastEdited = ph.lastEdited
             this.metadata.createdDate = ph.createdDate
+            this.ban = ph.ban;
         }
 
-        this.page = [1]
-        for (let index = 1; index < Math.ceil(this.listPesan.length / this.show); index) {
-            this.page.push(++index)
+
+        if (!this.ban.status) {
+            this.listPesan = (await this.http.post('http://localhost:3000/api/forum/pesan/list', this.body).toPromise()) as any[];
+
+
+            this.page = [1]
+            for (let index = 1; index < Math.ceil(this.listPesan.length / this.show); index) {
+                this.page.push(++index)
+            }
+            if (this.crnPage > this.page.length) this.crnPage = this.page.length
+
+            this.focusTo = parseInt(window.location.hash.replace("#", ""));
+
+
+            if (this.focusTo) this.focus(this.focusTo)
         }
-        if(this.crnPage > this.page.length) this.crnPage = this.page.length
-
-        this.focusTo = parseInt(window.location.hash.replace("#", ""));
+    }
 
 
-        if (this.focusTo) this.focus(this.focusTo)
+    async banForum() {
+
+        var temp = await this.http
+            .post('http://localhost:3000/api/forum/metadata', this.body)
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(BanForum, {
+            width: '80%',
+            data: this.metadata
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            this.http.post("http://localhost:3000/api/admin/ban/forum", { uid: this._id, id: this.id, reason: result }).toPromise();
+            window.location.reload()
+        });
+
+    }
+
+    async banPesan(id) {
+
+        var temp = await this.http
+            .post('http://localhost:3000/api/pesan/metadata', { idPesan: id })
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(BanPesan, {
+            width: '80%',
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            this.http.post("http://localhost:3000/api/admin/ban/pesan", { uid: this._id, id: id, reason: result }).toPromise();
+            window.location.reload()
+        });
+
+    }
+
+    async reportForum() {
+        var temp = await this.http
+            .post('http://localhost:3000/api/forum/metadata', this.body)
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(ReportForum, {
+            width: '80%',
+            data: this.metadata
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            console.log(result);
+
+            this.http.post("http://localhost:3000/api/admin/report", { type: "forum", uid: this._id, id: this.id, reason: result }).toPromise();
+            this.snackBar.open(`Terimakasih atas laporannya. Staff akan segera mencheck forum ini.`, null, { duration: 3000 })
+        });
+    }
+
+    async reportPesan(id) {
+        var temp = await this.http
+            .post('http://localhost:3000/api/pesan/metadata', { idPesan: id })
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(ReportPesan, {
+            width: '80%',
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            console.log(result);
+
+            this.http.post("http://localhost:3000/api/admin/report", { type: "pesan", uid: this._id, id: id, reason: result }).toPromise();
+            this.snackBar.open(`Terimakasih atas laporannya. Staff akan segera mencheck pesan ini.`, null, { duration: 3000 })
+        });
     }
 
     focus(focusTo) {
@@ -193,18 +294,20 @@ export class BukaForum implements AfterViewChecked {
         var temp = await this.http
             .post('http://localhost:3000/api/pesan/metadata', this.body)
             .toPromise() as any[];
-        for (let ph of temp) {
-            this.isiKirim.isi_pesan = ph.isiPesan
-            this.isiKirim.id_op = ph.idOP
-            this.isiKirim.idPesan = ph.idPesan
-        }
-        this.Edit = true;
-        this.ngOnInit(this.id);
-        window.location.hash = `#editor`
+
+        const dialogRef = this.dialog.open(EditPesan, {
+            width: '80%',
+            data: { pesan: temp[0].isiPesan }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result) return;
+            this.confirm_edit(temp[0].idPesan, result, temp[0].idOP)
+        });
     }
 
-    async confirm_edit() {
-        this.body.arr = [this.id, this.isiKirim.idPesan, this.isiKirim.isi_pesan, this.isiKirim.id_op]
+    async confirm_edit(idPesan, isiPesan, idOP) {
+        this.body.arr = [this.id, idPesan, isiPesan, idOP, this._id]
 
         await this.http
             .post('http://localhost:3000/api/pesan/edit', this.body)
@@ -212,7 +315,6 @@ export class BukaForum implements AfterViewChecked {
         this.isiKirim.isi_pesan = "";
         this.isiKirim.id_op = "";
         this.isiKirim.idPesan = null;
-        this.Edit = false;
         this.ngOnInit(this.id)
     }
     async next_page(page) {
@@ -225,7 +327,13 @@ export class BukaForum implements AfterViewChecked {
             });
     }
 
-    verboseTime(time) {        
+    editForum() {
+        this.router.navigate(['forum/edit', { id: this.id }], {
+            skipLocationChange: true,
+        });
+    }
+
+    verboseTime(time) {
         return this.timeVerbose.parseTime(time).verbose[5]
     }
 

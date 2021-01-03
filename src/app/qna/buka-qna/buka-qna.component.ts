@@ -8,6 +8,10 @@ import { HighlightService } from 'src/app/prism.component';
 import { TimeVerbose } from 'src/app/time.component';
 import { EditAnswer } from './edit-answer/edit-answer.component';
 import { PilihAnswer } from './pilih-answer/pilih-answer.component';
+import { BanQnA } from './ban-qna/ban-qna.component';
+import { ReportQnA } from './report-qna/report-qna.component';
+import { ReportAnswer } from './report-answer/report-answer.component';
+import { BanAnswer } from './ban-answer/ban-answer.component';
 
 
 
@@ -47,6 +51,7 @@ export class BukaQnA implements AfterViewChecked {
     listKomentar = [] as any;
     body = { arr: [], idAnswer: "" }
     listAnswer = [];
+    ban = {} as any;
     metadataQnA = [];
     page = [1];
     crnPage = 1;
@@ -56,6 +61,7 @@ export class BukaQnA implements AfterViewChecked {
     hasAnswered = 0;
     chosenAnswer = 0;
     answer_date = 0;
+    is_admin = false;
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
@@ -129,13 +135,14 @@ export class BukaQnA implements AfterViewChecked {
         }
 
 
+        let adminCheck = (await this.http.post('http://localhost:3000/api/admin/check', { id: this._id }).toPromise()) as any;
+        adminCheck.isAdmin ? this.is_admin = true : 0;
 
 
         this.body.arr = [this.id, this._id]
         try { this.metadataQnA = (await this.http.post('http://localhost:3000/api/qna/metadata', this.body).toPromise()) as any[]; }
         catch (err) { if (err) return this.notFound = 1; }
 
-        this.listAnswer = (await this.http.post('http://localhost:3000/api/qna/answer/list', this.body).toPromise()) as any[];
 
         for (let ph of this.metadataQnA) {
             this.metadata.judul = ph.namaQnA
@@ -148,22 +155,111 @@ export class BukaQnA implements AfterViewChecked {
             this.answer_date = ph.resolved_date
             this.metadata.createdDate = ph.createdDate
             if (ph.idOP == this._id) this.asker = true;
+            this.ban = ph.ban;
         }
 
+        if (!this.ban.status) {
+            this.listAnswer = (await this.http.post('http://localhost:3000/api/qna/answer/list', this.body).toPromise()) as any[];
 
-        this.page = [1]
-        for (let index = 1; index < Math.ceil(this.listAnswer.length / this.show); index) {
-            this.page.push(++index)
+            this.page = [1]
+            for (let index = 1; index < Math.ceil(this.listAnswer.length / this.show); index) {
+                this.page.push(++index)
+            }
+            if (this.crnPage > this.page.length) this.crnPage = this.page.length
+
+            for (let v of this.listAnswer) if (v.idOP == this._id) this.hasAnswered = v.idAnswer;
+
+            this.focusTo = parseInt(window.location.hash.replace("#", ""));
+
+
+            if (this.focusTo && reFocus) this.focus(this.focusTo)
         }
-        if (this.crnPage > this.page.length) this.crnPage = this.page.length
-
-        for (let v of this.listAnswer) if (v.idOP == this._id) this.hasAnswered = v.idAnswer;
-
-        this.focusTo = parseInt(window.location.hash.replace("#", ""));
-
-
-        if (this.focusTo && reFocus) this.focus(this.focusTo)
     }
+
+    async banQnA() {
+
+        var temp = await this.http
+            .post('http://localhost:3000/api/qna/metadata', this.body)
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(BanQnA, {
+            width: '80%',
+            data: this.metadata
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            this.http.post("http://localhost:3000/api/admin/ban/qna", { uid: this._id, id: this.id, reason: result }).toPromise();
+            window.location.reload()
+        });
+
+    }
+
+    async reportQnA() {
+        var temp = await this.http
+            .post('http://localhost:3000/api/qna/metadata', this.body)
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(ReportQnA, {
+            width: '80%',
+            data: this.metadata
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;            
+            console.log(result);
+            
+            this.http.post("http://localhost:3000/api/admin/report", { type: "qna", uid: this._id, id: this.id, reason: result }).toPromise();
+            this.snackBar.open(`Terimakasih atas laporannya. Staff akan segera mencheck pertanyaan ini.`, null, { duration: 3000 })
+        });
+    }
+
+    async reportAnswer(id) {
+        var temp = await this.http
+            .post('http://localhost:3000/api/answer/metadata', { idAnswer: id })
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(ReportAnswer, {
+            width: '80%',
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            console.log(result);
+
+            this.http.post("http://localhost:3000/api/admin/report", { type: "answer", uid: this._id, id: id, reason: result }).toPromise();
+            this.snackBar.open(`Terimakasih atas laporannya. Staff akan segera mencheck jawaban ini.`, null, { duration: 3000 })
+        });
+    }
+
+    async banAnswer(id) {
+
+        var temp = await this.http
+            .post('http://localhost:3000/api/answer/metadata', { idAnswer: id })
+            .toPromise() as any[];
+        var data = temp[0] as any;
+        data._id = this._id;
+
+        const dialogRef = this.dialog.open(BanAnswer, {
+            width: '80%',
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (!result) return;
+            this.http.post("http://localhost:3000/api/admin/ban/answer", { uid: this._id, id: id, reason: result }).toPromise();
+            window.location.reload()
+        });
+
+    }
+
 
     focus(focusTo) {
         this.router.navigate(['../qna/buka/' + this.id]);
@@ -228,7 +324,7 @@ export class BukaQnA implements AfterViewChecked {
     }
 
     async confirm_edit(idAnswer, isiAnswer, idOP) {
-        this.body.arr = [this.id, idAnswer, isiAnswer, idOP]
+        this.body.arr = [this.id, idAnswer, isiAnswer, idOP, this._id]
 
         await this.http
             .post('http://localhost:3000/api/answer/edit', this.body)
@@ -277,7 +373,8 @@ export class BukaQnA implements AfterViewChecked {
             this.komentar.idAnswer = id;
             try { this.listKomentar = (await this.http.post('http://localhost:3000/api/qna/answer/comment/list', { idAnswer: id }).toPromise()) as any[]; }
             catch (err) { }
-            finally{console.log(this.listKomentar);
+            finally {
+                console.log(this.listKomentar);
             }
 
         }
@@ -292,8 +389,13 @@ export class BukaQnA implements AfterViewChecked {
 
     }
 
+    editQnA() {
+        this.router.navigate(['qna/edit', { id: this.id }], {
+            skipLocationChange: true,
+        });
+    }
 
-    async comment(){
+    async comment() {
         this.body.arr = [this.komentar.idAnswer, this.komentar.isiComment, this._id]
         await this.http.post("http://localhost:3000/api/qna/answer/comment/tambahcomment", this.body).toPromise();
         this.komentar.isiComment = ""

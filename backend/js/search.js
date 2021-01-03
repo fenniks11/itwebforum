@@ -12,7 +12,6 @@ module.exports = {
             //list all tags
             var _tags = await db.collection("Tags").find({value: new RegExp(keys, "i")}).toArray()
 
-            console.log(type);
             for (let i = 0; i < type.length; i++) {
                 let queries = []
                 if (type[i] == "forum") {

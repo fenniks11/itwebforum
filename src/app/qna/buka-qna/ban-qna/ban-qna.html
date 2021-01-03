@@ -1,0 +1,66 @@
+<!-- MAIN -->
+<div *ngIf="logged_in else not_logged">
+    <h1 mat-dialog-title>Ban pertanyaan ini?</h1>
+    <div mat-dialog-content>
+        <p>Sertakan alasan kenapa pertanyaan ini di ban</p>
+        <input type="text" name="reason" [(ngModel)]="reason" placeholder="Ketik alasan mengapa pertanyaan ini di ban..."
+            class="form-control" required>
+
+        <br>
+
+        <div class="container-fluid dialog-c-mbody" id="{{selected.idAnswer}}">
+
+            <!-- top -->
+            <div class="dialog-top-mbody">
+                <small *ngIf="selected.lastEdited != null" ngbPopover="{{verboseTime(selected.lastEdited)}}"
+                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
+                    class="dialog-time-info dialog-edited">(Edited)
+                </small>
+                <small class="dialog-time-info">{{verboseTime(selected.createdDate)}}</small>
+            </div>
+            <!-- top end -->
+
+            <!-- main -->
+            <div class="row">
+
+
+
+                <!-- user info -->
+                <div class="col-md-1 dialog-user-info">
+                    <img #img [src]="selected.ProfilePicture" class="dialog-p-profile">
+                    <div class="dialog-d-profile">
+                        <span class="card-title dialog-n-profile">{{selected.originalPoster}}
+                        </span>
+                    </div>
+                </div>
+                <!-- user info end -->
+
+                <!-- main message -->
+                <div class="col-md-auto dialog-outer-m-mbody">
+                    <p class="card-text" [innerHTML]="selected.pesanUtama" style="margin-top: 20px;"> </p>
+                </div>
+                <!-- main message end -->
+
+            </div>
+        </div>
+
+        <!-- main end -->
+
+        <!-- bottom -->
+        <!-- bottom end -->
+
+    </div>
+
+
+</div>
+<div style="width: 100%; padding-top: 15px; text-align: end;">
+    <button mat-button (click)="batal()">Kembali</button>
+    <button mat-button [mat-dialog-close]="reason">Ban pertanyaan</button>
+</div>
+
+
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        Unauthorized
+    </div>
+</ng-template>

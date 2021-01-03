@@ -10,27 +10,34 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class HeaderApp {
   @Input() public titleHeader: string;
-  constructor(private router: Router, private snackBar: MatSnackBar) { };
+  constructor(private router: Router, private snackBar: MatSnackBar, private http: HttpClient,) { };
 
+  is_admin = false;
   login = false;
   keywords = "" as string;
   parent = "forum" //default parent
   smallerWidth = false;
 
   async ngOnInit() {
+    let adminCheck = (await this.http.post('http://localhost:3000/api/admin/check', { id: sessionStorage.getItem("_id") }).toPromise()) as any;
+    adminCheck.isAdmin ? this.is_admin = true : 0;
+
     this.login = !sessionStorage.getItem("_id") ? false : true
     this.onResize(0)
   }
 
-  onResize(event){
-    this.smallerWidth = window.screen.width > 610 ?  false : true;        
+  onResize(event) {
+    this.smallerWidth = window.screen.width > 610 ? false : true;
   }
 
   async update() {
     let title = await window.localStorage.getItem("activeTitle");
     this.titleHeader = !title.length ? "Cari sesuatu..." : title;
     this.parent = window.localStorage.getItem("parent")
-    
+  }
+
+  admin() {
+    this.router.navigate(['admin'])
   }
 
   tambahForum() {

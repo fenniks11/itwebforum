@@ -17,6 +17,13 @@ module.exports = {
                 getUser = await db.collection("user").find({ "user_id": docs[i].idOP }).toArray();
                 docs[i]["ProfilePicture"] = getUser[0].profile_picture;
                 docs[i]["originalPoster"] = getUser[0].username;
+
+                if(docs[i].ban.status){
+                    let getBanner, banner_id = docs[i].ban.banner;
+                    docs[i].ban.banner = {}
+                    getBanner = await db.collection("user").find({ "user_id": banner_id }).toArray();
+                    docs[i].ban.banner["originalPoster"] = getBanner[0].username;
+                }
             }
             if (!docs)
                 return res.json({
@@ -29,8 +36,6 @@ module.exports = {
 
     TambahPesan: async function (app, db) {
         app.post("/api/forum/pesan/tambahpesan", async (req, res) => {
-            console.log(req.body);
-            // return res.sendStatus(200)
             var id = parseInt(req.body.arr[0])
             var idp = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000))
             db.collection("pesan").insertOne({
@@ -39,7 +44,14 @@ module.exports = {
                 createdDate: new Date().getTime(),
                 isiPesan: req.body.arr[1],
                 idOP: req.body.arr[2],
-                lastEdited: null
+                lastEdited: null,
+                edittedBy: 0,
+                ban: {
+                    status: false,
+                    reason: null,
+                    ban_Date: null,
+                    banner: null
+                }
             });
             res.status(200).send();
         });
@@ -72,6 +84,7 @@ module.exports = {
             let getUser;
             getUser = await db.collection("user").find({ "user_id": docs[0].idOP }).toArray();
             docs[0]["originalPoster"] = getUser[0].nama;
+            docs[0]["ProfilePicture"] = getUser[0].profile_picture;
             res.json(docs);
         });
     },
@@ -80,9 +93,10 @@ module.exports = {
         app.post("/api/pesan/edit", async (req, res) => {
             var crnDate = new Date().getTime()
             db.collection("pesan").update({ idPesan: req.body.arr[1] }, {
-                $set:{
+                $set: {
                     isiPesan: req.body.arr[2],
-                    lastEdited: crnDate    
+                    lastEdited: crnDate,
+                    edittedBy: req.body.arr[4]
                 }
             })
             res.status(200).send();

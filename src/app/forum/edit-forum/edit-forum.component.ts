@@ -1,10 +1,12 @@
 import { Component, NgModule } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { TagifyService } from "../../tagify.service";
 
 @Component({
     selector: 'edit-forum',
     templateUrl: './edit-forum.html',
+    styleUrls: ["edit-forum.css"]
 })
 export class EditForum {
     id = "";
@@ -12,10 +14,14 @@ export class EditForum {
     pesan_utama = "";
     nama_baru = "";
     logged_in = !sessionStorage.getItem("_id") ? false : true;
+    _id = sessionStorage.getItem("_id");
     idOP = "";
     body = { arr: [] }
     body1 = { arr: [] }
-    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
+    tagify: any;
+    tagsLoaded = false;
+    tags = [] as any;
+    constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private Tagify: TagifyService) { }
 
     public TinyMce = {
         height: 500,
@@ -59,8 +65,27 @@ export class EditForum {
             xhr.send(formData);
         }
     }
+    public TagifySettings = {
+
+        enforceWhitelist: true,
+        whitelist: [],
+        placeholder: "Ketik sebuah tag, minimal 1 tag dan maksimal 5 tag",
+        maxTags: 5,
+        dropdown: {
+          maxItems: 20,           // <- mixumum allowed rendered suggestions
+          classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+          enabled: 1
+        }
+      };
     
     async ngOnInit() {
+        var tag = (await this.http
+            .get('http://localhost:3000/api/tags/list')
+            .toPromise()) as any[];
+      
+          this.TagifySettings = { ...this.TagifySettings, whitelist: tag }
+          this.tagsLoaded = true
+
         if (sessionStorage.getItem("_id") == null) return this.router.navigate(['/'])
         this.id = this.route.snapshot.paramMap.get("id")
         this.body.arr.push(this.id)
@@ -71,8 +96,22 @@ export class EditForum {
             this.idOP = ph.idOP;
         }
     }
+
+    tagChange(event) {
+    
+        let temp = [], obj = JSON.parse(event.target.value)
+        for (let i = 0; i < obj.length; i++) {
+          temp.push(obj[i]["idTag"])
+          
+        }
+        
+        this.tags = temp
+    
+      }
+
+
     kirim() {
-        this.body1.arr = [this.id, this.nama_baru, this.idOP, this.pesan_utama]
+        this.body1.arr = [this.id, this.nama_baru, this.idOP, this.pesan_utama, this.tags, this._id]
         this.http.post("http://localhost:3000/api/forum/edit", this.body1).toPromise();
         this.router.navigate(['forum'], { skipLocationChange: true })
     }

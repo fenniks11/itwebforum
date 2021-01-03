@@ -1,0 +1,58 @@
+<div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
+    <nav-bar current="Admin Panel"> </nav-bar>
+    <mat-drawer-container style="height: max-content; min-height: 700px; max-height: 100%; border-radius: 3px;">
+        <mat-drawer mode="side" opened>
+            <!-- admin / mod info  -->
+
+            <div class="user-info">
+                <img #img [src]="details.profile_picture" class="p-profile">
+                <div class="d-profile">
+                    <span class="card-title n-profile">{{details.username}}
+                    </span>
+                </div>
+            </div>
+
+            <!-- admin / mod info end -->
+
+            <div id="nav-button-holder">
+                <button (click)="activePage = 'home'" class="btn btn-outline-secondary nav-buttons">Admin
+                    home</button>
+
+                <button (click)="activePage = 'report'" class="btn btn-outline-secondary nav-buttons">Laporan</button>
+
+                <button (click)="activePage = 'manage_tags'" class="btn btn-outline-secondary nav-buttons">Tags</button>
+            </div>
+
+        </mat-drawer>
+
+        <mat-drawer-content>
+            <div [ngSwitch]="activePage">
+
+                <div *ngSwitchCase="'home'">
+                    <admin-home></admin-home>
+                </div>
+
+                <div *ngSwitchCase="'report'">
+                    <admin-report></admin-report>
+                </div>
+
+                <div *ngSwitchCase="'manage_tags'">
+                    <admin-tags></admin-tags>
+                </div>
+
+                <div *ngSwitchDefault>
+                    <admin-home></admin-home>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+
+
+<ng-template #unauthorizedAccess class="overlay">
+    <div class="overlay-content"> Unauthorized! </div>
+</ng-template>
+
+<ng-template *ngIf="check == 0" class="overlay">
+    <div class="overlay-content"> Authorization Initializing... </div>
+</ng-template>

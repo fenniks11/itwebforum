@@ -1,0 +1,28 @@
+<!-- MAIN -->
+<div *ngIf="logged_in else not_logged">
+
+    <h1 mat-dialog-title class="text-danger">Hapus tag ini?</h1>
+
+    <div mat-dialog-content>
+        <p>Tag ini akan menghilang dari database, termasuk database Forum dan QnA. Lanjutkan?</p>
+        <input type="text" name="verify" [(ngModel)]="verify" placeholder='Ketik "{{selected.value}}" tanpa tanda kutip...'
+            class="form-control" required>
+
+        <br>
+    </div>
+
+
+</div>
+<div style="width: 100%; padding-top: 15px; text-align: end;">
+    <button mat-button (click)="batal()">Kembali</button>
+    <button mat-button class="btn btn-danger"
+        [disabled]="verify != selected.value "
+        [mat-dialog-close]="true">Hapus Tag</button>
+</div>
+
+
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        Unauthorized
+    </div>
+</ng-template>

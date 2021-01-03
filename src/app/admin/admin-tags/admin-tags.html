@@ -1,0 +1,79 @@
+<div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
+
+    <mat-tab-group>
+
+        <mat-tab label="List">
+
+            <div *ngFor="let tag of tagList">
+
+                <mat-expansion-panel class="tag-cards">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+
+                        <mat-panel-title>
+                            {{tag.value}}
+                        </mat-panel-title>
+
+
+                        <mat-panel-description>
+                            #{{tag.idTag}}
+                        </mat-panel-description>
+
+                    </mat-expansion-panel-header>
+
+                    Deskripsi:
+                    <p> {{tag.tagDescription}} </p>
+
+                    <div class="tag-action-buttons">
+
+                        <button (click)="deleteTag(tag.idTag, tag.value)" class="btn btn-danger">Hapus</button>&nbsp;
+
+                        <button (click)="editTag(tag.idTag, tag.value, tag.tagDescription)" class="btn btn-primary">Edit</button>&nbsp;
+
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+
+
+
+
+
+        </mat-tab>
+
+        <mat-tab label="Tambah">
+            <p>Tambahkan tag baru kedalam database</p>
+
+            <mat-form-field class="tag-input">
+                <mat-label>Nama tag</mat-label>
+                <input matInput placeholder="Cth: Javascript, CSS, PHP..." [(ngModel)]="newTag.name">
+            </mat-form-field>
+
+            <br>
+
+            <mat-form-field class="tag-input">
+                <mat-label>Deskripsi tag</mat-label>
+                <textarea matInput [(ngModel)]="newTag.description"
+                    placeholder="Cth: JavaScript adalah bahasa pemrograman..."></textarea>
+            </mat-form-field>
+
+            <div style="text-align: end;">
+                <button (click)="addTag()" [disabled]="!newTag.name.length || !newTag.description.length"
+                    class="btn btn-success">Tambah</button>&nbsp;
+            </div>
+
+        </mat-tab>
+
+    </mat-tab-group>
+
+
+</div>
+
+<ng-template #unauthorizedAccess class="overlay">
+    <div class="overlay-content"> Unauthorized! </div>
+</ng-template>
+
+<ng-template *ngIf="check == 0" class="overlay">
+    <div class="overlay-content"> Authorization Initializing... </div>
+</ng-template>

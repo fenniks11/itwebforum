@@ -54,6 +54,23 @@ import { FooterComponent } from './home/footer/footer.component';
 import { Contact } from './home/footer/contact/contact.component';
 import { About } from './home/footer/about/about.component';
 import { AdviceDialog } from './home/footer/advice/advice.component';
+import { EditPesan } from './forum/buka-forum/edit-answer/edit-pesan.component';
+import { AdminPanel } from './admin/admin.component';
+import { BanForum } from './forum/buka-forum/ban-forum/ban-forum.component';
+import { BanQnA } from './qna/buka-qna/ban-qna/ban-qna.component';
+import { ReportQnA } from './qna/buka-qna/report-qna/report-qna.component';
+import { ReportForum } from './forum/buka-forum/report-forum/report-forum.component';
+import { BanPesan } from './forum/buka-forum/ban-pesan/ban-pesan.component';
+import { ReportPesan } from './forum/buka-forum/report-pesan/report-pesan.component';
+import { ReportAnswer } from './qna/buka-qna/report-answer/report-answer.component';
+import { BanAnswer } from './qna/buka-qna/ban-answer/ban-answer.component';
+import { AdminHome } from './admin/admin-home/admin-home.component';
+import { AdminReport } from './admin/admin-report/admin-report.component';
+import { ReportClose } from './admin/admin-report/report-close/report-close.component';
+import {MatTabsModule} from '@angular/material/tabs'; 
+import { AdminTags } from './admin/admin-tags/admin-tags.component';
+import { DeleteTag } from './admin/admin-tags/delete-tag/delete-tag.component';
+import { EditTag } from './admin/admin-tags/edit-tag/edit-tag.component';
 
 
 
@@ -81,12 +98,28 @@ import { AdviceDialog } from './home/footer/advice/advice.component';
     Err404,
     NavBar,
     EditAnswer,
-    TagifyComponent,  
+    TagifyComponent,
     PilihAnswer,
     FooterComponent,
     Contact,
     About,
-    AdviceDialog
+    AdviceDialog,
+    EditPesan,
+    AdminPanel,
+    BanForum,
+    BanQnA,
+    ReportQnA,
+    ReportForum,
+    BanPesan,
+    ReportPesan,
+    ReportAnswer,
+    BanAnswer,
+    AdminHome,
+    AdminReport,
+    ReportClose,
+    AdminTags,
+    DeleteTag,
+    EditTag
   ],
   imports: [
     BrowserModule,
@@ -101,11 +134,12 @@ import { AdviceDialog } from './home/footer/advice/advice.component';
     MatToolbarModule,
     MatDialogModule,
     MatSidenavModule,
+    MatTabsModule,
     FormsModule,
     HttpClientModule,
     MatGridListModule,
     MatIconModule,
-    MatStepperModule, 
+    MatStepperModule,
     MatTableModule,
     MatPaginatorModule,
     MatSnackBarModule,
@@ -118,12 +152,24 @@ import { AdviceDialog } from './home/footer/advice/advice.component';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  entryComponents:[
+  entryComponents: [
     EditAnswer,
     PilihAnswer,
     Contact,
     About,
-    AdviceDialog
+    AdviceDialog,
+    EditPesan,
+    BanForum,
+    BanQnA,
+    ReportQnA,
+    ReportForum,
+    BanPesan,
+    ReportPesan,
+    ReportAnswer,
+    BanAnswer,
+    ReportClose,
+    DeleteTag,
+    EditTag
   ],
   providers: [{ provide: Window, useValue: window }, HighlightService, TimeVerbose, TagifyService],
   bootstrap: [AppComponent]

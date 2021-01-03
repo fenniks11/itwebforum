@@ -23,7 +23,14 @@ module.exports = {
                 },
                 resolve_answer: 0,
                 resolved_date: 0,
-                lastEdited: null
+                lastEdited: null,
+                edittedBy: 0,
+                ban: {
+                    status: false,
+                    reason: null,
+                    ban_Date: null,
+                    banner: null
+                }
             });
             return res.json({
                 id: id,
@@ -33,7 +40,7 @@ module.exports = {
 
     ListQnA: async function (app, db) {
         app.get("/api/qna/list", async (req, res) => {
-            const docs = await db.collection("qna").find({}).toArray();
+            const docs = await db.collection("qna").find({"ban.status": false}).toArray();
             let getUser, getResponses, getTags;
 
             for (let i = 0; i < docs.length; i++) {
@@ -108,6 +115,14 @@ module.exports = {
             getResponses = await db.collection("answer").find({ "idQnA": docs[0].idQnA }).toArray();
             docs[0]["responses"] = getResponses.length;
 
+            if(docs[0].ban.status){
+                let getBanner, banner_id = docs[0].ban.banner;
+                docs[0].ban.banner = {}
+                getBanner = await db.collection("user").find({ "user_id": banner_id }).toArray();
+                docs[0].ban.banner["ProfilePicture"] = getBanner[0].profile_picture;
+                docs[0].ban.banner["originalPoster"] = getBanner[0].username;
+            }
+
             res.json(docs);
 
         });
@@ -121,7 +136,10 @@ module.exports = {
                 $set: {
                     pesanUtama: req.body.arr[3],
                     lastEdited: crnDate,
-                    namaQnA: req.body.arr[1]
+                    edittedBy: req.body.arr[6],
+                    namaQnA: req.body.arr[1],
+                    tags: req.body.arr[5],
+                    category: req.body.arr[4],
                 }
             })
             res.status(200).send();

@@ -19,6 +19,7 @@ import { TambahQuestion } from './qna/tambah-q/tambah-q.component';
 import { BukaQnA } from './qna/buka-qna/buka-qna.component';
 import { EditQuestion } from './qna/edit-question/edit-question.component';
 import { Err404 } from './home/404err/404err.component';
+import { AdminPanel } from './admin/admin.component';
 
 
 
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'qna/tambah', component: TambahQuestion },
   { path: 'qna/buka/:id', component: BukaQnA },
   { path: 'qna/edit', component: EditQuestion },
+  { path: 'admin', component: AdminPanel },
   { path: '', component: HomeComponent }, //Main page
   { path: '**', component:  Err404} //error 404 page
 ];

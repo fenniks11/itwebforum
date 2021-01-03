@@ -5,6 +5,13 @@
 
 
     <div *ngIf="!notFound else err404">
+
+        <!-- ban status  -->
+        <div *ngIf="ban.status">
+            <h1 style="font-size: 100px; text-align: center;"><span class="badge badge-danger">Banned</span></h1>
+        </div>
+        <!-- ban status end -->
+
         <!-- main title -->
         <h1 id="main-title">{{metadata.judul}}</h1>
         <h4 id="main-op">Main OP: {{metadata.originalPoster}}</h4>
@@ -12,14 +19,13 @@
 
         <!-- MAIN MESSAGE -->
 
-        <div class="c-mbody">
+        <div class="c-mbody" *ngIf="!ban.status else bannedMessage">
 
             <!-- top -->
             <div class="top-mbody">
 
-                    <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
-                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
-                    class="time-info edited">(Edited)
+                <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
+                    triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit" class="time-info edited">(Edited)
                 </small>
 
                 <small class="time-info">{{verboseTime(metadata.createdDate)}}</small>
@@ -51,7 +57,26 @@
             <!-- bottom -->
             <div class="bottom-mbody">
 
+                <a (click)="reportForum()" ngbPopover="Laporkan forum ini" triggers="mouseenter:mouseleave"
+                    class="clickable">
+                    <i class="fa fa-exclamation fa-lg"></i></a>
+
+                <span *ngIf="_id == metadata.idOP">
+                    <span class="seperator"> | </span>
+
+                    <a (click)="editForum()" ngbPopover="Edit forum" triggers="mouseenter:mouseleave" class="clickable">
+                        <i class="fa fa-edit fa-lg"></i></a>
+                </span>
+
+                <span *ngIf="is_admin">
+                    <span class="seperator"> | </span>
+
+                    <a (click)="banForum()" ngbPopover="Ban forum" triggers="mouseenter:mouseleave" class="clickable">
+                        <i class="fa fa-ban fa-lg"></i></a>
+                </span>
+
             </div>
+            <!-- bottom end -->
 
         </div>
         <!-- MAIN MESSAGE END -->
@@ -76,13 +101,16 @@
 
                         <!-- top -->
                         <div class="top-mbody">
+                            <span *ngIf="list.ban.status" style="font-size: 15px;"><span
+                                    class="badge badge-danger">Banned</span>&nbsp;</span>
 
-                            <small *ngIf="list.lastEdited != null" ngbPopover="{{verboseTime(list.lastEdited)}}"
-                                triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
-                                class="time-info edited">(Edited)
+                            <small *ngIf="list.lastEdited != null && !list.ban.status"
+                                ngbPopover="{{verboseTime(list.lastEdited)}}" triggers="mouseenter:mouseleave"
+                                popoverTitle="Terakhir di Edit" class="time-info edited">(Edited)
                             </small>
 
-                            <small class="time-info">{{verboseTime(list.createdDate)}}</small>
+                            <small class="time-info">{{ verboseTime(!list.ban.status ?list.createdDate:
+                                list.ban.ban_Date)}}</small>
                         </div>
                         <!-- top end -->
 
@@ -101,7 +129,14 @@
 
                             <!-- main message -->
                             <div class="col-md-auto m-mbody">
-                                <p class="card-text" [innerHTML]="list.isiPesan" style="margin-top: 20px;"></p>
+                                <p *ngIf="!list.ban.status else bannedMsg" class="card-text" [innerHTML]="list.isiPesan"
+                                    style="margin-top: 20px;"></p>
+                                <ng-template #bannedMsg>
+                                    Pesan ini sudah di ban dengan alasan:
+                                    <blockquote>{{list.ban.reason}}</blockquote>
+                                    Oleh: {{list.ban.banner.originalPoster}}
+                                    <blockquote>{{verboseTime(list.ban.ban_Date)}}</blockquote>
+                                </ng-template>
                             </div>
                             <!-- main message end -->
 
@@ -109,11 +144,17 @@
                         <!-- main end -->
 
                         <!-- bottom -->
-                        <div class="bottom-mbody">
+                        <div class="bottom-mbody" *ngIf="!list.ban.status">
 
                             <a (click)="copylink(list.idPesan)" ngbPopover="Salin link pesan ini"
                                 triggers="mouseenter:mouseleave" class="clickable">
                                 <i class="fa fa-link fa-lg"></i></a>
+
+                            <span class="seperator"> | </span>
+
+                            <a (click)="reportPesan(list.idPesan)" ngbPopover="Laporkan pesan ini" triggers="mouseenter:mouseleave"
+                            class="clickable">
+                            <i class="fa fa-exclamation fa-lg"></i></a>
 
                             <span class="seperator"> | </span>
 
@@ -126,10 +167,18 @@
 
                                 <span class="seperator"> | </span>
 
-                                <a (click)="alertHapus(list.idAnswer)" ngbPopover="Hapus　pesan"
+                                <a (click)="alertHapus(list.idPesan)" ngbPopover="Hapus pesan"
                                     triggers="mouseenter:mouseleave" class="clickable"><i
                                         class="fa fa-trash-o fa-lg"></i></a>
 
+                            </span>
+
+                            <span *ngIf="is_admin">
+                                <span class="seperator"> | </span>
+
+                                <a (click)="banPesan(list.idPesan)" ngbPopover="Ban pesan"
+                                    triggers="mouseenter:mouseleave" class="clickable">
+                                    <i class="fa fa-ban fa-lg"></i></a>
                             </span>
 
                             <ng-template #bukanOP>
@@ -164,7 +213,8 @@
                             <option value="20">20</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
-                        </select></h5>
+                        </select>
+                    </h5>
                 </tr>
             </table>
         </div>
@@ -180,16 +230,20 @@
         </div>
 
         <div #input *ngIf="logged_in else not_logged">
-            <div *ngIf="Edit == false; else edit_msg">Tinggalkan balasan </div>
-            <ng-template #edit_msg> Edit Pesan </ng-template>
-            <div class="card">
-                <div style=" width: 85%; margin: 0 auto;">
-                    Isi pesan:*
-                    <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_pesan" data="isiKirim.isi_pesan" id="editor">
-                    </editor>
+            <div *ngIf="!ban.status else bannedInput">
+                <div>Tinggalkan balasan </div>
+                <div class="card">
+                    <div style=" width: 95%; margin: 0 auto;">
+                        Isi pesan:*
+                        <editor [init]="TinyMce" [(ngModel)]="isiKirim.isi_pesan" data="isiKirim.isi_pesan" id="editor">
+                        </editor>
+                    </div>
+                    <div style="width: 100%; margin: 0 auto; justify-content: flex-end; display: flex;">
+                        <P>*Syarat: Pesan minimal 5 karakter</P> &nbsp;
+                        <button style="color: black; width: fit-content;" class="btn btn-outline-secondary"
+                            [disabled]="isiKirim.isi_pesan.length < 12" (click)="kirim()">Kirim</button>
+                    </div>
                 </div>
-                <button *ngIf="!Edit else editButton" [disabled]="isiKirim.isi_pesan.length < 12"
-                    (click)="kirim()">Kirim</button>
             </div>
         </div>
 
@@ -226,5 +280,59 @@
 
 </ng-template>
 
-<ng-template #editButton><button [disabled]="isiKirim.isi_pesan.length < 12" (click)="confirm_edit()">Edit</button>
+
+<ng-template #bannedMessage>
+
+    <div class="c-mbody">
+
+        <!-- top -->
+        <div class="top-mbody">
+
+            <small *ngIf="metadata.lastEdited != null" ngbPopover="{{verboseTime(metadata.lastEdited)}}"
+                triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit" class="time-info edited">(Edited)
+            </small>
+
+            <small class="time-info">{{verboseTime(ban.ban_Date)}}</small>
+        </div>
+        <!-- top end -->
+
+        <!-- main -->
+        <div class="row">
+
+            <!-- user info -->
+            <div class="col-md-1 user-info">
+                <img #img [src]="ban.banner.ProfilePicture" class="p-profile">
+                <div class="d-profile">
+                    <span class="card-title n-profile">{{ban.banner.originalPoster}}
+                    </span>
+                </div>
+            </div>
+            <!-- user info end -->
+
+            <!-- main message -->
+            <div class="col-md-auto  m-mbody">
+                <h1 class="card-text" style="margin-top: 20px;">
+                    Forum ini sudah di ban dengan alasan:
+                    <blockquote>{{ban.reason}}</blockquote>
+                </h1>
+            </div>
+            <!-- main message end -->
+
+        </div>
+        <!-- main end -->
+
+        <!-- bottom -->
+        <div class="bottom-mbody">
+
+
+        </div>
+        <!-- bottom end -->
+
+    </div>
+
+</ng-template>
+
+<ng-template #bannedInput>
+    <strong style="margin: auto; text-align: center; display: block;">Kamu tidak dapat membalas forum yang sudah di
+        ban</strong>
 </ng-template>

@@ -61,4 +61,17 @@ module.exports = function (app, db) {
 
   let home = require("./js/home")
   home.Statistic(app, db)
+
+  let admin = require("./js/admin")
+  admin.levelCheck(app, db)
+  admin.BanForum(app, db)
+  admin.BanPesan(app, db)
+  admin.BanAnswer(app, db)
+  admin.BanQnA(app, db)
+  admin.Report(app, db)
+  admin.ReportList(app, db)
+  admin.ReportClose(app, db)
+  admin.AddTag(app, db)
+  admin.EditTag(app, db)
+  admin.DeleteTag(app,db)
 };
