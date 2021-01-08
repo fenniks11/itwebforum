@@ -21,6 +21,8 @@
                 <button (click)="activePage = 'report'" class="btn btn-outline-secondary nav-buttons">Laporan</button>
 
                 <button (click)="activePage = 'manage_tags'" class="btn btn-outline-secondary nav-buttons">Tags</button>
+
+                <button (click)="activePage = 'advice_inbox'" class="btn btn-outline-secondary nav-buttons">Kotak Saran</button>
             </div>
 
         </mat-drawer>
@@ -38,6 +40,10 @@
 
                 <div *ngSwitchCase="'manage_tags'">
                     <admin-tags></admin-tags>
+                </div>
+
+                <div *ngSwitchCase="'advice_inbox'">
+                    <admin-advice></admin-advice>
                 </div>
 
                 <div *ngSwitchDefault>

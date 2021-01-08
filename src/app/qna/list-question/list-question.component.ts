@@ -154,6 +154,10 @@ export class ListQuestion {
     });
   }
 
+  searchTag(value) {
+    this.router.navigate(['search', { keywords: "tag:" + value }])
+  }
+
   async filter(show) {
     if (show == "_empty") this.router.navigate(['qna'])
     else this.router.navigate(['qna', { show: show }], {})

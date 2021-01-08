@@ -278,7 +278,7 @@ module.exports = {
         });
     },
 
-    DeleteTag: async function(app,db){
+    DeleteTag: async function (app, db) {
         app.post("/api/admin/tag/delete", async (req, res) => {
 
             var uid = req.body.uid, idTag = req.body.idTag
@@ -292,22 +292,198 @@ module.exports = {
             db.collection("tags").deleteOne({ idTag: idTag });
 
             // edit forum & qna yang memiliki tag
-            db.collection("forum").update({},{
-                $pull:{
+            db.collection("forum").update({}, {
+                $pull: {
                     tags: idTag
                 }
             },
-            { multi: true })
+                { multi: true })
 
-            db.collection("qna").update({},{
-                $pull:{
+            db.collection("qna").update({}, {
+                $pull: {
                     tags: idTag
                 }
             },
-            { multi: true })
+                { multi: true })
 
             res.status(200).send();
         });
-    }
+    },
 
+    AdviceIn: async function (app, db) {
+        app.post("/api/advice/in", async (req, res) => {
+            var uid = req.body.uid, about = req.body.about, describe = req.body.describe
+
+            var ida = Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000));
+
+            db.collection("advice").insertOne({
+                idAdv: ida,
+                time: new Date().getTime(),
+                from: uid,
+                about: about,
+                describe: describe,
+                considered: false,
+                accepted: false,
+                readBy: []
+            });
+            res.status(200).send();
+        })
+    },
+
+    AdviceList: async function (app, db) {
+
+        app.post("/api/admin/advice/list", async (req, res) => {
+
+            var uid = req.body.uid
+
+            const doc = await db.collection("user").find({ user_id: uid }).toArray()
+
+            if (!doc[0]) return res.status(403).send("Unauthorized")
+            if (parseInt(doc[0].level) < 90) return res.status(403).send("Unauthorized")
+
+            var docs = await db
+                .collection("advice")
+                .find({})
+                .project({ "_id": 0 })
+                .toArray();
+
+            let getOP;
+
+            for (let i = 0; i < docs.length; i++) {
+
+                getOP = await db.collection("user").find({ "user_id": docs[i].from }).toArray();
+                docs[i].from = {
+                    id: docs[i].from,
+                    username: getOP[0].username,
+                    profile_picture: getOP[0].profile_picture
+                }
+
+
+                if (docs[i].considered) {
+                    getOP = await db.collection("user").find({ "user_id": docs[i].considered.by }).toArray();
+                    docs[i].considered = {
+                        by: {
+                            username: getOP[0].username,
+                            profile_picture: getOP[0].profile_picture
+                        },
+                        date: docs[i].considered.date
+                    }
+                }
+
+                if (docs[i].accepted) {
+                    getOP = await db.collection("user").find({ "user_id": docs[i].accepted.by }).toArray();
+                    docs[i].accepted = {
+                        by: {
+                            username: getOP[0].username,
+                            profile_picture: getOP[0].profile_picture
+                        },
+                        date: docs[i].accepted.date
+                    }
+                }
+
+            }
+
+            res.json(docs);
+
+        });
+
+    },
+
+    AdviceDeleteAll: async function (app, db) {
+
+        app.post("/api/admin/advice/delete_all", async (req, res) => {
+            var uid = req.body.uid, idd = req.body.idd
+
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+
+            if (!docs[0]) return res.status(403).send("Unauthorized")
+            if (parseInt(docs[0].level) < 90) return res.status(403).send("Unauthorized")
+
+            db.collection("advice").deleteMany({ from: idd, considered: false })
+
+
+            res.status(200).send();
+        })
+    },
+
+    AdviceMarkRead: async function (app, db) {
+
+        app.post("/api/admin/advice/read", async (req, res) => {
+            var uid = req.body.uid, idAdv = req.body.idAdv
+
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+
+            if (!docs[0]) return res.status(403).send("Unauthorized")
+            if (parseInt(docs[0].level) < 90) return res.status(403).send("Unauthorized")
+
+            db.collection("advice").updateOne({ idAdv: idAdv }, {
+                $push: { readBy: uid }
+            })
+
+
+            res.status(200).send();
+        })
+    },
+
+    AdviceConsider: async function (app, db) {
+
+        app.post("/api/admin/advice/consider", async (req, res) => {
+            var uid = req.body.uid, idAdv = req.body.idAdv
+
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+
+            if (!docs[0]) return res.status(403).send("Unauthorized")
+            if (parseInt(docs[0].level) < 90) return res.status(403).send("Unauthorized")
+
+            db.collection("advice").updateOne({ idAdv: idAdv }, {
+                $set: {
+                    considered: {
+                        date: new Date().getTime(),
+                        by: uid
+                    }
+                }
+            })
+            res.status(200).send();
+        })
+    },
+
+    AdviceUnConsider: async function (app, db) {
+
+        app.post("/api/admin/advice/unconsider", async (req, res) => {
+            var uid = req.body.uid, idAdv = req.body.idAdv
+
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+
+            if (!docs[0]) return res.status(403).send("Unauthorized")
+            if (parseInt(docs[0].level) < 90) return res.status(403).send("Unauthorized")
+
+            db.collection("advice").updateOne({ idAdv: idAdv }, {
+                $set: {
+                    considered: false
+                }
+            })
+            res.status(200).send();
+        })
+    },
+
+    AdviceAccept: async function (app, db) {
+        app.post("/api/admin/advice/accept", async (req, res) => {
+            var uid = req.body.uid, idAdv = req.body.idAdv
+
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+
+            if (!docs[0]) return res.status(403).send("Unauthorized")
+            if (parseInt(docs[0].level) < 90) return res.status(403).send("Unauthorized")
+
+            db.collection("advice").updateOne({ idAdv: idAdv }, {
+                $set: {
+                    accepted: {
+                        date: new Date().getTime(),
+                        by: uid
+                    }
+                }
+            })
+            res.status(200).send();
+        })
+    }
 }

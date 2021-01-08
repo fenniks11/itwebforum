@@ -81,26 +81,28 @@
 
                   </div>
 
-                  <div class="col-md-11" (click)="buka(list.idQnA)">
-                    <a class="nav-link">
+                  <div class="col-md-11" >
+                    <a class="nav-link" (click)="buka(list.idQnA)">
                       <p class="badge badge-pill badge-success answered-question" *ngIf="list.resolve_answer">Pertanyaan
                         terjawab</p>
                       <h2 class="card-title question-title" [innerHTML]="list.namaQnA"></h2>
 
                     </a>
-                    <p class="card-title" style="padding-left:10px;">Original Poster: {{list.originalPoster}}</p>
+                    <p class="card-title" (click)="buka(list.idQnA)" style="padding-left:10px;">Original Poster: {{list.originalPoster}}</p>
 
-                    <h5 class="time-info"><span *ngIf="list.lastEdited != null"
+                    <h5 class="time-info" (click)="buka(list.idQnA)"><span *ngIf="list.lastEdited != null"
                         ngbPopover="{{getDate(list.lastEdited)}}" triggers="mouseenter:mouseleave"
                         popoverTitle="Terakhir di Edit"
                         class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}} </h5>
 
 
                     <div class="button-tag">
+
                       <span *ngFor="let tag of list.tagList">
                         <a class="btn btn-sm btn-secondary mr-2" [ngbPopover]="tag.tagDescription"
-                          triggers="mouseenter:mouseleave" [popoverTitle]="tag.value" role="button">{{tag.value}}</a>
+                          triggers="mouseenter:mouseleave"(click)="searchTag(tag.value)" [popoverTitle]="tag.value" role="button">{{tag.value}}</a>
                       </span>
+
                     </div>
 
 

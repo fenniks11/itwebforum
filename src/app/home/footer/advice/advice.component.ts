@@ -9,6 +9,9 @@ import { TimeVerbose } from 'src/app/time.component';
 })
 export class AdviceDialog {
 
+    logged_in = !sessionStorage.getItem("_id") ? false : true;
+    about = ""
+    describe = ""
 
     constructor(
         public dialogRef: MatDialogRef<AdviceDialog>,
@@ -17,6 +20,10 @@ export class AdviceDialog {
 
     async ngOnInit() {
 
+    }
+
+    kirim(): void{
+        this.dialogRef.close({about: this.about, describe: this.describe, uid: sessionStorage.getItem("_id")})
     }
 
     batal(): void {

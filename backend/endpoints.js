@@ -73,5 +73,12 @@ module.exports = function (app, db) {
   admin.ReportClose(app, db)
   admin.AddTag(app, db)
   admin.EditTag(app, db)
-  admin.DeleteTag(app,db)
+  admin.DeleteTag(app, db)
+  admin.AdviceIn(app, db)
+  admin.AdviceList(app, db)
+  admin.AdviceDeleteAll(app, db)
+  admin.AdviceMarkRead(app, db)
+  admin.AdviceConsider(app, db)
+  admin.AdviceUnConsider(app, db)
+  admin.AdviceAccept(app,db)
 };

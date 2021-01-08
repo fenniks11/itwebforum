@@ -1,16 +1,41 @@
 <h1 mat-dialog-title>Kotak Saran</h1>
-<div mat-dialog-content class="dialog-content">
 
-    <div class="card-body mx-auto" style="border-left: violet;">
+<div *ngIf="logged_in else not_logged">
+    <div mat-dialog-content class="dialog-content">
 
-        <h1 class="card-title text-warning">Kotak Saran</h1>
-        <h3 class="card-text">Maaf, fitur ini belum tersedia.</h3>
+        <div class="card-body mx-auto" style="border-left: violet;">
 
+            <label for="about">Saran tentang: </label>
+            <input type="text" name="about" [(ngModel)]="about" placeholder="Judul dari saran..." class="form-control"
+                required>
+
+
+            <label for="describe">Keterangan saran: </label>
+            <textarea name="describe" [(ngModel)]="describe" placeholder="Jelaskan lebih lanjut tentang saranmu..."
+                class="form-control" required> </textarea>
+        </div>
+
+    </div>
+
+
+
+    <div class="closebtn">
+        <button mat-button (click)="batal()">Kembali</button>
+
+        <span ngbPopover="Judul minimal 3 karakter dan deskripsi minimal 5 karakter" triggers="mouseenter:mouseleave">
+            <button mat-button [disabled]="about.length < 3 || describe.length < 5"
+            (click)="kirim()">Kirim</button>
+        </span>
     </div>
 
 </div>
 
-
-<div class="closebtn">
-    <button mat-button (click)="batal()">Tutup</button>
-</div>
+<ng-template #not_logged>
+    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
+        <div style="height: 20vmax;"></div>
+        <h1>Kamu harus login terlebih dahulu sebelum dapat melaporkan jawaban ini!</h1>
+        <button (click)="batal()" mat-button>
+            Kembali
+        </button>
+    </div>
+</ng-template>

@@ -1,0 +1,240 @@
+<div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
+
+
+
+    <mat-tab-group>
+
+        <mat-tab label="Baru">
+
+            <div *ngFor="let adv of advList">
+
+                <mat-expansion-panel class="adv-cards" *ngIf="!adv.considered && !adv.readBy.includes(id)">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+
+                        <mat-panel-title>
+                            {{adv.about}}
+                        </mat-panel-title>
+
+
+                        <mat-panel-description>
+                            #{{adv.idAdv}}
+                        </mat-panel-description>
+
+                    </mat-expansion-panel-header>
+
+                    <div>Oleh: <img #img [src]="adv.from.profile_picture" class="p-profile">&nbsp;{{adv.from.username}}
+                    </div>
+
+                    <div>
+                        Deskripsi:
+                        <p> {{adv.describe}} </p>
+                    </div>
+
+                    <div class="adv-action-buttons">
+
+                        <button (click)="deleteFrom(adv.from.id, adv.from.username)" class="btn btn-danger">Hapus semua dari user ini</button>&nbsp;
+                        <button (click)="markRead(adv.idAdv)" class="btn btn-primary">Tandai sebagai dibaca</button>&nbsp;
+                        <button (click)="consider(adv.idAdv)" class="btn btn-success">Pertimbangkan</button>&nbsp;
+
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+
+
+        </mat-tab>
+
+        <mat-tab label="Dipertimbangkan">
+
+            <div *ngFor="let adv of advList">
+
+                <mat-expansion-panel class="adv-cards" *ngIf="adv.considered && !adv.accepted">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                        <mat-panel-title>
+                            {{adv.about}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            #{{adv.idAdv}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <div>Oleh: <img #img [src]="adv.from.profile_picture" class="p-profile">&nbsp;{{adv.from.username}}
+                    </div>
+
+                    <div>
+                        Deskripsi:
+                        <p> {{adv.describe}} </p>
+                    </div>
+
+                    <div class="adv-action-buttons">
+                        <p>Dipertimbangkan oleh {{adv.considered.by.username}} pada waktu {{adv.considered.date}}</p>
+                        <button (click)="unconsider(adv.idAdv)" class="btn btn-danger">Hapus dari pertimbangan</button>&nbsp;
+                        <button (click)="accept(adv.idAdv)" class="btn btn-success">Tandai sebagai diterima</button>&nbsp;
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Diterima">
+
+            <div *ngFor="let adv of advList">
+
+                <mat-expansion-panel class="adv-cards" *ngIf="adv.accepted">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                        <mat-panel-title>
+                            {{adv.about}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            #{{adv.idAdv}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <div>Oleh: <img #img [src]="adv.from.profile_picture" class="p-profile">&nbsp;{{adv.from.username}}
+                    </div>
+
+                    <div>
+                        Deskripsi:
+                        <p> {{adv.describe}} </p>
+                    </div>
+
+                    <div class="adv-action-buttons">
+                        Diterima oleh {{adv.accepted.by.username}} pada waktu {{adv.accepted.date}}
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Terbaca">
+
+            <div *ngFor="let adv of advList">
+
+                <mat-expansion-panel class="adv-cards" *ngIf="adv.readBy.includes(id)">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+                        <mat-panel-title>
+                            {{adv.about}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            #{{adv.idAdv}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <div>Oleh: <img #img [src]="adv.from.profile_picture" class="p-profile">&nbsp;{{adv.from.username}}
+                    </div>
+
+                    <div>
+                        Deskripsi:
+                        <p> {{adv.describe}} </p>
+
+
+                        <div class="adv-action-buttons">
+
+                            <span *ngIf="adv.accepted">
+                                Diterima oleh {{adv.accepted.by.username}} pada waktu {{adv.accepted.date}}
+                            </span>
+
+                            <span *ngIf="adv.considered && !adv.accepted">
+                                <p>Dipertimbangkan oleh {{adv.considered.by.username}} pada waktu
+                                    {{adv.considered.date}}
+                                </p>
+                                <button (click)="unconsider(adv.idAdv)" class="btn btn-danger">Hapus dari pertimbangan</button>&nbsp;
+                                <button (click)="0" class="btn btn-danger">Tandai sebagai diterima</button>&nbsp;
+                            </span>
+
+                            <span *ngIf="!adv.considered && !adv.accepted">
+                                <button (click)="deleteFrom(adv.from.id, adv.from.username)" class="btn btn-danger">Hapus semua dari user ini</button>&nbsp;
+                                <button (click)="consider(adv.idAdv)" class="btn btn-success">Pertimbangkan</button>&nbsp;
+                            </span>
+
+
+                        </div>
+
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Semua">
+
+            <div *ngFor="let adv of advList">
+
+                <mat-expansion-panel class="adv-cards">
+
+                    <mat-expansion-panel-header style="background-color: black; border-bottom: 1px solid white;">
+
+                        <mat-panel-title>
+                            {{adv.about}}
+                        </mat-panel-title>
+
+
+                        <mat-panel-description>
+                            #{{adv.idAdv}}
+                        </mat-panel-description>
+
+                    </mat-expansion-panel-header>
+
+                    <div>Oleh: <img #img [src]="adv.from.profile_picture" class="p-profile">&nbsp;{{adv.from.username}}
+                    </div>
+
+                    <div>
+                        Deskripsi:
+                        <p> {{adv.describe}} </p>
+                    </div>
+
+                    <div class="adv-action-buttons">
+
+                        <span *ngIf="adv.accepted">
+                            Diterima oleh {{adv.accepted.by.username}} pada waktu {{adv.accepted.date}}
+                        </span>
+
+                        <span *ngIf="adv.considered && !adv.accepted">
+                            <p>Dipertimbangkan oleh {{adv.considered.by.username}} pada waktu {{adv.considered.date}}
+                            </p>
+                            <button (click)="unconsider(adv.idAdv)" class="btn btn-danger">Hapus dari pertimbangan</button>&nbsp;
+                            <button (click)="accept(adv.idAdv)" class="btn btn-success">Tandai sebagai diterima</button>&nbsp;
+                        </span>
+
+                        <span *ngIf="!adv.considered && !adv.accepted">
+                            <button (click)="deleteFrom(adv.from.id, adv.from.username)" class="btn btn-danger">Hapus semua dari user ini</button>&nbsp;
+                            <span *ngIf="!adv.readBy.includes(id)"><button (click)="markRead(adv.idAdv)" class="btn btn-primary">Tandai
+                                    sebagai dibaca</button>&nbsp;</span>
+                            <button (click)="consider(adv.idAdv)" class="btn btn-success">Pertimbangkan</button>&nbsp;
+                        </span>
+
+
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+
+
+        </mat-tab>
+
+    </mat-tab-group>
+
+
+
+
+</div>
+
+<ng-template #unauthorizedAccess class="overlay">
+    <div class="overlay-content"> Unauthorized! </div>
+</ng-template>
+
+<ng-template *ngIf="check == 0" class="overlay">
+    <div class="overlay-content"> Authorization Initializing... </div>
+</ng-template>

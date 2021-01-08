@@ -144,6 +144,10 @@ export class ListForum {
     this.crnPage = page
   }
 
+  searchTag(value) {
+    this.router.navigate(['search', { keywords: "tag:" + value }])
+  }
+
   alertHapus(id, nama) {
     this.snackBar.open(`Hapus forum "${nama}"?`, "Hapus", { duration: 5000 })
       .onAction().subscribe(() => {

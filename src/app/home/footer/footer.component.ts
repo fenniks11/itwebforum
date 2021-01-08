@@ -14,7 +14,7 @@ import { AdviceDialog } from "./advice/advice.component";
 })
 export class FooterComponent {
   @Input() public titleHeader: string;
-  constructor(public dialog: MatDialog) { };
+  constructor(public dialog: MatDialog, private http: HttpClient, private snackBar: MatSnackBar) { };
 
   async ngOnInit() {
 
@@ -38,6 +38,14 @@ export class FooterComponent {
     const dialogRef = this.dialog.open(AdviceDialog, {
       width: '60%',
       data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (!result) return;
+
+      // ke edit tag
+      (await this.http.post('http://localhost:3000/api/advice/in', result).toPromise());
+      this.snackBar.open(`Terimakasih atas sarannya!`, "Ok", { duration: 5000 })
     });
   }
 

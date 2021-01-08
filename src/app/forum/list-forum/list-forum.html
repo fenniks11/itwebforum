@@ -91,16 +91,16 @@
 
                                     </div>
 
-                                    <div class="col-md-11" (click)="buka(list.idForum)">
-                                        <a class="nav-link">
+                                    <div class="col-md-11">
+                                        <a class="nav-link" (click)="buka(list.idForum)">
                                             <h2 class="card-title forum-title" [innerHTML]="list.namaForum"></h2>
 
                                         </a>
-                                        <p class="card-title" style="padding-left:10px;">Penanya:
+                                        <p class="card-title" (click)="buka(list.idForum)" style="padding-left:10px;">Penanya:
                                             {{list.originalPoster}}
                                         </p>
 
-                                        <h5 class="time-info"><span *ngIf="list.lastEdited != null"
+                                        <h5 class="time-info" (click)="buka(list.idForum)"><span *ngIf="list.lastEdited != null"
                                                 ngbPopover="{{getDate(list.lastEdited)}}"
                                                 triggers="mouseenter:mouseleave" popoverTitle="Terakhir di Edit"
                                                 class="time-info edited">(Edited)</span>{{getDate(list.createdDate)}}
@@ -109,9 +109,11 @@
 
                                         <div class="button-tag">
                                             <span *ngFor="let tag of list.tagList">
+
                                                 <a class="btn btn-sm btn-secondary mr-2"
                                                     [ngbPopover]="tag.tagDescription" triggers="mouseenter:mouseleave"
-                                                    [popoverTitle]="tag.value" role="button">{{tag.value}}</a>
+                                                    [popoverTitle]="tag.value" (click)="searchTag(tag.value)" role="button">{{tag.value}}</a>
+
                                             </span>
                                         </div>
 
