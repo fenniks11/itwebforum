@@ -14,6 +14,7 @@ export class AdminHome {
   check = 0;
   unauthorized = false;
   details = {} as any
+  statistic: any;
 
 
   async ngOnInit() {
@@ -22,6 +23,8 @@ export class AdminHome {
     this.details = (await this.http.post('http://localhost:3000/api/user/get', { id: this.id }).toPromise());
     this.check = 1;
     if(parseInt(this.details.level) < 90) this.unauthorized = true;
+
+    this.statistic = (await this.http.post('http://localhost:3000/api/admin/statistic', { uid: this.id }).toPromise());
 
     
   }

@@ -1,7 +1,7 @@
 <div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
     <nav-bar current="Admin Panel"> </nav-bar>
-    <mat-drawer-container style="height: max-content; min-height: 700px; max-height: 100%; border-radius: 3px;">
-        <mat-drawer mode="side" opened>
+    <mat-drawer-container id="admin-drawer-container">
+        <mat-drawer mode="side" id="admin-drawer" opened>
             <!-- admin / mod info  -->
 
             <div class="user-info">

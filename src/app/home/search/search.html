@@ -16,7 +16,7 @@
                 <mat-label style="color: gray;">Masukkan kata kunci...</mat-label>
                 <input type="text" matInput [(ngModel)]="keywords" name="keywords" id="keywords"
                     placeholder="Cth. tag:javascript / Forum kece...">
-                <button mat-icon-button matSuffix (click)="cari()">
+                <button ngbPopover="Cari" triggers="mouseenter:mouseleave" mat-icon-button matSuffix (click)="cari()">
                     <mat-icon>search</mat-icon>
                 </button>
                 <mat-hint style="color: gray;">*Syarat: Kata kunci minimal 3 karakter dan 1 tipe terpilih</mat-hint>

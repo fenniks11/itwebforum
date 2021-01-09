@@ -178,12 +178,10 @@
                     </mat-expansion-panel-header>
 
                     <div style="text-align: center;">
-                        <button style="color: white;" class="btn btn-outline-secondary" (click)="pagination(5)">5
-                            Judul</button>&nbsp;
-                        <button style="color: white;" class="btn btn-outline-secondary" (click)="pagination(10)">10
-                            Judul</button>&nbsp;
-                        <button style="color: white;" class="btn btn-outline-secondary" (click)="pagination(20)">20
-                            Judul</button>
+                        Menampilkan {{show}} judul
+                        <input type="radio" name="pagination" style="color: white;" (click)="pagination(5)">&nbsp;&nbsp;&nbsp;5 <br>
+                        <input type="radio" name="pagination" style="color: white;" (click)="pagination(10)"> 10 <br>
+                        <input type="radio" name="pagination" style="color: white;" (click)="pagination(20)"> 20 <br>
 
                         <p> Input Manual :</p>
                         <form (submit)="pagination(inputShow, true)" action="#">
@@ -223,14 +221,38 @@
 
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Urutkan berdasarkan
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p>Maaf, fitur ini belum selesai!</p>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Urutkan berdasarkan
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+        
+                  <div style="text-align: center;">
+                    <div class="row">
+                      <div class="col-md-1"><input type="radio" name="sortBy" style="color: white;" (click)="sort('date')"></div>
+                      <div class="col-md-auto">Tanggal</div>
+                    </div>
+        
+                    <div class="row">
+                      <div class="col-md-1"><input type="radio" name="sortBy" style="color: white;" (click)="sort('like')"></div>
+                      <div class="col-md-auto">Disukai</div>
+                    </div>
+        
+                    <div class="row">
+                      <div class="col-md-1"><input type="radio" name="sortBy" style="color: white;" (click)="sort('reply')"></div>
+                      <div class="col-md-auto">Dibalas</div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-1"><input type="radio" name="sortBy" style="color: white;" (click)="sort('view')"></div>
+                      <div class="col-md-auto">Dilihat</div>
+                    </div>
+                  </div>
+        
+                  <mat-slide-toggle (change)="sortDesc = !sortDesc; ngOnInit()">{{!sortDesc ? 'Ascending' : 'Descending'}}</mat-slide-toggle>
+        
                 </mat-expansion-panel>
-            </mat-accordion>
+              </mat-accordion>
 
 
         </div>

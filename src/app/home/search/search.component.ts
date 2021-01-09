@@ -27,22 +27,26 @@ export class Search {
      * belum ada fungsi "Sort By" atau "Urutkan Berdasarkan".
      */
 
-    ngOnInit() { if (this.keywords && this.keywords.length >= 3) this.headerSearch = true }
+    ngOnInit() { if (this.keywords && this.keywords.length >= 3) { this.headerSearch = true; this.types.push("forum", "qna") ;this.cari(true) } }
 
-    errorPrompt(type){
-        this.snackBar.open( type == "keywords" ? `Silahkan masukkan kata kunci minimal 3 karakter` : "Silahkan centang minimal 1 tipe" , "Ok", { duration: 5000 })
+    errorPrompt(type) {
+        this.snackBar.open(type == "keywords" ? `Silahkan masukkan kata kunci minimal 3 karakter` : "Silahkan centang minimal 1 tipe", "Ok", { duration: 5000 })
     }
 
-    async cari() {
+    async cari(headerSearch = false) {
         if (!this.keywords || this.keywords.length < 3) return this.errorPrompt("keywords");
-        this.types = []
-        
-        
-        document.querySelectorAll(".types:checked").forEach((value, ndex) => { this.types.push(value.id); })
-        if (!this.types.length) return this.errorPrompt("types");
+
+        if (!headerSearch) {
+            this.types = []
+
+
+            document.querySelectorAll(".types:checked").forEach((value, ndex) => { this.types.push(value.id); })
+            if (!this.types.length) return this.errorPrompt("types");
+        }
         this.showResult = false;
 
-        var text = this.keywords.split(/ +/g) as [], tags = []
+
+        var text = this.keywords.split(/ +/g) as [], orgQuery = this.keywords, tags = []
 
         for (let i = text.length - 1; i >= 0; i--) {
             if (/tag:(.*)/.exec(text[i])) {
@@ -57,7 +61,7 @@ export class Search {
 
         this.result = await this.http.post("http://localhost:3000/api/search", { keywords: this.keywords, types: this.types, tags: tags }).toPromise() as any;
 
-        this.keywords = ""
+        this.keywords = orgQuery
 
         this.resultLength = 0
         for (const i in this.result) {

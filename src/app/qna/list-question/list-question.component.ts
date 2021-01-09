@@ -30,6 +30,11 @@ export class ListQuestion {
   tagFilter = [] as any;
   filterIn = ""
 
+  showType = "_empty"
+
+  sortDesc = false;
+  sortBy = "date"
+
   public TagifySettings = {
 
     enforceWhitelist: true,
@@ -47,6 +52,7 @@ export class ListQuestion {
   constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private window: Window, private route: ActivatedRoute, private timeVerbose: TimeVerbose, private Tagify: TagifyService) { }
 
   async ngOnInit() {
+
     window.localStorage.setItem("activeTitle", "Daftar Pertanyaan")
 
 
@@ -65,8 +71,11 @@ export class ListQuestion {
     }
 
 
-    var filter = this.route.snapshot.paramMap.get("show");
-    if (filter) {
+
+    this.showType = this.route.snapshot.paramMap.get("show") ? this.route.snapshot.paramMap.get("show") : "_empty"
+    if (this.showType != "_empty") {
+      if (this.showType != "fb" && this.showType != "f" && this.showType != "b") return;
+      var filter = this.showType
       for (let i = this.listQnA.length - 1; i >= 0; i--) {
         if (this.listQnA[i].category != filter) this.listQnA.splice(i, 1)
       }
@@ -86,15 +95,41 @@ export class ListQuestion {
 
     this._id = sessionStorage.getItem('_id') == null ? "0" : sessionStorage.getItem('_id');
 
+    this.sortBy =  this.route.snapshot.paramMap.get("sort") ? this.route.snapshot.paramMap.get("sort") : "date";
+
+      this.listQnA.sort((a, b) => {
+
+        if (this.sortBy == "date") {
+          if (!this.sortDesc) return b.createdDate - a.createdDate
+          else return a.createdDate - b.createdDate
+        }
+
+        else if (this.sortBy == "like") {
+          if (!this.sortDesc) return b.liked.length - a.liked.length
+          else return a.liked.length - b.liked.length
+        }
+
+        else if (this.sortBy == "reply") {
+          if (!this.sortDesc) return b.responses - a.responses
+          else return a.responses - b.responses
+        }
+
+        else if (this.sortBy == "view") {
+          if (!this.sortDesc) return b.viewed.length - a.viewed.length
+          else return a.viewed.length - b.viewed.length
+        }
+
+        else return a.createdDate - b.createdDate
+      })
+
+    
+
 
     this.page = [1]
     for (let index = 1; index < Math.ceil(this.listQnA.length / this.show); index) {
       this.page.push(++index)
     }
     if (this.crnPage > this.page.length) this.crnPage = this.page.length
-
-
-
 
   }
 
@@ -158,11 +193,16 @@ export class ListQuestion {
     this.router.navigate(['search', { keywords: "tag:" + value }])
   }
 
-  async filter(show) {
-    if (show == "_empty") this.router.navigate(['qna'])
-    else this.router.navigate(['qna', { show: show }], {})
+  filter(show) {
+    this.showType = show
+    this.router.navigate(['qna', { show: this.showType, sort: this.sortBy }])
     this.ngOnInit()
-    // window.location.reload()
+  }
+
+  sort(sort) {
+    this.sortBy = sort;
+    this.router.navigate(['qna', { show: this.showType, sort: this.sortBy }])
+    this.ngOnInit()
   }
 
   async hapus(idQnA) {
@@ -185,7 +225,7 @@ export class ListQuestion {
   }
 
   async like(id) {
-    if (this._id == "0") {
+    if (this._id == "0" || !this._id) {
       this.snackBar.open(`Kamu harus login terlebih dahulu`, "Login", { duration: 5000 })
         .onAction().subscribe(() => { this.router.navigate(["login"]) });
       return;
@@ -200,8 +240,8 @@ export class ListQuestion {
 
 /**
  *
- * tambah CodeMirror untuk compilerun
+ * send baby clothes to sis ria from kantor pos indonesia before 12 pm
  *
- * tambah time_events dari serevya
- * tambah time properties dari serevya
+ * 
+ * 
  */

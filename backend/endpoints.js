@@ -81,4 +81,5 @@ module.exports = function (app, db) {
   admin.AdviceConsider(app, db)
   admin.AdviceUnConsider(app, db)
   admin.AdviceAccept(app,db)
+  admin.AdminStatistic(app,db)
 };
