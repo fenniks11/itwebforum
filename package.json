@@ -61,5 +61,17 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.8.3"
-  }
+  },
+  "description": "Aplikasi ini adalah sebagai penilaian untuk tugas besar dalam mata kuliah Interaksi Manusia dan Komputer.",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fenniks11/itwebforum.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fenniks11/itwebforum/issues"
+  },
+  "homepage": "https://github.com/fenniks11/itwebforum#readme"
 }
