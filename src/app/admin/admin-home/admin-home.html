@@ -1,18 +1,20 @@
-<div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
-    <div>
-        <p>Halo,</p>
-        <img #img [src]="details.profile_picture" class="p-profile">
-        <div class="d-profile">
-            <span class="card-title n-profile">{{details.username}}
-            </span>
-            <p style="color: rgb(160, 0, 0);">Administrator</p>
-            <p>User level: {{details.level}}</p>
-        </div>
+<div class="container-fluid" *ngIf="!unauthorized else unauthorizedAccess" style="background-color: white; color: black;">
+  
+    <div class="container mb-5">
+        <div class="row">
+          <div class="col-lg-9">
+              <p class="text-info">Halo, {{details.username}}</p>
+          </div>
+          <div class="col-lg-2">
+              <p class="text-danger">Administrator</p>
+              <small class="text-muted">User level: {{details.level}}</small>
+          </div>
+          <div class="col-lg-1">
+              <img #img [src]="details.profile_picture" class="p-profile">
+          </div>
+      </div>
     </div>
-
-    <div>
-        <p>Saat ini, ada</p>
-
+    <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <mat-card>
@@ -144,9 +146,9 @@
             </div>
         </div>
     </div>
-
+<br><br><br>
 </div>
-
+<br>
 <ng-template #unauthorizedAccess class="overlay">
     <div class="overlay-content"> Unauthorized! </div>
 </ng-template>

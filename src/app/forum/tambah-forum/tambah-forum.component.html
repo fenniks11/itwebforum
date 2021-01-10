@@ -95,13 +95,11 @@
 </div>
 
 <ng-template #not_logged>
-    <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
         <div style="height: 20vmax;"></div>
-        <h1>Kamu harus login terlebih dahulu sebelum dapat membuat forum baru!</h1>
-        <button (click)="toLogin()" mat-button>
+        <h1 class="text-warning text-center">Kamu harus login terlebih dahulu sebelum dapat membuat forum baru!</h1>
+        <button (click)="toLogin()" class="btn btn-primary" mat-button>
             Login
         </button>
-    </div>
 </ng-template>
 
 <ng-template #tagLoading>Memuat Tags...</ng-template>
