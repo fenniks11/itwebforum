@@ -1,7 +1,7 @@
 <div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
     <nav-bar current="Admin Panel"> </nav-bar>
-    <mat-drawer-container style="height: max-content; min-height: 700px; max-height: 100%; border-radius: 3px;">
-        <mat-drawer mode="side" opened>
+    <mat-drawer-container id="admin-drawer-container">
+        <mat-drawer mode="side" id="admin-drawer" opened>
             <!-- admin / mod info  -->
 
             <div class="user-info">
@@ -21,6 +21,8 @@
                 <button (click)="activePage = 'report'" class="btn btn-outline-secondary nav-buttons">Laporan</button>
 
                 <button (click)="activePage = 'manage_tags'" class="btn btn-outline-secondary nav-buttons">Tags</button>
+
+                <button (click)="activePage = 'advice_inbox'" class="btn btn-outline-secondary nav-buttons">Kotak Saran</button>
             </div>
 
         </mat-drawer>
@@ -38,6 +40,10 @@
 
                 <div *ngSwitchCase="'manage_tags'">
                     <admin-tags></admin-tags>
+                </div>
+
+                <div *ngSwitchCase="'advice_inbox'">
+                    <admin-advice></admin-advice>
                 </div>
 
                 <div *ngSwitchDefault>

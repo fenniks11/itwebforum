@@ -71,7 +71,7 @@ export class AdminReport {
   }
 
   chat() {
-    this.snackBar.open(`Maaf, fitur ini belum selesai!`, null, { duration: 3000 })
+    this.snackBar.open(`Maaf, fitur ini tidak tersedia dalam demo`, null, { duration: 3000 })
   }
 
   closeCase(idReport, response) {

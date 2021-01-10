@@ -1,45 +1,161 @@
 <body style="text-align: center;">
-    <p>*Syarat: Kata kunci minimal 3 karakter dan 1 tipe terpilih</p>
-    <input [(ngModel)]="keywords" type="text" id="keywords" placeholder="Masukkan kata kunci">
-    <button (click)="cari()">Cari</button>
-    &nbsp; <span>Tipe: </span>
-    <input type="checkbox" [checked]="headerSearch" class="types" id="forum" /> Forum
-    <input type="checkbox" [checked]="headerSearch" class="types" id="qna" /> QnA
-    <input type="checkbox" class="types" id="pesan" /> Pesan
-    <input type="checkbox" class="types" id="tag" /> Tag
-    <input type="checkbox" class="types" id="user" /> Username
+
+    <div class="search-box">
+        <h1>Pencarian</h1>
+
+        <form>
+
+            <div>
+                <span>Tipe: </span>
+                <input type="checkbox" [checked]="headerSearch" class="types" id="forum" /> Forum
+                <input type="checkbox" [checked]="headerSearch" class="types" id="qna" /> QnA
+                <input type="checkbox" class="types" id="user" /> Username
+            </div>
+
+            <mat-form-field appearance="outline" style="width: 75%">
+                <mat-label style="color: gray;">Masukkan kata kunci...</mat-label>
+                <input type="text" matInput [(ngModel)]="keywords" name="keywords" id="keywords"
+                    placeholder="Cth. tag:javascript / Forum kece...">
+                <button ngbPopover="Cari" triggers="mouseenter:mouseleave" mat-icon-button matSuffix (click)="cari()">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <mat-hint style="color: gray;">*Syarat: Kata kunci minimal 3 karakter dan 1 tipe terpilih</mat-hint>
+            </mat-form-field>
+
+        </form>
+
+
+    </div>
 
     <hr>
 
-    <ul *ngFor="let list of result">
+    <div class="search-res container" *ngIf="showResult">
+
+        <p class="result-length"> <span class="result-length-number">{{resultLength}}</span> total hasil</p>
+
+        <mat-expansion-panel class="result-exp-pan" *ngIf="types.includes('forum')">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="color: black;">
+                    ({{result.forum.length}}) Forum
+                </mat-panel-title>
 
 
 
-        <li *ngIf="list.namaForum">
-            <!-- jika array == forum  -->
-            <p style="cursor: pointer;" (click)="forum(list.idForum)">{{list.namaForum}}</p>
-        </li>
+            </mat-expansion-panel-header>
 
-        <li *ngIf="list.namaQnA">
-            <!-- jika array == qna  -->
-            <p style="cursor: pointer;" (click)="qna(list.idQnA)">{{list.namaQnA}}</p>
-        </li>
+            <p class="result-length"> <span class="result-length-number">{{result.forum.length}}</span> hasil</p>
+            <div *ngIf="result.forum.length">
+                <div *ngFor="let forums of result.forum">
+
+                    <mat-card ngbPopover="Klik untuk membuka" triggers="mouseenter:mouseleave" class="result-card"
+                        (click)="forum(forums.idForum)">
+
+                        <mat-card-header>
+
+                            <img #img mat-card-avatar [src]="forums.ProfilePicture" class="search-res-p-profile">
+                            <mat-card-subtitle>{{forums.originalPoster}}</mat-card-subtitle>
+
+                        </mat-card-header>
+
+                        <mat-card-content> {{forums.namaForum}}</mat-card-content>
+
+                        <mat-card-footer>
+                            Tags: <span *ngFor="let tag of forums.tagList">
+                                <a class="btn btn-sm btn-secondary mr-2" [ngbPopover]="tag.tagDescription"
+                                    triggers="mouseenter:mouseleave" role="button">{{tag.value}}</a>
+                            </span>
+                        </mat-card-footer>
+
+                    </mat-card>
+
+                    <!-- jika array == forum  -->
+                </div>
+            </div>
+
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel class="result-exp-pan" *ngIf="types.includes('qna')">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="color: black;">
+                    ({{result.qna.length}}) QnA
+                </mat-panel-title>
 
 
 
-        <li *ngIf="list.idPesan">
-            <!-- jika array == pesan  -->
-            <p style="cursor: pointer;" (click)="pesan(list.idForum ,list.idPesan)">{{list.isiPesan}}</p>
-        </li>
+            </mat-expansion-panel-header>
+
+            <p class="result-length"> <span class="result-length-number">{{result.qna.length}}</span> hasil</p>
+            <div *ngIf="result.qna.length">
+                <div *ngFor="let qnas of result.qna">
+
+                    <mat-card ngbPopover="Klik untuk membuka" triggers="mouseenter:mouseleave" class="result-card"
+                        (click)="qna(qnas.idQnA)">
+
+                        <mat-card-header>
+
+                            <img #img mat-card-avatar [src]="qnas.ProfilePicture" class="search-res-p-profile">
+                            <mat-card-subtitle>{{qnas.originalPoster}}</mat-card-subtitle>
+
+                        </mat-card-header>
+
+                        <mat-card-content> {{qnas.namaQnA}}</mat-card-content>
+
+                        <mat-card-footer>
+                            Tags: <span *ngFor="let tag of qnas.tagList">
+                                <a class="btn btn-sm btn-secondary mr-2" [ngbPopover]="tag.tagDescription"
+                                    triggers="mouseenter:mouseleave" role="button">{{tag.value}}</a>
+                            </span>
+                        </mat-card-footer>
+
+                    </mat-card>
+
+                    <!-- jika array == qna  -->
+                </div>
+            </div>
+
+        </mat-expansion-panel>
 
 
 
-        <li *ngIf="list.username">
-            <!-- jika array == user  -->
-            <p style="cursor: pointer;" (click)="user(list.username)">{{list.username}}</p>
-        </li>
 
 
 
-    </ul>
+        <mat-expansion-panel class="result-exp-pan" *ngIf="types.includes('user')">
+
+
+            <mat-expansion-panel-header>
+                <mat-panel-title style="color: black;">
+                    ({{result.user.length}}) User
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+
+
+            <p class="result-length"> <span class="result-length-number">{{result.user.length}}</span> hasil</p>
+            <div *ngIf="result.user.length">
+                <div *ngFor="let users of result.user">
+
+                    <mat-card ngbPopover="Klik untuk membuka" triggers="mouseenter:mouseleave" class="result-card"
+                        (click)="user(users.username)">
+
+
+                        <img #img mat-card-image [src]="users.profile_picture" class="search-res-p-profile">
+                        <mat-card-content> {{users.username}}</mat-card-content>
+
+
+                    </mat-card>
+
+                    <!-- jika array == user  -->
+                </div>
+            </div>
+
+        </mat-expansion-panel>
+
+
+
+
+
+
+    </div>
 </body>

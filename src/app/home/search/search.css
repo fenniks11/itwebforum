@@ -1,0 +1,57 @@
+.result-exp-pan {
+    background-color: rgb(235, 235, 235);
+    color: black;
+    margin-top: 5px;
+}
+
+#keywords{
+    font-size: larger;
+}
+
+::placeholder{
+    color: gray;
+}
+
+.search-btn{
+    height: 100%;
+}
+
+/* Border */
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: black;
+}
+
+/* Font color */
+
+input.mat-input-element {
+    color: black;
+}
+
+.result-length {
+    text-align: start;
+    font-size: large;
+}
+
+.result-length-number {
+    font-size: x-large;
+}
+
+.result-card {
+    cursor: pointer;
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.result-card:last-of-type {
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+.search-res-p-profile {
+    border-radius: 50%;
+    width: 3rem;
+    height: auto;
+    max-width: 100%;
+    display: inline;
+}

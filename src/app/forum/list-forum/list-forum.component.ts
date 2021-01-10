@@ -28,6 +28,9 @@ export class ListForum {
   tagFilter = [] as any;
   crnPage = 1;
 
+  sortDesc = false;
+  sortBy = "date"
+
   public TagifySettings = {
 
     enforceWhitelist: true,
@@ -42,7 +45,7 @@ export class ListForum {
     }
   };
 
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private timeVerbose: TimeVerbose, private Tagify: TagifyService) { }
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private route: ActivatedRoute, private timeVerbose: TimeVerbose, private Tagify: TagifyService) { }
 
   async ngOnInit() {
 
@@ -73,6 +76,35 @@ export class ListForum {
         if (!check) this.listForum.splice(i, 1)
       }
     }
+
+    this.sortBy =  this.route.snapshot.paramMap.get("sort") ? this.route.snapshot.paramMap.get("sort") : "date";
+
+      this.listForum.sort((a, b) => {
+
+        if (this.sortBy == "date") {
+          if (!this.sortDesc) return b.createdDate - a.createdDate
+          else return a.createdDate - b.createdDate
+        }
+
+        else if (this.sortBy == "like") {
+          if (!this.sortDesc) return b.liked.length - a.liked.length
+          else return a.liked.length - b.liked.length
+        }
+
+        else if (this.sortBy == "reply") {
+          if (!this.sortDesc) return b.responses - a.responses
+          else return a.responses - b.responses
+        }
+
+        else if (this.sortBy == "view") {
+          if (!this.sortDesc) return b.viewed.length - a.viewed.length
+          else return a.viewed.length - b.viewed.length
+        }
+
+        else return a.createdDate - b.createdDate
+      })
+
+    
 
     this.page = [1]
     for (let index = 1; index < Math.ceil(this.listForum.length / this.show); index) {
@@ -114,8 +146,12 @@ export class ListForum {
       document.querySelector("#mainbox").classList.add("row")
       document.querySelector("#listbox").classList.add("col-md-9")
     }
+  }
 
-
+  sort(sort) {
+    this.sortBy = sort;
+    this.router.navigate(['forum', { sort: this.sortBy }])
+    this.ngOnInit()
   }
 
   getDate(ms) {
@@ -144,6 +180,10 @@ export class ListForum {
     this.crnPage = page
   }
 
+  searchTag(value) {
+    this.router.navigate(['search', { keywords: "tag:" + value }])
+  }
+
   alertHapus(id, nama) {
     this.snackBar.open(`Hapus forum "${nama}"?`, "Hapus", { duration: 5000 })
       .onAction().subscribe(() => {
@@ -152,7 +192,7 @@ export class ListForum {
   }
 
   async like(id) {
-    if (this._id == "0") {
+    if (this._id == "0" || !this._id) {
       this.snackBar.open(`Kamu harus login terlebih dahulu`, "Login", { duration: 5000 })
         .onAction().subscribe(() => { this.router.navigate(["login"]) });
       return;

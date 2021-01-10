@@ -11,14 +11,14 @@ import { HeaderApp } from './home/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
-import { MatCardModule, MatCard } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { MatToolbarModule, MatToolbar } from "@angular/material/toolbar";
+import { HttpClientModule } from '@angular/common/http';
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BukaForum } from './forum/buka-forum/buka-forum.component';
 import { EditForum } from './forum/edit-forum/edit-forum.component';
@@ -71,6 +71,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { AdminTags } from './admin/admin-tags/admin-tags.component';
 import { DeleteTag } from './admin/admin-tags/delete-tag/delete-tag.component';
 import { EditTag } from './admin/admin-tags/edit-tag/edit-tag.component';
+import { AdminAdvice } from './admin/admin-advice/admin-advice.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
+import {MatRadioModule} from '@angular/material/radio'; 
 
 
 
@@ -119,7 +122,8 @@ import { EditTag } from './admin/admin-tags/edit-tag/edit-tag.component';
     ReportClose,
     AdminTags,
     DeleteTag,
-    EditTag
+    EditTag,
+    AdminAdvice
   ],
   imports: [
     BrowserModule,
@@ -134,6 +138,8 @@ import { EditTag } from './admin/admin-tags/edit-tag/edit-tag.component';
     MatToolbarModule,
     MatDialogModule,
     MatSidenavModule,
+    MatSlideToggleModule,
+    MatRadioModule,
     MatTabsModule,
     FormsModule,
     HttpClientModule,

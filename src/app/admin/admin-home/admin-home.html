@@ -1,5 +1,150 @@
 <div *ngIf="!unauthorized else unauthorizedAccess" class="container-fluid">
-    HOME PAGE
+    <div>
+        <p>Halo,</p>
+        <img #img [src]="details.profile_picture" class="p-profile">
+        <div class="d-profile">
+            <span class="card-title n-profile">{{details.username}}
+            </span>
+            <p style="color: rgb(160, 0, 0);">Administrator</p>
+            <p>User level: {{details.level}}</p>
+        </div>
+    </div>
+
+    <div>
+        <p>Saat ini, ada</p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.user}}</mat-card-title>
+                    <mat-card-subtitle>User terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.banned_user}}</mat-card-title>
+                    <mat-card-subtitle>Banned user</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.online_staff}}</mat-card-title>
+                    <mat-card-subtitle>Staff online</mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.forum}}</mat-card-title>
+                    <mat-card-subtitle>Forum terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.banned_forum}}</mat-card-title>
+                    <mat-card-subtitle>Banned forum</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.pesan}}</mat-card-title>
+                    <mat-card-subtitle>Pesan terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.banned_pesan}}</mat-card-title>
+                    <mat-card-subtitle>Banned pesan</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.pertanyaan}}</mat-card-title>
+                    <mat-card-subtitle>QnA terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.banned_pertanyaan}}</mat-card-title>
+                    <mat-card-subtitle>Banned QnA</mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.pertanyaan_terjawab}}</mat-card-title>
+                    <mat-card-subtitle>QnA terjawab</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.answer}}</mat-card-title>
+                    <mat-card-subtitle>Jawaban terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.banned_answer}}</mat-card-title>
+                    <mat-card-subtitle>Banned jawaban</mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.tags}}</mat-card-title>
+                    <mat-card-subtitle>Tags terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+
+                <mat-card>
+                    <mat-card-title>{{statistic.report}}</mat-card-title>
+                    <mat-card-subtitle>Laporan terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card>
+                    <mat-card-title>{{statistic.advice}}</mat-card-title>
+                    <mat-card-subtitle>Saran terdaftar</mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6">
+                <mat-card>
+                    <mat-card-title>{{statistic.handled_report}}</mat-card-title>
+                    <mat-card-subtitle>Laporan ditangani</mat-card-subtitle>
+                </mat-card>
+            </div>
+            <div class="col-md-6">
+                <mat-card>
+                    <mat-card-title>{{statistic.unhandled_report}}</mat-card-title>
+                    <mat-card-subtitle>Laporan belum ditangani</mat-card-subtitle>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <ng-template #unauthorizedAccess class="overlay">
