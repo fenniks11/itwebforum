@@ -1,9 +1,72 @@
+.overlay {
+    color: white;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.97);
+    overflow-y: hidden;
+    transition: 0.1s;
+}
+
+.overlay-content {
+    user-select: none;
+    font-size: 20px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    /* margin-top: 30px; */
+}
+
 .p-profile {
-  border-radius: 50%;
-  width: 10vw;
-  height: auto;
-  max-width: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    border-radius: 50%;
+    width: 10vw;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.d-profile {
+    font: bolder;
+    font-size: x-large;
+    text-align: center;
+}
+
+.n-profile {
+    font-size: medium;
+    height: auto;
+}
+
+#nav-button-holder {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.nav-buttons {
+    margin-bottom: 10px;
+    color: black;
+}
+
+#admin-drawer {
+    color: black;
+    background-color: rgb(223, 223, 223);
+}
+
+#admin-drawer-container {
+    height: max-content;
+    min-height: 700px;
+    max-height: 100%;
+    border-radius: 3px;
+    background-color: rgb(102, 102, 102);
+    color: black;
 }

@@ -73,7 +73,8 @@ import { DeleteTag } from './admin/admin-tags/delete-tag/delete-tag.component';
 import { EditTag } from './admin/admin-tags/edit-tag/edit-tag.component';
 import { AdminAdvice } from './admin/admin-advice/admin-advice.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
-import {MatRadioModule} from '@angular/material/radio'; 
+import {MatRadioModule} from '@angular/material/radio';
+import { ActivateComponent } from './home/activate/activate.component'; 
 
 
 
@@ -123,7 +124,8 @@ import {MatRadioModule} from '@angular/material/radio';
     AdminTags,
     DeleteTag,
     EditTag,
-    AdminAdvice
+    AdminAdvice,
+    ActivateComponent
   ],
   imports: [
     BrowserModule,

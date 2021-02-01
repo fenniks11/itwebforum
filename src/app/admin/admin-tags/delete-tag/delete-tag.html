@@ -4,10 +4,8 @@
     <h1 mat-dialog-title class="text-danger">Hapus tag ini?</h1>
 
     <div mat-dialog-content>
-        <p>Tag ini akan menghilang dari database, termasuk database Forum dan QnA. Lanjutkan?</p>
-        <input type="text" name="verify" [(ngModel)]="verify" placeholder='Ketik "{{selected.value}}" tanpa tanda kutip...'
-            class="form-control" required>
-
+        <p *ngIf="!first_conf else next_conf_msg">Tag ini akan menghilang dari database, termasuk database Forum dan
+            QnA. Lanjutkan?</p>
         <br>
     </div>
 
@@ -15,9 +13,8 @@
 </div>
 <div style="width: 100%; padding-top: 15px; text-align: end;">
     <button mat-button (click)="batal()">Kembali</button>
-    <button mat-button class="btn btn-danger"
-        [disabled]="verify != selected.value "
-        [mat-dialog-close]="true">Hapus Tag</button>
+    <button *ngIf="!first_conf else next_conf_btn" mat-button class="btn btn-danger" (click)="first_conf = true">Hapus
+        Tag</button>
 </div>
 
 
@@ -25,4 +22,12 @@
     <div style="position: sticky; height: 0px; color: rgb(0, 0, 0); text-align: center;">
         Unauthorized
     </div>
+</ng-template>
+
+<ng-template #next_conf_btn>
+    <button mat-button class="btn btn-danger" [mat-dialog-close]="true">Lanjutkan Hapus Tag</button>
+</ng-template>
+
+<ng-template #next_conf_msg>
+    <p style="color: red;">Menghapus tag dapat membuat masalah yang tidak terduga. Tetap lanjutkan?</p>
 </ng-template>

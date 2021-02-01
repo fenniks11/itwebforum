@@ -46,10 +46,12 @@ export class Register {
       return;
     }
 
-    await sessionStorage.setItem("_id", res2.id)
+    await sessionStorage.setItem("activate_id", res2.id)
+    // await sessionStorage.setItem("_id", res2.id)
     this.snackBar.open(`Memproses...`, null, { duration: 2000 })
     setTimeout(() => {
-      this.router.navigate(["profile", { fresh: true }])
+      this.router.navigate(['activate'])
+      // this.router.navigate(["profile", { fresh: true }])
     }, 2000);
   }
 }

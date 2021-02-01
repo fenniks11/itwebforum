@@ -24,6 +24,7 @@ module.exports = function (app, db) {
   user.Register(app, db);
   user.PP_Delete(app, db);
   user.Change(app, db);
+  user.Activate_Key(app, db)
 
   let compiler = require("./js/compiler")
   compiler.Compile(app, db);
@@ -80,6 +81,6 @@ module.exports = function (app, db) {
   admin.AdviceMarkRead(app, db)
   admin.AdviceConsider(app, db)
   admin.AdviceUnConsider(app, db)
-  admin.AdviceAccept(app,db)
-  admin.AdminStatistic(app,db)
+  admin.AdviceAccept(app, db)
+  admin.AdminStatistic(app, db)
 };
