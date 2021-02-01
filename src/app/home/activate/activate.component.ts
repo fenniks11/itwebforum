@@ -14,11 +14,12 @@ export class ActivateComponent implements OnInit {
   email: string = "";
   input_key: string = "";
   errValidate: string = "";
+  mail_sent: boolean = false;
 
   constructor(private router: Router, private http: HttpClient, private snackBar: MatSnackBar) { }
 
   async ngOnInit() {
-    this.id = sessionStorage.getItem("activated_id")
+    this.id = await sessionStorage.getItem("activate_id")    
     if (!this.id) return this.router.navigate(['login']);
     var res = await this.http.post("http://localhost:3000/api/user/activate_key", { id: this.id }).toPromise() as any;
     this.key = res.key;
@@ -26,7 +27,9 @@ export class ActivateComponent implements OnInit {
   }
 
   async send_key() { //send to email
+    this.mail_sent = true;
     console.log(this.key);
+    alert("Untuk saat ini, kunci berada pada console log di browser kamu.")
   }
 
   async activate() {

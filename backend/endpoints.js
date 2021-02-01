@@ -25,6 +25,7 @@ module.exports = function (app, db) {
   user.PP_Delete(app, db);
   user.Change(app, db);
   user.Activate_Key(app, db)
+  user.Activation(app, db);
 
   let compiler = require("./js/compiler")
   compiler.Compile(app, db);

@@ -145,7 +145,16 @@ module.exports = {
         app.post("/api/user/activate_key", async (req, res) => {
             var uid = req.body.id;
             const docs = await db.collection("user").find({ user_id: uid }).toArray()
-            return res.json({ email: docs[0].email ,key: docs[0].activated.key })
+            return res.json({ email: docs[0].email, key: docs[0].activated.key })
+        })
+    },
+
+    Activation: async function (app, db) {
+        app.post("/api/user/activation", async (req, res) => {
+            var uid = req.body.id, key = req.body.key;
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+            if (key != docs[0].activated.key) return res.json({ success: false }).send();
+            else return res.json({ success: true }).send()
         })
     }
 }

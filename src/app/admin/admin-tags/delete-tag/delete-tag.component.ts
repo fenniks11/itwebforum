@@ -10,6 +10,7 @@ import { TimeVerbose } from 'src/app/time.component';
 export class DeleteTag {
     selected = {} as any;
     _id: any;
+    first_conf = false;
     verify = ""
     logged_in = !sessionStorage.getItem("_id") ? false : true;
 
