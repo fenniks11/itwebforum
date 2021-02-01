@@ -33,7 +33,7 @@ export class ActivateComponent implements OnInit {
   }
 
   async activate() {
-    if (this.key.length < 10) return this.errValidate = "Kunci memiliki 10 karakter";
+    if (this.input_key.length < 10) return this.errValidate = "Kunci memiliki 10 karakter";
     else if (this.key != this.input_key) return this.errValidate = "Kunci yang dimasukkan salah";
 
     var res = await this.http.post("http://localhost:3000/api/user/activation", { id: this.id, key: this.input_key }).toPromise() as any;

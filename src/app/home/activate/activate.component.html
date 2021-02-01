@@ -13,6 +13,8 @@
                 <mat-icon matSuffix><i class="fa fa-key"></i></mat-icon>
             </mat-form-field>
 
+            <p *ngIf="errValidate" style="color: red;">{{errValidate}}</p>
+
             <mat-card-actions>
                 <div class="col-lg">
                     <button (click)="activate()" [disabled]="!mail_sent" class="btn btn-success mb-10" style="width: 20%;">Aktivasi</button>

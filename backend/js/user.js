@@ -154,7 +154,11 @@ module.exports = {
             var uid = req.body.id, key = req.body.key;
             const docs = await db.collection("user").find({ user_id: uid }).toArray()
             if (key != docs[0].activated.key) return res.json({ success: false }).send();
-            else return res.json({ success: true }).send()
+            else {
+                docs[0].activated.status = true;
+                db.collection("user").updateOne({ user_id: uid }, { $set: { activated: docs[0].activated } })
+                res.json({ success: true }).send()
+            }
         })
     }
 }
