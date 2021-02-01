@@ -5,7 +5,7 @@
 
     <div mat-dialog-content>
         <p *ngIf="!first_conf else next_conf_msg">Tag ini akan menghilang dari database, termasuk database Forum dan
-            QnA. Lanjutkan?</p>
+            QnA. Lanjutkan menghapus {{data.value}}?</p>
         <br>
     </div>
 
@@ -29,5 +29,5 @@
 </ng-template>
 
 <ng-template #next_conf_msg>
-    <p style="color: red;">Menghapus tag dapat membuat masalah yang tidak terduga. Tetap lanjutkan?</p>
+    <p style="color: red;">Menghapus tag dapat membuat masalah yang tidak terduga. Tetap lanjutkan menghapus {{data.value}}?</p>
 </ng-template>
