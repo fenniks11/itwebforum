@@ -40,7 +40,7 @@ export class Login {
       await sessionStorage.setItem("activate_id", res.id)
       this.router.navigate(['activate'])
     }
-    else return this.errorLogin(res.reason /*404 = not found, 401 = unauthorized (wrong pass) */);
+    else if (!res.success) return this.errorLogin(res.reason /*404 = not found, 401 = unauthorized (wrong pass) */);
     sessionStorage.setItem("_id", res.id)
     if (this.oncomplete) this.router.navigateByUrl(this.oncomplete)
     else window.location.reload()
