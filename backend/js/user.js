@@ -20,9 +20,9 @@ module.exports = {
                 /**
                  * Level:
                  * 1 = user biasa
-                 * 2 - 8 = user dengan kemampuan tertentu / privileged users
-                 * 9 = moderator
-                 * 10 = admin
+                 * 2 - 89 = user dengan kemampuan tertentu / privileged users
+                 * 90 - 99 = moderator
+                 * 100 = admin
                  */
                 level: "1",
                 email: email, // Unique key
@@ -38,7 +38,11 @@ module.exports = {
                  * P = perempuan
                  * L = laki-laki
                  */
-                jenis_kelamin: "L"
+                jenis_kelamin: "L",
+                activated: {
+                    status: false,
+                    key: `${md5(Math.round(new Date().getTime() % Math.random() * (Math.random() * 10000000)))}`.slice(0, 10)
+                }
             });
             res.json({ success: true, id: id })
         })
@@ -51,6 +55,7 @@ module.exports = {
 
             if (!docs.length) return res.json({ success: false, reason: 404 })
             else if (docs[0].password != password) return res.json({ success: false, reason: 401 })
+            else if (!docs[0].activated.status) return res.json({ success: false, reason: 403, id: docs[0].user_id })
             else res.json({ success: true, id: docs[0].user_id })
         })
     },
@@ -62,7 +67,7 @@ module.exports = {
             if (docs.length) return res.json({ found: true, reason: "email" })
             docs = await db.collection("user").find({ username: username }).toArray()
             if (docs.length) return res.json({ found: true, reason: "username" })
-            res.json({ found: false})
+            res.json({ found: false })
         })
     },
 
@@ -80,7 +85,7 @@ module.exports = {
 
     Change: async function (app, db) {
         app.post("/api/user/change", async (req, res) => { //check details
-            
+
             var uid = req.body.id, details = req.body.details
             let docs = await db.collection("user").find({ username: req.body.details.username }).toArray()
             if (docs.length) return res.json({ success: false, reason: "username" })
@@ -133,6 +138,27 @@ module.exports = {
                 res.json({ result: `${req.protocol}://${req.get('host')}/image/users/default.png` })
                 //file removed
             })
+        })
+    },
+
+    Activate_Key: async function (app, db) {
+        app.post("/api/user/activate_key", async (req, res) => {
+            var uid = req.body.id;
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+            return res.json({ email: docs[0].email, key: docs[0].activated.key })
+        })
+    },
+
+    Activation: async function (app, db) {
+        app.post("/api/user/activation", async (req, res) => {
+            var uid = req.body.id, key = req.body.key;
+            const docs = await db.collection("user").find({ user_id: uid }).toArray()
+            if (key != docs[0].activated.key) return res.json({ success: false }).send();
+            else {
+                docs[0].activated.status = true;
+                db.collection("user").updateOne({ user_id: uid }, { $set: { activated: docs[0].activated } })
+                res.json({ success: true }).send()
+            }
         })
     }
 }

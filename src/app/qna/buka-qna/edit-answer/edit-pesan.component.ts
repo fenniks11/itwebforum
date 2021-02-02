@@ -44,7 +44,7 @@ export class EditPesan {
 
             xhr = new XMLHttpRequest();
             xhr.withCredentials = false;
-            xhr.open('POST', 'http://localhost:3000/api/forum/img_pesan');
+            xhr.open('POST', 'http://158.140.174.243:8081/api/forum/img_pesan');
 
             xhr.onload = function () {
                 if (xhr.responseText.startsWith("Fail")) return failure(xhr.responseText);

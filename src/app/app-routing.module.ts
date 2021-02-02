@@ -20,6 +20,7 @@ import { BukaQnA } from './qna/buka-qna/buka-qna.component';
 import { EditQuestion } from './qna/edit-question/edit-question.component';
 import { Err404 } from './home/404err/404err.component';
 import { AdminPanel } from './admin/admin.component';
+import { ActivateComponent } from './home/activate/activate.component';
 
 
 
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'forum', component: Forum },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
+  { path: 'activate', component: ActivateComponent },
   { path: 'profile', component: Profile },
   { path: 'home', component: HomeComponent },
   { path: 'compilerun', component: CompileRun },

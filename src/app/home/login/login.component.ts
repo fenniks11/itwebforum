@@ -34,9 +34,13 @@ export class Login {
 
   async login() {
     console.log(this.password);
-    
+
     var res = await this.http.post("http://localhost:3000/api/user/login", { email: this.email, password: this.password }).toPromise() as any;
-    if (!res.success) return this.errorLogin(res.reason /*404 = not found, 401 = unauthorized (wrong pass) */);
+    if (!res.success && res.reason == 403) {
+      await sessionStorage.setItem("activate_id", res.id)
+      this.router.navigate(['activate'])
+    }
+    else if (!res.success) return this.errorLogin(res.reason /*404 = not found, 401 = unauthorized (wrong pass) */);
     sessionStorage.setItem("_id", res.id)
     if (this.oncomplete) this.router.navigateByUrl(this.oncomplete)
     else window.location.reload()

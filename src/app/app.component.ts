@@ -19,6 +19,7 @@ export class AppComponent {
 
       if (ev instanceof NavigationEnd) {
         //Route change        
+        if(sessionStorage.getItem("activate_id")) return this.router.navigate(['activate']);
         if (ev.url.includes("forum")) window.localStorage.setItem("parent", "forum")
         else if (ev.url.includes("qna")) window.localStorage.setItem("parent", "qna")
 
