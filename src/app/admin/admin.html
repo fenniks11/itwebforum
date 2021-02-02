@@ -2,8 +2,6 @@
     <nav-bar current="Admin Panel"> </nav-bar>
     <mat-drawer-container id="admin-drawer-container">
         <mat-drawer mode="side" id="admin-drawer" opened>
-            <!-- admin / mod info  -->
-
             <div class="user-info">
                 <img #img [src]="details.profile_picture" class="p-profile">
                 <div class="d-profile">
@@ -15,14 +13,14 @@
             <!-- admin / mod info end -->
 
             <div id="nav-button-holder">
-                <button (click)="activePage = 'home'" class="btn btn-outline-secondary nav-buttons">Admin
-                    home</button>
+                <a (click)="activePage = 'home'" class="nav-link" style="border-bottom: 1px solid rgb(255, 253, 253);">Admin
+                    home</a>
 
-                <button (click)="activePage = 'report'" class="btn btn-outline-secondary nav-buttons">Laporan</button>
+                <a (click)="activePage = 'report'" class="nav-link"style="border-bottom: 1px solid rgb(255, 253, 253);">Laporan</a>
 
-                <button (click)="activePage = 'manage_tags'" class="btn btn-outline-secondary nav-buttons">Tags</button>
+                <a (click)="activePage = 'manage_tags'" class="nav-link"style="border-bottom: 1px solid rgb(255, 253, 253);">Tags</a>
 
-                <button (click)="activePage = 'advice_inbox'" class="btn btn-outline-secondary nav-buttons">Kotak Saran</button>
+                <a (click)="activePage = 'advice_inbox'" class="nav-link"style="border-bottom: 1px solid rgb(255, 253, 253);">Kotak Saran</a>
             </div>
 
         </mat-drawer>
@@ -52,7 +50,7 @@
             </div>
         </mat-drawer-content>
     </mat-drawer-container>
-</div>
+    </div>
 
 
 <ng-template #unauthorizedAccess class="overlay">

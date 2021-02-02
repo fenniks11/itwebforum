@@ -11,122 +11,85 @@
 </div>
 
 <div class="container-fluid mt-5">
-  <div class="card text-center card text-center border-primary bg-light mb-3">
-    <div class="card-header">
-      Itwebforum
-    </div>
-    <div class="card-body mx-auto" style="border-left: violet;">
-      <h1 class="card-title text-success">Pengenalan</h1>
-      <h3 class="card-text">Adalah website dimana para programmer Fasilkom-TI dapat saling berdiskusi dan tolong
-        menolong dalam menjawab pertanyaan yang terkait dalam bidang pemrograman.</h3>
-
-      <p class="card-text">Forum dan Pertanyaan memiliki tag sesuai dengan topiknya masing masing</p>
+  <div class="card text-center card text-center bg-transparant mb-3" >
+    <div class="card-body">
+      <h3 class="card-text" style=" font-size: 25px; font-weight: lighter;">Adalah website dimana para programmer Fasilkom-TI dapat berdiskusi  menjawab pertanyaan yang terkait dalam bidang pemrograman. 
+        Fitur Forum dan Pertanyaan memiliki tag sesuai dengan topik permasalahan.</h3>
       <a routerLink='/forum' class="btn btn-primary mr-2"><i class="fa fa-globe">&nbsp;Daftar Forum</i> </a>
       <a routerLink='/qna' class="btn btn-primary mr-2"><i class="fa fa-comments-o">&nbsp;Daftar Pertanyaan</i> </a>
-
       <br>
-
-      <p class="card-text">Semua pertanyaan tergolong dari tiga kategori pertanyaan</p>
+<br>
+      <p class="card-text" style="font-size: 25px; font-weight: lighter;">Pada fitur Q & A semua pertanyaan tergolong dalam tiga kategori pertanyaan</p>
       <a [routerLink]="['/qna']" [queryParams]="{show: 'f'}" class="btn btn-primary mr-2">Frontend</a>
       <a [routerLink]="['/qna']" [queryParams]="{show: 'fb'}" class="btn btn-success mr-2">Frontend dan Backend</a>
       <a [routerLink]="['/qna']" [queryParams]="{show: 'b'}" class="btn btn-secondary">Backend</a>
     </div>
 
   </div>
-  <br>
-
-
-  <div class="parallax statistic-home">
-    <div class="statistic">
-
-      <div class="row statistic-card">
-        <div class="col-md-2 statistic-numbers">
-          {{totalForum}}
-        </div>
-
-        <div class="col-md-10 statistic-description">
-          Total forum terdaftar
-        </div>
+  <br>  
+  <div class="card">
+    <div class="card-header bg-info">
+      <div class="row">
+        <h2 class="text-start">
+          Statistik Forum
+        </h2>
       </div>
-
-      <div class="row statistic-card">
-        <div class="col-md-2 statistic-numbers">
-          {{totalPesan}}
-        </div>
-
-        <div class="col-md-10 statistic-description">
-          Total balasan forum
-        </div>
-      </div>
-
-      <div class="row statistic-card">
-        <div class="col-md-2 statistic-numbers">
-          {{totalPertanyaan}}
-        </div>
-
-        <div class="col-md-10 statistic-description">
-          Total pertanyaan ditanyakan
-        </div>
-      </div>
-
-      <div class="row statistic-card">
-        <div class="col-md-2 statistic-numbers">
-          {{pertanyaanTerjawab}}
-        </div>
-
-        <div class="col-md-10 statistic-description">
-          Total pertanyaan terjawab
-        </div>
-      </div>
-
-      <div class="row statistic-card">
-        <div class="col-md-2 statistic-numbers">
-          {{totalPenggunaTerdaftar}}
-        </div>
-
-        <div class="col-md-10 statistic-description">
-          Total pengguna terdaftar
-        </div>
-      </div>
-
-      <div class="row statistic-card">
-        <div class="col-md-2 statistic-numbers">
-          {{totalTag}}
-        </div>
-
-        <div class="col-md-10 statistic-description">
-          Total tag terdaftar
-        </div>
-      </div>
-
-
-
     </div>
-  </div>
-
-<div class="container mt-5">  
-  <div *ngIf="!logged_in else alreadyLogged">
-  <div class="row mt-4">
-    <div class="col-md-6" style="border-right: 1px solid rgba(70, 44, 27, 0.555);">
-      <h1 class="text-info text-center">Ayo, segera bergabung dan mulai berinteraksi !</h1>
-      <br>
-      <register></register>
-    </div>
-    <div class="col-md-6" style="border-left: 1px solid rgba(70, 44, 27, 0.555);">
-      <h1 class="text-info text-center">Jika sudah punya akun, silahkan login terlebih dahulu</h1>
-      <br>
-      <login></login>
+    <div class="card-body">
+      <div class="container">
+        <ngb-accordion #acc="ngbAccordion">
+          <ngb-panel id="toggle-1">
+            <ng-template ngbPanelTitle>
+              <span><i class="fa fa-question-circle-o">&nbsp;</i>Forum</span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-sm">
+                  <b>Jumlah forum terdaftar :</b> {{totalForum}}
+                </div>
+                <div class="col-sm">
+                  <b>Jumlah balasan forum :</b>  {{totalPesan}}
+                </div>
+              </div>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="toggle-2">
+            <ng-template ngbPanelTitle>
+              <span><i class="fa fa-question-circle">&nbsp;</i>Q & A</span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-sm">
+                  <b>Jumlah Pertanyaan :</b> {{totalPertanyaan}}
+                </div>
+                <div class="col-sm">
+                  <b>Jumlah balasan forum :</b>  {{totalPesan}}
+                </div>
+                <div class="col-sm">
+                  <b>Jumlah Pertanyaan Terjawab : </b>{{pertanyaanTerjawab}}
+                </div>
+              </div>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="toggle-3">
+            <ng-template ngbPanelTitle>
+              <span><i class="fa fa-users">&nbsp;</i>Lainnya</span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-sm">
+                  <b>Jumlah Pengguna Terdaftar :</b> {{totalPenggunaTerdaftar}}
+                </div>
+                <div class="col-sm">
+                  <b>Jumlah Tag Terdaftar :</b>  {{totalTag}}
+                </div>
+  
+              </div>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+      </div>
     </div>
   </div>
   <br>
 </div>
-<hr>
-</div>
-
-</div>
-
-<ng-template #alreadyLogged>
-  <!-- jika sudah login  -->
-
-
-</ng-template>
